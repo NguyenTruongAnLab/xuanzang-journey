@@ -29,17 +29,28 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="timeline.css">
+    <link rel="stylesheet" href="avatar.css">
 </head>
 <body>
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
             <span class="navbar-brand mb-0 h1">Xuanzang's Journey (629-645 CE)</span>
-            <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#aboutModal">About</button>
+            <div class="d-flex gap-2">
+                <div class="btn-group" role="group" aria-label="Language selector">
+                    <button type="button" class="btn btn-outline-light btn-sm" id="langEn" onclick="setLanguage('en')">EN</button>
+                    <button type="button" class="btn btn-outline-light btn-sm" id="langVi" onclick="setLanguage('vi')">VI</button>
+                </div>
+                <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#aboutModal">About</button>
+            </div>
         </div>
     </nav>
 
     <div class="container-fluid p-0">
         <div id="map"></div>
+        
+        <!-- Enhanced Visual Timeline -->
+        <div id="enhancedTimelineContainer" class="enhanced-timeline-container"></div>
         
         <div class="timeline-controls">
             <div class="container">
@@ -100,8 +111,14 @@
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
+    <!-- i18n System -->
+    <script src="i18n.js"></script>
+    
     <!-- Custom JS -->
     <script src="journey-data.js"></script>
+    <script src="journey-data-enhanced.js"></script>
+    <script src="avatar.js"></script>
+    <script src="timeline.js"></script>
     <script src="map.js"></script>
 </body>
 </html>
