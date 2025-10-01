@@ -5,6 +5,72 @@ let journeyLine;
 let currentStepIndex = 0;
 let isPlaying = false;
 let playInterval;
+let bookmarkedLocations = new Set();
+
+// Load bookmarks from localStorage
+function loadBookmarks() {
+    const saved = localStorage.getItem('xuanzang_bookmarks');
+    if (saved) {
+        try {
+            bookmarkedLocations = new Set(JSON.parse(saved));
+        } catch (e) {
+            bookmarkedLocations = new Set();
+        }
+    }
+}
+
+// Save bookmarks to localStorage
+function saveBookmarks() {
+    localStorage.setItem('xuanzang_bookmarks', JSON.stringify([...bookmarkedLocations]));
+}
+
+// Toggle bookmark for current location
+function toggleBookmark() {
+    const currentLocation = journeyData[currentStepIndex];
+    const locationId = `${currentLocation.name}_${currentLocation.year}`;
+    
+    if (bookmarkedLocations.has(locationId)) {
+        bookmarkedLocations.delete(locationId);
+    } else {
+        bookmarkedLocations.add(locationId);
+    }
+    
+    saveBookmarks();
+    updateBookmarkButton();
+}
+
+// Update bookmark button UI
+function updateBookmarkButton() {
+    const currentLocation = journeyData[currentStepIndex];
+    const locationId = `${currentLocation.name}_${currentLocation.year}`;
+    const isBookmarked = bookmarkedLocations.has(locationId);
+    
+    const bookmarkIcon = document.getElementById('bookmarkIcon');
+    const bookmarkText = document.getElementById('bookmarkText');
+    const bookmarkBtn = document.getElementById('bookmarkBtn');
+    const tFunc = typeof t === 'function' ? t : (key) => key;
+    
+    if (bookmarkIcon) {
+        bookmarkIcon.textContent = isBookmarked ? '★' : '☆';
+    }
+    
+    if (bookmarkText) {
+        bookmarkText.textContent = isBookmarked ? tFunc('bookmark.saved') : tFunc('bookmark.button');
+    }
+    
+    if (bookmarkBtn) {
+        if (isBookmarked) {
+            bookmarkBtn.classList.remove('btn-outline-warning');
+            bookmarkBtn.classList.add('btn-warning');
+        } else {
+            bookmarkBtn.classList.remove('btn-warning');
+            bookmarkBtn.classList.add('btn-outline-warning');
+        }
+    }
+}
+
+// Make toggleBookmark globally accessible
+window.toggleBookmark = toggleBookmark;
 
 // Initialize the map
 function initMap() {
@@ -174,6 +240,9 @@ function updateSummaryPanel(location, enhanced, tFunc) {
         `;
         summaryDetails.innerHTML = detailsHTML;
     }
+    
+    // Update bookmark button state
+    updateBookmarkButton();
 }
 
 // Update the left illustration panel with images
@@ -211,8 +280,19 @@ function updateIllustrationPanel(location, enhanced, tFunc) {
             // Show placeholder when no images available
             const placeholder = document.createElement('div');
             placeholder.className = 'carousel-placeholder';
+            
+            // Choose icon based on location type or emotion
+            let icon = '🏛️'; // default
+            if (enhanced.emotion === 'tired') icon = '🏜️';
+            else if (enhanced.emotion === 'peaceful' || enhanced.emotion === 'reverent') icon = '🛕';
+            else if (enhanced.emotion === 'excited') icon = '🏔️';
+            else if (enhanced.emotion === 'determined') icon = '🚶';
+            else if (enhanced.emotion === 'contemplative') icon = '🌄';
+            else if (enhanced.emotion === 'triumphant') icon = '🎉';
+            
             placeholder.innerHTML = `
                 <div>
+                    <div class="location-icon">${icon}</div>
                     <h5>${enhanced.name}</h5>
                     <p>📍 ${enhanced.modernName}</p>
                     <p style="font-size: 0.85rem; margin-top: 10px;">${tFunc('info.noImagesAvailable') || 'Historical images not available'}</p>
@@ -420,13 +500,29 @@ function startPlaying() {
         
         updateTimeline();
         
-        // Perform emotion-based animation
+        // Perform emotion-based animation at new location
         const location = journeyData[currentStepIndex];
         const enhanced = typeof getEnhancedLocation === 'function' ? getEnhancedLocation(location) : location;
+        
+        // Stop walking briefly for emotion display
         if (window.monkAvatar && enhanced.emotion) {
-            window.monkAvatar.performEmotionAction(enhanced.emotion);
+            window.monkAvatar.stopWalking();
+            
+            // Perform the emotion animation
+            setTimeout(() => {
+                if (window.monkAvatar) {
+                    window.monkAvatar.performEmotionAction(enhanced.emotion);
+                }
+                
+                // Resume walking after emotion animation
+                setTimeout(() => {
+                    if (isPlaying && window.monkAvatar) {
+                        window.monkAvatar.startWalking();
+                    }
+                }, 1500);
+            }, 200);
         }
-    }, 2000); // Move to next location every 2 seconds
+    }, 3000); // Move to next location every 3 seconds (increased from 2s for better viewing)
 }
 
 // Stop animated playback
@@ -456,6 +552,9 @@ function updateLanguageButtons() {
 
 // Initialize map when page loads
 document.addEventListener('DOMContentLoaded', () => {
+    // Load bookmarks first
+    loadBookmarks();
+    
     initMap();
     
     // Initialize enhanced timeline

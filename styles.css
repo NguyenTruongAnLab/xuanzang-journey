@@ -191,6 +191,23 @@ body {
     font-size: 1rem;
     text-align: center;
     padding: 20px;
+    flex-direction: column;
+}
+
+.carousel-placeholder h5 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.carousel-placeholder p {
+    margin: 5px 0;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.carousel-placeholder .location-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
 }
 
 .info-panel .card {

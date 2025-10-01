@@ -58,6 +58,10 @@ const translations = {
         'illustration.previous': 'Previous image',
         'illustration.next': 'Next image',
         
+        // Bookmark
+        'bookmark.button': 'Bookmark',
+        'bookmark.saved': 'Bookmarked',
+        
         // Modal
         'modal.aboutTitle': "About Xuanzang's Journey",
         'modal.intro': 'This interactive map shows the remarkable 16-year journey (629-645 CE) of the Chinese Buddhist monk Xuanzang, who traveled from China to India and back to bring Buddhist scriptures to China.',
@@ -134,6 +138,10 @@ const translations = {
         'illustration.title': 'Hình Ảnh Địa Điểm',
         'illustration.previous': 'Ảnh trước',
         'illustration.next': 'Ảnh tiếp theo',
+        
+        // Bookmark
+        'bookmark.button': 'Đánh Dấu',
+        'bookmark.saved': 'Đã Đánh Dấu',
         
         // Modal
         'modal.aboutTitle': 'Về Hành Trình Huyền Trang',
@@ -276,6 +284,14 @@ function updateUILanguage() {
     
     const carouselNext = document.getElementById('carouselNext');
     if (carouselNext) carouselNext.setAttribute('aria-label', t('illustration.next'));
+    
+    // Update bookmark button
+    const bookmarkText = document.getElementById('bookmarkText');
+    if (bookmarkText) {
+        const isBookmarked = bookmarkText.textContent === t('bookmark.saved') || 
+                           document.getElementById('bookmarkBtn')?.classList.contains('btn-warning');
+        bookmarkText.textContent = isBookmarked ? t('bookmark.saved') : t('bookmark.button');
+    }
     
     // Update current year display
     if (window.journeyData && window.currentStepIndex !== undefined) {
