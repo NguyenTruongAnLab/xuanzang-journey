@@ -193,6 +193,11 @@ function updateTimeline() {
     const currentLocation = journeyData[currentStepIndex];
     currentYearEl.textContent = tFunc('controls.currentYear', { year: currentLocation.year });
     
+    // Update enhanced timeline
+    if (window.enhancedTimeline) {
+        window.enhancedTimeline.setCurrentIndex(currentStepIndex);
+    }
+    
     // Highlight current location
     highlightCurrentLocation();
     
@@ -273,6 +278,9 @@ function updateLanguageButtons() {
 document.addEventListener('DOMContentLoaded', () => {
     initMap();
     
+    // Initialize enhanced timeline
+    initEnhancedTimeline();
+    
     // Show first location by default
     setTimeout(() => {
         showLocationDetails(journeyData[0]);
@@ -304,3 +312,10 @@ document.addEventListener('languageChanged', () => {
     // Update language buttons
     updateLanguageButtons();
 });
+
+// Connect timeline clicks to map
+window.onTimelineMarkerClick = function(index) {
+    currentStepIndex = index;
+    updateTimeline();
+    stopPlaying();
+};
