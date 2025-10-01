@@ -7,12 +7,33 @@ class MonkAvatar {
         this.avatar = null;
         this.currentAnimation = 'idle';
         this.footstepInterval = null;
+        this.map = null;
+        this.mapMarker = null;
         this.init();
     }
     
     init() {
         this.createAvatarContainer();
         this.createAtmosphere();
+    }
+    
+    setMap(map) {
+        this.map = map;
+        // Create a custom divIcon for the map marker
+        if (map && window.L) {
+            const avatarIcon = L.divIcon({
+                className: 'map-monk-avatar',
+                html: this.getMonkSVG(),
+                iconSize: [60, 80],
+                iconAnchor: [30, 80]
+            });
+            
+            // Create marker but don't add to map yet
+            this.mapMarker = L.marker([0, 0], { 
+                icon: avatarIcon,
+                zIndexOffset: 2000
+            });
+        }
     }
     
     createAvatarContainer() {
@@ -213,12 +234,37 @@ class MonkAvatar {
         this.container.style.bottom = y + 'px';
     }
     
+    moveToLocation(coordinates, duration = 1000) {
+        // Move avatar on the map to specific coordinates
+        if (this.map && this.mapMarker && coordinates) {
+            // Add marker to map if not already added
+            if (!this.map.hasLayer(this.mapMarker)) {
+                this.mapMarker.addTo(this.map);
+            }
+            
+            // Animate movement to new coordinates
+            this.mapMarker.setLatLng(coordinates);
+            
+            // Pan map to follow avatar (smoothly)
+            this.map.panTo(coordinates, {
+                animate: true,
+                duration: duration / 1000
+            });
+        }
+    }
+    
     hide() {
         this.container.style.opacity = '0';
+        if (this.mapMarker && this.map && this.map.hasLayer(this.mapMarker)) {
+            this.map.removeLayer(this.mapMarker);
+        }
     }
     
     show() {
         this.container.style.opacity = '1';
+        if (this.mapMarker && this.map && !this.map.hasLayer(this.mapMarker)) {
+            this.mapMarker.addTo(this.map);
+        }
     }
 }
 

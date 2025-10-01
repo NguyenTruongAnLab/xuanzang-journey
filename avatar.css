@@ -8,6 +8,19 @@
     pointer-events: none;
 }
 
+/* Map-based monk avatar */
+.map-monk-avatar {
+    background: none !important;
+    border: none !important;
+    pointer-events: none;
+}
+
+.map-monk-avatar .monk-avatar {
+    width: 60px;
+    height: 80px;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5));
+}
+
 .monk-avatar {
     width: 60px;
     height: 80px;

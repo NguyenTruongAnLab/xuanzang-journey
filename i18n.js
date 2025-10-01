@@ -43,6 +43,24 @@ const translations = {
         'info.description': 'Description',
         'info.historicalContext': 'Historical Context',
         'info.emotion': 'Emotion',
+        'info.noImagesAvailable': 'Historical images not available',
+        
+        // Summary Panel
+        'summary.title': 'Journey Summary',
+        'summary.duration': 'Duration:',
+        'summary.distance': 'Distance:',
+        'summary.current': 'Current:',
+        'summary.progress': 'Progress:',
+        'summary.details': 'Location Details',
+        
+        // Illustration Panel
+        'illustration.title': 'Location Images',
+        'illustration.previous': 'Previous image',
+        'illustration.next': 'Next image',
+        
+        // Bookmark
+        'bookmark.button': 'Bookmark',
+        'bookmark.saved': 'Bookmarked',
         
         // Modal
         'modal.aboutTitle': "About Xuanzang's Journey",
@@ -62,7 +80,12 @@ const translations = {
         'a11y.mapRegion': 'Interactive map showing Xuanzang\'s journey',
         'a11y.timelineSlider': 'Timeline slider to navigate through years',
         'a11y.playButton': 'Play or pause the journey animation',
-        'a11y.languageButton': 'Switch language'
+        'a11y.languageButton': 'Switch language',
+        'a11y.keyboardShortcuts': 'Keyboard Shortcuts',
+        'a11y.arrowKeys': 'Arrow keys (← →) - Navigate timeline',
+        'a11y.spaceKey': 'Space - Play/Pause',
+        'a11y.tabKey': 'Tab - Navigate controls',
+        'a11y.enterKey': 'Enter - Activate button'
     },
     
     vi: {
@@ -106,6 +129,24 @@ const translations = {
         'info.description': 'Mô Tả',
         'info.historicalContext': 'Bối Cảnh Lịch Sử',
         'info.emotion': 'Tâm Trạng',
+        'info.noImagesAvailable': 'Không có hình ảnh lịch sử',
+        
+        // Summary Panel
+        'summary.title': 'Tổng Quan Hành Trình',
+        'summary.duration': 'Thời gian:',
+        'summary.distance': 'Quãng đường:',
+        'summary.current': 'Hiện tại:',
+        'summary.progress': 'Tiến trình:',
+        'summary.details': 'Chi Tiết Địa Điểm',
+        
+        // Illustration Panel
+        'illustration.title': 'Hình Ảnh Địa Điểm',
+        'illustration.previous': 'Ảnh trước',
+        'illustration.next': 'Ảnh tiếp theo',
+        
+        // Bookmark
+        'bookmark.button': 'Đánh Dấu',
+        'bookmark.saved': 'Đã Đánh Dấu',
         
         // Modal
         'modal.aboutTitle': 'Về Hành Trình Huyền Trang',
@@ -125,7 +166,12 @@ const translations = {
         'a11y.mapRegion': 'Bản đồ tương tác hiển thị hành trình của Huyền Trang',
         'a11y.timelineSlider': 'Thanh trượt thời gian để điều hướng qua các năm',
         'a11y.playButton': 'Phát hoặc tạm dừng hoạt ảnh hành trình',
-        'a11y.languageButton': 'Chuyển đổi ngôn ngữ'
+        'a11y.languageButton': 'Chuyển đổi ngôn ngữ',
+        'a11y.keyboardShortcuts': 'Phím Tắt',
+        'a11y.arrowKeys': 'Phím mũi tên (← →) - Điều hướng thời gian',
+        'a11y.spaceKey': 'Space - Phát/Tạm dừng',
+        'a11y.tabKey': 'Tab - Điều hướng các điều khiển',
+        'a11y.enterKey': 'Enter - Kích hoạt nút'
     }
 };
 
@@ -218,6 +264,43 @@ function updateUILanguage() {
     if (locationTitle && locationTitle.textContent === t('info.selectLocation')) {
         locationTitle.textContent = t('info.selectLocation');
         document.getElementById('locationInfo').textContent = t('info.clickMarker');
+    }
+    
+    // Update summary panel
+    const summaryTitle = document.getElementById('summaryTitle');
+    if (summaryTitle) summaryTitle.textContent = t('summary.title');
+    
+    const summaryTotalDuration = document.getElementById('summaryTotalDuration');
+    if (summaryTotalDuration) summaryTotalDuration.textContent = t('summary.duration');
+    
+    const summaryTotalDistance = document.getElementById('summaryTotalDistance');
+    if (summaryTotalDistance) summaryTotalDistance.textContent = t('summary.distance');
+    
+    const summaryCurrentLocation = document.getElementById('summaryCurrentLocation');
+    if (summaryCurrentLocation) summaryCurrentLocation.textContent = t('summary.current');
+    
+    const summaryProgress = document.getElementById('summaryProgress');
+    if (summaryProgress) summaryProgress.textContent = t('summary.progress');
+    
+    const summaryDetailsTitle = document.getElementById('summaryDetailsTitle');
+    if (summaryDetailsTitle) summaryDetailsTitle.textContent = t('summary.details');
+    
+    // Update illustration panel
+    const illustrationTitle = document.getElementById('illustrationTitle');
+    if (illustrationTitle) illustrationTitle.textContent = t('illustration.title');
+    
+    const carouselPrev = document.getElementById('carouselPrev');
+    if (carouselPrev) carouselPrev.setAttribute('aria-label', t('illustration.previous'));
+    
+    const carouselNext = document.getElementById('carouselNext');
+    if (carouselNext) carouselNext.setAttribute('aria-label', t('illustration.next'));
+    
+    // Update bookmark button
+    const bookmarkText = document.getElementById('bookmarkText');
+    if (bookmarkText) {
+        const isBookmarked = bookmarkText.textContent === t('bookmark.saved') || 
+                           document.getElementById('bookmarkBtn')?.classList.contains('btn-warning');
+        bookmarkText.textContent = isBookmarked ? t('bookmark.saved') : t('bookmark.button');
     }
     
     // Update current year display
