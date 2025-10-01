@@ -59,6 +59,7 @@ function updateBookmarkButton() {
     }
     
     if (bookmarkBtn) {
+        // Update visual state
         if (isBookmarked) {
             bookmarkBtn.classList.remove('btn-outline-warning');
             bookmarkBtn.classList.add('btn-warning');
@@ -66,6 +67,11 @@ function updateBookmarkButton() {
             bookmarkBtn.classList.remove('btn-warning');
             bookmarkBtn.classList.add('btn-outline-warning');
         }
+        
+        // Update ARIA state for accessibility
+        bookmarkBtn.setAttribute('aria-pressed', isBookmarked ? 'true' : 'false');
+        bookmarkBtn.setAttribute('aria-label', 
+            isBookmarked ? tFunc('bookmark.saved') : tFunc('bookmark.button'));
     }
 }
 
@@ -339,20 +345,40 @@ function setupCarousel() {
         }
     };
     
+    const goToPrev = () => {
+        if (currentCarouselIndex > 0) {
+            currentCarouselIndex--;
+            updateCarousel();
+        }
+    };
+    
+    const goToNext = () => {
+        if (currentCarouselIndex < images.length - 1) {
+            currentCarouselIndex++;
+            updateCarousel();
+        }
+    };
+    
     if (prevBtn) {
-        prevBtn.onclick = () => {
-            if (currentCarouselIndex > 0) {
-                currentCarouselIndex--;
-                updateCarousel();
+        prevBtn.onclick = goToPrev;
+        
+        // Keyboard support for prev button
+        prevBtn.onkeydown = (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                goToPrev();
             }
         };
     }
     
     if (nextBtn) {
-        nextBtn.onclick = () => {
-            if (currentCarouselIndex < images.length - 1) {
-                currentCarouselIndex++;
-                updateCarousel();
+        nextBtn.onclick = goToNext;
+        
+        // Keyboard support for next button
+        nextBtn.onkeydown = (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                goToNext();
             }
         };
     }

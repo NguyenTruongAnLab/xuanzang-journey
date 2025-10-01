@@ -50,55 +50,55 @@
         <div id="map"></div>
         
         <!-- Left Illustration Panel -->
-        <div id="illustrationPanel" class="illustration-panel">
+        <div id="illustrationPanel" class="illustration-panel" role="region" aria-label="Location illustrations">
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title" id="illustrationTitle">Location Images</h6>
                     <div id="illustrationCarousel" class="illustration-carousel">
-                        <div class="carousel-container">
-                            <button class="carousel-btn prev" id="carouselPrev" aria-label="Previous image">‹</button>
+                        <div class="carousel-container" role="img" aria-live="polite">
+                            <button class="carousel-btn prev" id="carouselPrev" aria-label="Previous image" tabindex="0">‹</button>
                             <div class="carousel-images" id="carouselImages">
                                 <!-- Images will be loaded here -->
                             </div>
-                            <button class="carousel-btn next" id="carouselNext" aria-label="Next image">›</button>
+                            <button class="carousel-btn next" id="carouselNext" aria-label="Next image" tabindex="0">›</button>
                         </div>
-                        <div class="carousel-caption" id="carouselCaption"></div>
+                        <div class="carousel-caption" id="carouselCaption" aria-live="polite"></div>
                     </div>
                 </div>
             </div>
         </div>
         
         <!-- Right Summary Panel (Fixed) -->
-        <div id="summaryPanel" class="summary-panel">
+        <div id="summaryPanel" class="summary-panel" role="region" aria-label="Journey summary">
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title" id="summaryTitle">Journey Summary</h6>
-                    <div id="summaryContent">
-                        <div class="summary-item">
+                    <div id="summaryContent" role="list">
+                        <div class="summary-item" role="listitem">
                             <strong id="summaryTotalDuration">Duration:</strong>
                             <span>16 years (629-645 CE)</span>
                         </div>
-                        <div class="summary-item">
+                        <div class="summary-item" role="listitem">
                             <strong id="summaryTotalDistance">Distance:</strong>
                             <span>Over 10,000 miles</span>
                         </div>
-                        <div class="summary-item">
+                        <div class="summary-item" role="listitem">
                             <strong id="summaryCurrentLocation">Current:</strong>
                             <span id="summaryCurrentName">Chang'an</span>
                         </div>
-                        <div class="summary-item">
+                        <div class="summary-item" role="listitem">
                             <strong id="summaryProgress">Progress:</strong>
                             <span id="summaryProgressText">0 / 29 locations</span>
                         </div>
                     </div>
                     <div class="mt-2">
-                        <button class="btn btn-sm btn-outline-warning w-100" id="bookmarkBtn" onclick="toggleBookmark()">
-                            <span id="bookmarkIcon">☆</span> <span id="bookmarkText">Bookmark</span>
+                        <button class="btn btn-sm btn-outline-warning w-100" id="bookmarkBtn" onclick="toggleBookmark()" aria-pressed="false">
+                            <span id="bookmarkIcon" aria-hidden="true">☆</span> <span id="bookmarkText">Bookmark</span>
                         </button>
                     </div>
                     <div class="mt-3">
                         <h6 id="summaryDetailsTitle">Location Details</h6>
-                        <div id="summaryDetails">
+                        <div id="summaryDetails" role="region" aria-live="polite">
                             <p class="text-muted">Select a location to see details</p>
                         </div>
                     </div>

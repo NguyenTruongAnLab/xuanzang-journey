@@ -80,7 +80,12 @@ const translations = {
         'a11y.mapRegion': 'Interactive map showing Xuanzang\'s journey',
         'a11y.timelineSlider': 'Timeline slider to navigate through years',
         'a11y.playButton': 'Play or pause the journey animation',
-        'a11y.languageButton': 'Switch language'
+        'a11y.languageButton': 'Switch language',
+        'a11y.keyboardShortcuts': 'Keyboard Shortcuts',
+        'a11y.arrowKeys': 'Arrow keys (← →) - Navigate timeline',
+        'a11y.spaceKey': 'Space - Play/Pause',
+        'a11y.tabKey': 'Tab - Navigate controls',
+        'a11y.enterKey': 'Enter - Activate button'
     },
     
     vi: {
@@ -161,7 +166,12 @@ const translations = {
         'a11y.mapRegion': 'Bản đồ tương tác hiển thị hành trình của Huyền Trang',
         'a11y.timelineSlider': 'Thanh trượt thời gian để điều hướng qua các năm',
         'a11y.playButton': 'Phát hoặc tạm dừng hoạt ảnh hành trình',
-        'a11y.languageButton': 'Chuyển đổi ngôn ngữ'
+        'a11y.languageButton': 'Chuyển đổi ngôn ngữ',
+        'a11y.keyboardShortcuts': 'Phím Tắt',
+        'a11y.arrowKeys': 'Phím mũi tên (← →) - Điều hướng thời gian',
+        'a11y.spaceKey': 'Space - Phát/Tạm dừng',
+        'a11y.tabKey': 'Tab - Điều hướng các điều khiển',
+        'a11y.enterKey': 'Enter - Kích hoạt nút'
     }
 };
 
