@@ -1,0 +1,240 @@
+/* Animated Monk Avatar Styles */
+
+.monk-avatar-container {
+    position: fixed;
+    bottom: 85px;
+    left: 20px;
+    z-index: 1001;
+    pointer-events: none;
+}
+
+.monk-avatar {
+    width: 60px;
+    height: 80px;
+    position: relative;
+    transition: transform 0.5s ease-in-out;
+}
+
+.monk-avatar.walking {
+    animation: walk 1s steps(2) infinite;
+}
+
+.monk-avatar.bowing {
+    animation: bow 2s ease-in-out;
+}
+
+.monk-avatar.meditating {
+    animation: meditate 3s ease-in-out infinite;
+}
+
+.monk-avatar.celebrating {
+    animation: celebrate 1s ease-in-out 3;
+}
+
+@keyframes walk {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-3px); }
+}
+
+@keyframes bow {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(15deg); }
+}
+
+@keyframes meditate {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes celebrate {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-10px) rotate(-5deg); }
+    75% { transform: translateY(-10px) rotate(5deg); }
+}
+
+/* Atmospheric effects */
+.atmosphere-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 10;
+    overflow: hidden;
+}
+
+.cloud {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 100px;
+    opacity: 0.6;
+    animation: float-cloud linear infinite;
+}
+
+.cloud::before,
+.cloud::after {
+    content: '';
+    position: absolute;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 100px;
+}
+
+.cloud-1 {
+    width: 80px;
+    height: 30px;
+    top: 10%;
+    animation-duration: 40s;
+}
+
+.cloud-1::before {
+    width: 50px;
+    height: 40px;
+    top: -20px;
+    left: 10px;
+}
+
+.cloud-1::after {
+    width: 40px;
+    height: 35px;
+    top: -15px;
+    right: 10px;
+}
+
+.cloud-2 {
+    width: 100px;
+    height: 35px;
+    top: 20%;
+    animation-duration: 50s;
+    animation-delay: -10s;
+}
+
+.cloud-2::before {
+    width: 60px;
+    height: 45px;
+    top: -25px;
+    left: 15px;
+}
+
+.cloud-2::after {
+    width: 50px;
+    height: 40px;
+    top: -20px;
+    right: 15px;
+}
+
+.cloud-3 {
+    width: 70px;
+    height: 28px;
+    top: 15%;
+    animation-duration: 45s;
+    animation-delay: -20s;
+}
+
+.cloud-3::before {
+    width: 45px;
+    height: 35px;
+    top: -18px;
+    left: 12px;
+}
+
+.cloud-3::after {
+    width: 35px;
+    height: 30px;
+    top: -15px;
+    right: 12px;
+}
+
+@keyframes float-cloud {
+    from {
+        left: -150px;
+    }
+    to {
+        left: 110%;
+    }
+}
+
+.leaf {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: linear-gradient(135deg, #4a7c59 0%, #6b9e7c 50%, #4a7c59 100%);
+    border-radius: 0 100% 0 100%;
+    animation: fall linear infinite;
+    opacity: 0.7;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-10px) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.7;
+    }
+    100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Footstep markers */
+.footstep {
+    position: absolute;
+    width: 8px;
+    height: 12px;
+    background: rgba(139, 69, 19, 0.3);
+    border-radius: 40% 40% 20% 20%;
+    animation: fade-footstep 2s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes fade-footstep {
+    0% {
+        opacity: 0.6;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Enhanced play button with avatar */
+.avatar-play-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+}
+
+.avatar-play-button .mini-monk {
+    width: 24px;
+    height: 32px;
+}
+
+.avatar-play-button.playing .mini-monk {
+    animation: walk 0.6s steps(2) infinite;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .monk-avatar-container {
+        bottom: 235px;
+        left: 10px;
+    }
+    
+    .monk-avatar {
+        width: 50px;
+        height: 65px;
+    }
+    
+    .cloud {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .monk-avatar-container {
+        display: none; /* Hide on very small screens for performance */
+    }
+}

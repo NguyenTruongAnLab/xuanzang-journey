@@ -243,7 +243,14 @@ function updateJourneyProgress() {
 function startPlaying() {
     const tFunc = typeof t === 'function' ? t : (key) => key;
     isPlaying = true;
-    document.getElementById('playBtn').textContent = tFunc('controls.pause');
+    const playBtn = document.getElementById('playBtn');
+    playBtn.textContent = tFunc('controls.pause');
+    playBtn.classList.add('playing');
+    
+    // Start monk walking
+    if (window.monkAvatar) {
+        window.monkAvatar.startWalking();
+    }
     
     playInterval = setInterval(() => {
         currentStepIndex++;
@@ -253,6 +260,13 @@ function startPlaying() {
         }
         
         updateTimeline();
+        
+        // Perform emotion-based animation
+        const location = journeyData[currentStepIndex];
+        const enhanced = typeof getEnhancedLocation === 'function' ? getEnhancedLocation(location) : location;
+        if (window.monkAvatar && enhanced.emotion) {
+            window.monkAvatar.performEmotionAction(enhanced.emotion);
+        }
     }, 2000); // Move to next location every 2 seconds
 }
 
@@ -260,7 +274,14 @@ function startPlaying() {
 function stopPlaying() {
     const tFunc = typeof t === 'function' ? t : (key) => key;
     isPlaying = false;
-    document.getElementById('playBtn').textContent = tFunc('controls.play');
+    const playBtn = document.getElementById('playBtn');
+    playBtn.textContent = tFunc('controls.play');
+    playBtn.classList.remove('playing');
+    
+    // Stop monk walking
+    if (window.monkAvatar) {
+        window.monkAvatar.stopWalking();
+    }
     
     if (playInterval) {
         clearInterval(playInterval);
@@ -280,6 +301,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize enhanced timeline
     initEnhancedTimeline();
+    
+    // Initialize monk avatar
+    initMonkAvatar();
+    updatePlayButtonWithAvatar();
     
     // Show first location by default
     setTimeout(() => {
