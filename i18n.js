@@ -43,6 +43,20 @@ const translations = {
         'info.description': 'Description',
         'info.historicalContext': 'Historical Context',
         'info.emotion': 'Emotion',
+        'info.noImagesAvailable': 'Historical images not available',
+        
+        // Summary Panel
+        'summary.title': 'Journey Summary',
+        'summary.duration': 'Duration:',
+        'summary.distance': 'Distance:',
+        'summary.current': 'Current:',
+        'summary.progress': 'Progress:',
+        'summary.details': 'Location Details',
+        
+        // Illustration Panel
+        'illustration.title': 'Location Images',
+        'illustration.previous': 'Previous image',
+        'illustration.next': 'Next image',
         
         // Modal
         'modal.aboutTitle': "About Xuanzang's Journey",
@@ -106,6 +120,20 @@ const translations = {
         'info.description': 'Mô Tả',
         'info.historicalContext': 'Bối Cảnh Lịch Sử',
         'info.emotion': 'Tâm Trạng',
+        'info.noImagesAvailable': 'Không có hình ảnh lịch sử',
+        
+        // Summary Panel
+        'summary.title': 'Tổng Quan Hành Trình',
+        'summary.duration': 'Thời gian:',
+        'summary.distance': 'Quãng đường:',
+        'summary.current': 'Hiện tại:',
+        'summary.progress': 'Tiến trình:',
+        'summary.details': 'Chi Tiết Địa Điểm',
+        
+        // Illustration Panel
+        'illustration.title': 'Hình Ảnh Địa Điểm',
+        'illustration.previous': 'Ảnh trước',
+        'illustration.next': 'Ảnh tiếp theo',
         
         // Modal
         'modal.aboutTitle': 'Về Hành Trình Huyền Trang',
@@ -219,6 +247,35 @@ function updateUILanguage() {
         locationTitle.textContent = t('info.selectLocation');
         document.getElementById('locationInfo').textContent = t('info.clickMarker');
     }
+    
+    // Update summary panel
+    const summaryTitle = document.getElementById('summaryTitle');
+    if (summaryTitle) summaryTitle.textContent = t('summary.title');
+    
+    const summaryTotalDuration = document.getElementById('summaryTotalDuration');
+    if (summaryTotalDuration) summaryTotalDuration.textContent = t('summary.duration');
+    
+    const summaryTotalDistance = document.getElementById('summaryTotalDistance');
+    if (summaryTotalDistance) summaryTotalDistance.textContent = t('summary.distance');
+    
+    const summaryCurrentLocation = document.getElementById('summaryCurrentLocation');
+    if (summaryCurrentLocation) summaryCurrentLocation.textContent = t('summary.current');
+    
+    const summaryProgress = document.getElementById('summaryProgress');
+    if (summaryProgress) summaryProgress.textContent = t('summary.progress');
+    
+    const summaryDetailsTitle = document.getElementById('summaryDetailsTitle');
+    if (summaryDetailsTitle) summaryDetailsTitle.textContent = t('summary.details');
+    
+    // Update illustration panel
+    const illustrationTitle = document.getElementById('illustrationTitle');
+    if (illustrationTitle) illustrationTitle.textContent = t('illustration.title');
+    
+    const carouselPrev = document.getElementById('carouselPrev');
+    if (carouselPrev) carouselPrev.setAttribute('aria-label', t('illustration.previous'));
+    
+    const carouselNext = document.getElementById('carouselNext');
+    if (carouselNext) carouselNext.setAttribute('aria-label', t('illustration.next'));
     
     // Update current year display
     if (window.journeyData && window.currentStepIndex !== undefined) {
