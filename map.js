@@ -8,6 +8,12 @@ let playInterval;
 
 // Initialize the map
 function initMap() {
+    // Initialize i18n first
+    if (typeof initI18n === 'function') {
+        initI18n();
+        updateUILanguage();
+    }
+    
     // Create map centered on the approximate middle of the journey
     map = L.map('map', {
         tap: true,  // Enable touch interactions
@@ -33,6 +39,9 @@ function initMap() {
     
     // Setup timeline controls
     setupTimelineControls();
+    
+    // Set active language button
+    updateLanguageButtons();
 }
 
 // Create the full journey path line
@@ -87,13 +96,16 @@ function addMarkers() {
 
 // Create popup content for markers
 function createPopupContent(location) {
+    const enhanced = typeof getEnhancedLocation === 'function' ? getEnhancedLocation(location) : location;
+    const tFunc = typeof t === 'function' ? t : (key) => key;
+    
     let content = `
         <div class="marker-popup">
-            <h6>${location.name}</h6>
-            <p class="modern-name">${location.modernName}</p>
-            <p class="duration">Duration: ${location.duration}</p>
-            <p><strong>Year:</strong> ${location.year} CE</p>
-            <p>${location.description.substring(0, 150)}...</p>
+            <h6>${enhanced.name}</h6>
+            <p class="modern-name">${enhanced.modernName}</p>
+            <p class="duration">${tFunc('info.duration')}: ${enhanced.duration}</p>
+            <p><strong>${tFunc('info.arrival')}:</strong> ${enhanced.arrivalMonth || enhanced.year + ' CE'}</p>
+            <p>${enhanced.description.substring(0, 150)}...</p>
         </div>
     `;
     return content;
@@ -101,26 +113,34 @@ function createPopupContent(location) {
 
 // Show detailed information in the side panel
 function showLocationDetails(location) {
+    const enhanced = typeof getEnhancedLocation === 'function' ? getEnhancedLocation(location) : location;
+    const tFunc = typeof t === 'function' ? t : (key) => key;
+    
     const infoPanel = document.getElementById('infoPanel');
     const titleEl = document.getElementById('locationTitle');
     const infoEl = document.getElementById('locationInfo');
     const imagesEl = document.getElementById('locationImages');
     
-    titleEl.textContent = `${location.name} (${location.year} CE)`;
+    titleEl.textContent = `${enhanced.name} (${enhanced.year} CE)`;
     
     let infoHTML = `
-        <p><strong>Modern Name:</strong> ${location.modernName}</p>
-        <p><strong>Duration:</strong> ${location.duration}</p>
-        <p><strong>Description:</strong> ${location.description}</p>
-        <p><strong>Historical Context:</strong> ${location.historicalContext}</p>
+        <p><strong>${tFunc('info.modernName')}:</strong> ${enhanced.modernName}</p>
+        ${enhanced.ancientName ? `<p><strong>${tFunc('info.ancientName')}:</strong> ${enhanced.ancientName}</p>` : ''}
+        <p><strong>${tFunc('info.duration')}:</strong> ${enhanced.duration}</p>
+        ${enhanced.arrivalMonth ? `<p><strong>${tFunc('info.arrival')}:</strong> ${enhanced.arrivalMonth}</p>` : ''}
+        ${enhanced.departureMonth ? `<p><strong>${tFunc('info.departure')}:</strong> ${enhanced.departureMonth}</p>` : ''}
+        ${enhanced.travelTime ? `<p><strong>${tFunc('info.travelTime')}:</strong> ${enhanced.travelTime}</p>` : ''}
+        ${enhanced.emotion ? `<p><strong>${tFunc('info.emotion')}:</strong> ${tFunc('emotion.' + enhanced.emotion)}</p>` : ''}
+        <p><strong>${tFunc('info.description')}:</strong> ${enhanced.description}</p>
+        <p><strong>${tFunc('info.historicalContext')}:</strong> ${enhanced.historicalContext}</p>
     `;
     
     infoEl.innerHTML = infoHTML;
     
     // Add images if available
-    if (location.images && location.images.length > 0) {
+    if (enhanced.images && enhanced.images.length > 0) {
         let imagesHTML = '<div class="mt-3">';
-        location.images.forEach(image => {
+        enhanced.images.forEach(image => {
             imagesHTML += `
                 <img src="${image.url}" alt="${image.caption}" class="location-image">
                 <p class="text-muted small">${image.caption}</p>
@@ -163,6 +183,7 @@ function setupTimelineControls() {
 function updateTimeline() {
     const slider = document.getElementById('timelineSlider');
     const currentYearEl = document.getElementById('currentYear');
+    const tFunc = typeof t === 'function' ? t : (key, params) => key;
     
     // Update slider position
     const percentage = (currentStepIndex / (journeyData.length - 1)) * 100;
@@ -170,7 +191,7 @@ function updateTimeline() {
     
     // Update current year display
     const currentLocation = journeyData[currentStepIndex];
-    currentYearEl.textContent = `Year: ${currentLocation.year}`;
+    currentYearEl.textContent = tFunc('controls.currentYear', { year: currentLocation.year });
     
     // Highlight current location
     highlightCurrentLocation();
@@ -215,8 +236,9 @@ function updateJourneyProgress() {
 
 // Start animated playback
 function startPlaying() {
+    const tFunc = typeof t === 'function' ? t : (key) => key;
     isPlaying = true;
-    document.getElementById('playBtn').textContent = 'Pause';
+    document.getElementById('playBtn').textContent = tFunc('controls.pause');
     
     playInterval = setInterval(() => {
         currentStepIndex++;
@@ -231,12 +253,20 @@ function startPlaying() {
 
 // Stop animated playback
 function stopPlaying() {
+    const tFunc = typeof t === 'function' ? t : (key) => key;
     isPlaying = false;
-    document.getElementById('playBtn').textContent = 'Play Journey';
+    document.getElementById('playBtn').textContent = tFunc('controls.play');
     
     if (playInterval) {
         clearInterval(playInterval);
     }
+}
+
+// Update language button active state
+function updateLanguageButtons() {
+    const currentLang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : 'en';
+    document.getElementById('langEn').classList.toggle('active', currentLang === 'en');
+    document.getElementById('langVi').classList.toggle('active', currentLang === 'vi');
 }
 
 // Initialize map when page loads
@@ -253,4 +283,24 @@ document.addEventListener('DOMContentLoaded', () => {
 // Handle window resize
 window.addEventListener('resize', () => {
     map.invalidateSize();
+});
+
+// Handle language change
+document.addEventListener('languageChanged', () => {
+    // Update all markers' popups
+    markers.forEach((marker, index) => {
+        const location = journeyData[index];
+        marker.setPopupContent(createPopupContent(location));
+    });
+    
+    // Update info panel if visible
+    if (currentStepIndex >= 0 && currentStepIndex < journeyData.length) {
+        showLocationDetails(journeyData[currentStepIndex]);
+    }
+    
+    // Update timeline
+    updateTimeline();
+    
+    // Update language buttons
+    updateLanguageButtons();
 });
