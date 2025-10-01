@@ -1,0 +1,4 @@
+# Jekyll configuration for GitHub Pages
+# This tells GitHub Pages not to process files with Jekyll
+
+# No processing needed - pure HTML/CSS/JS site
