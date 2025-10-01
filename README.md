@@ -52,6 +52,7 @@ His detailed travelogue, "Great Tang Records on the Western Regions," became an 
 
 #### 3. Animated Buddhist Monk Avatar
 - **Custom SVG Character**: Hand-drawn Buddhist monk with traditional robe, staff, and prayer beads
+- **Map Synchronization**: Avatar moves on the map to current location coordinates
 - **Emotion-Based Animations**:
   - 🚶‍♂️ Walking animation during journey playback
   - 🙏 Bowing at reverent locations
@@ -70,15 +71,37 @@ His detailed travelogue, "Great Tang Records on the Western Regions," became an 
 - **Emotional Context**: Xuanzang's state of mind at each location
 - **Bilingual Descriptions**: Full context in both English and Vietnamese
 
+#### 5. Interactive Side Panels (New!) 🎨
+- **Left Illustration Panel**: 
+  - Display location-specific images with carousel navigation
+  - Previous/Next buttons to browse through historical photos
+  - Beautiful gradient placeholders with emotion-based icons when images unavailable
+  - Keyboard accessible (Tab, Enter, Space)
+- **Right Summary Panel**:
+  - Always visible journey statistics (duration, distance, progress)
+  - Current location details and context
+  - Bookmark feature to save favorite locations (stored in browser)
+  - Real-time updates as you navigate the timeline
+- **No Popup Clutter**: All information displayed in clean side panels instead of map popups
+
+#### 6. Bookmark Feature 🔖
+- **Save Favorites**: Mark locations you want to revisit
+- **Persistent Storage**: Bookmarks saved in browser localStorage
+- **Visual Feedback**: Gold star icon indicates bookmarked locations
+- **Bilingual Labels**: Bookmark button adapts to selected language
+
 ### Accessibility Features ♿
 - **Keyboard Navigation**: 
   - Arrow keys (← →) to navigate timeline
   - Space bar to play/pause
   - Tab key to navigate all controls
+  - Enter/Space to activate buttons and carousel navigation
 - **ARIA Labels**: All interactive elements properly labeled for screen readers
+- **Live Regions**: Dynamic content updates announced to screen readers
 - **High Contrast**: Readable color combinations throughout
 - **Responsive Design**: Fully functional on all device sizes
 - **Focus Indicators**: Clear visual feedback for keyboard navigation
+- **Semantic HTML**: Proper use of roles and ARIA attributes
 
 ## 🚀 Technologies Used
 
