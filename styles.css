@@ -131,6 +131,29 @@ body {
     .timeline-controls {
         padding: 10px 0;
     }
+    
+    .timeline-controls .row {
+        row-gap: 10px;
+    }
+    
+    .timeline-controls .col-md-2,
+    .timeline-controls .col-md-8 {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-brand {
+        font-size: 1rem;
+    }
+    
+    .info-panel .card-title {
+        font-size: 1rem;
+    }
+    
+    .info-panel .card-text {
+        font-size: 0.875rem;
+    }
 }
 
 /* Loading animation */

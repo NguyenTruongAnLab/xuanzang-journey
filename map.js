@@ -9,7 +9,14 @@ let playInterval;
 // Initialize the map
 function initMap() {
     // Create map centered on the approximate middle of the journey
-    map = L.map('map').setView([35, 80], 4);
+    map = L.map('map', {
+        tap: true,  // Enable touch interactions
+        tapTolerance: 15,  // Increase tap tolerance for mobile
+        touchZoom: true,
+        scrollWheelZoom: true,
+        doubleClickZoom: true,
+        boxZoom: true
+    }).setView([35, 80], 4);
 
     // Add OpenStreetMap tiles
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
