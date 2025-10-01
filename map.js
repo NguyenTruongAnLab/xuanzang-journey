@@ -14,15 +14,18 @@ function initMap() {
         updateUILanguage();
     }
     
-    // Create map centered on the approximate middle of the journey
+    // Create map centered on the journey region (Central Asia)
+    // Focus on the area between China, Central Asia, and India
     map = L.map('map', {
         tap: true,  // Enable touch interactions
         tapTolerance: 15,  // Increase tap tolerance for mobile
         touchZoom: true,
         scrollWheelZoom: true,
         doubleClickZoom: true,
-        boxZoom: true
-    }).setView([35, 80], 4);
+        boxZoom: true,
+        keyboard: true,  // Enable keyboard navigation
+        keyboardPanDelta: 80
+    }).setView([35, 75], 4);  // Center on Central Asia with better zoom
 
     // Add OpenStreetMap tiles
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -30,6 +33,11 @@ function initMap() {
         maxZoom: 18,
         minZoom: 3
     }).addTo(map);
+
+    // Add ARIA labels for accessibility
+    const mapContainer = document.getElementById('map');
+    mapContainer.setAttribute('role', 'application');
+    mapContainer.setAttribute('aria-label', typeof t === 'function' ? t('a11y.mapRegion') : 'Interactive map showing Xuanzang\'s journey');
 
     // Create the journey path
     createJourneyPath();
@@ -42,6 +50,14 @@ function initMap() {
     
     // Set active language button
     updateLanguageButtons();
+    
+    // Fit map to journey bounds with padding
+    if (journeyLine) {
+        map.fitBounds(journeyLine.getBounds(), {
+            padding: [50, 50],
+            maxZoom: 5
+        });
+    }
 }
 
 // Create the full journey path line
@@ -161,6 +177,11 @@ function setupTimelineControls() {
     const playBtn = document.getElementById('playBtn');
     const currentYearEl = document.getElementById('currentYear');
     
+    // Add ARIA labels
+    const tFunc = typeof t === 'function' ? t : (key) => key;
+    slider.setAttribute('aria-label', tFunc('a11y.timelineSlider'));
+    playBtn.setAttribute('aria-label', tFunc('a11y.playButton'));
+    
     // Slider change event
     slider.addEventListener('input', (e) => {
         const percentage = e.target.value;
@@ -175,6 +196,30 @@ function setupTimelineControls() {
             stopPlaying();
         } else {
             startPlaying();
+        }
+    });
+    
+    // Keyboard navigation for timeline
+    document.addEventListener('keydown', (e) => {
+        // Arrow keys to navigate timeline
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+            e.preventDefault();
+            if (e.key === 'ArrowLeft' && currentStepIndex > 0) {
+                currentStepIndex--;
+            } else if (e.key === 'ArrowRight' && currentStepIndex < journeyData.length - 1) {
+                currentStepIndex++;
+            }
+            updateTimeline();
+            stopPlaying();
+        }
+        // Space to play/pause
+        else if (e.key === ' ' && e.target.tagName !== 'INPUT') {
+            e.preventDefault();
+            if (isPlaying) {
+                stopPlaying();
+            } else {
+                startPlaying();
+            }
         }
     });
 }
