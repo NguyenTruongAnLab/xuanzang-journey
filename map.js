@@ -198,12 +198,79 @@ function initMap() {
         keyboardPanDelta: 80
     }).setView([35, 75], 4);  // Center on Central Asia with better zoom
 
-    // Add OpenStreetMap tiles
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    // Define basemap layers
+    const esriNatGeo = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; National Geographic',
         maxZoom: 18,
         minZoom: 3
+    });
+
+    const esriWorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics',
+        maxZoom: 18,
+        minZoom: 3
+    });
+
+    const esriStreet = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, METI, TomTom',
+        maxZoom: 18,
+        minZoom: 3
+    });
+
+    const shadedRelief = L.tileLayer('https://tile.opentopomap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data: &copy; OpenStreetMap contributors, SRTM, NASA',
+        maxZoom: 17,
+        minZoom: 3
+    });
+
+    const osmTopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data: &copy; OpenTopoMap (CC-BY-SA)',
+        maxZoom: 17,
+        minZoom: 3
+    });
+
+    // Load saved basemap preference from localStorage or default to ESRI National Geographic
+    const savedBasemap = localStorage.getItem('xuanzang_basemap') || 'esriNatGeo';
+    
+    // Prepare basemap options with i18n labels
+    const tFunc = typeof t === 'function' ? t : (key) => key;
+    const baseMaps = {};
+    baseMaps[tFunc('basemap.esriNatGeo')] = esriNatGeo;
+    baseMaps[tFunc('basemap.esriWorldImagery')] = esriWorldImagery;
+    baseMaps[tFunc('basemap.esriStreet')] = esriStreet;
+    baseMaps[tFunc('basemap.shadedRelief')] = shadedRelief;
+    baseMaps[tFunc('basemap.osmTopo')] = osmTopo;
+
+    // Add the default basemap based on saved preference
+    let defaultBasemap = esriNatGeo;
+    if (savedBasemap === 'esriWorldImagery') defaultBasemap = esriWorldImagery;
+    else if (savedBasemap === 'esriStreet') defaultBasemap = esriStreet;
+    else if (savedBasemap === 'shadedRelief') defaultBasemap = shadedRelief;
+    else if (savedBasemap === 'osmTopo') defaultBasemap = osmTopo;
+    
+    defaultBasemap.addTo(map);
+
+    // Add layer control for basemap switching
+    const layerControl = L.control.layers(baseMaps, null, {
+        position: 'topright',
+        collapsed: true
     }).addTo(map);
+
+    // Save basemap preference when user changes it
+    map.on('baselayerchange', function(e) {
+        const basemapKey = Object.keys(baseMaps).find(key => baseMaps[key] === e.layer);
+        if (basemapKey === tFunc('basemap.esriNatGeo')) {
+            localStorage.setItem('xuanzang_basemap', 'esriNatGeo');
+        } else if (basemapKey === tFunc('basemap.esriWorldImagery')) {
+            localStorage.setItem('xuanzang_basemap', 'esriWorldImagery');
+        } else if (basemapKey === tFunc('basemap.esriStreet')) {
+            localStorage.setItem('xuanzang_basemap', 'esriStreet');
+        } else if (basemapKey === tFunc('basemap.shadedRelief')) {
+            localStorage.setItem('xuanzang_basemap', 'shadedRelief');
+        } else if (basemapKey === tFunc('basemap.osmTopo')) {
+            localStorage.setItem('xuanzang_basemap', 'osmTopo');
+        }
+    });
 
     // Add ARIA labels for accessibility
     const mapContainer = document.getElementById('map');
