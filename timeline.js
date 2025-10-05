@@ -23,19 +23,19 @@ class EnhancedTimeline {
                 <h6 class="timeline-title">${tFunc('timeline.title')}</h6>
                 <div class="timeline-phases">
                     <div class="timeline-phase">
-                        <span class="phase-indicator phase-1"></span>
+                        <span class="phase-indicator phase-1">🇨🇳</span>
                         <span>${tFunc('timeline.phase1')}</span>
                     </div>
                     <div class="timeline-phase">
-                        <span class="phase-indicator phase-2"></span>
+                        <span class="phase-indicator phase-2">🏜️</span>
                         <span>${tFunc('timeline.phase2')}</span>
                     </div>
                     <div class="timeline-phase">
-                        <span class="phase-indicator phase-3"></span>
+                        <span class="phase-indicator phase-3">🇮🇳</span>
                         <span>${tFunc('timeline.phase3')}</span>
                     </div>
                     <div class="timeline-phase">
-                        <span class="phase-indicator phase-4"></span>
+                        <span class="phase-indicator phase-4">🏔️</span>
                         <span>${tFunc('timeline.phase4')}</span>
                     </div>
                 </div>
@@ -154,10 +154,23 @@ class EnhancedTimeline {
     }
     
     onMarkerClick(index) {
-        // This will be set by the main map.js
+        // Update current index
+        if (typeof window.currentStepIndex !== 'undefined') {
+            window.currentStepIndex = index;
+        }
+        
+        // Move monk avatar to clicked location
+        if (window.monkAvatar && window.journeyData && window.journeyData[index]) {
+            window.monkAvatar.moveToLocation(window.journeyData[index].coordinates, 1000);
+        }
+        
+        // Call the map update function
         if (window.onTimelineMarkerClick) {
             window.onTimelineMarkerClick(index);
         }
+        
+        // Update timeline to show current position
+        this.updatePosition(index);
     }
     
     setCurrentIndex(index) {

@@ -360,12 +360,28 @@ function showLocationDetails(location) {
 
 // Update the right summary panel
 function updateSummaryPanel(location, enhanced, tFunc) {
-    const summaryCurrentName = document.getElementById('summaryCurrentName');
+    const summaryBriefInfo = document.getElementById('summaryBriefInfo');
     const summaryProgressText = document.getElementById('summaryProgressText');
     const summaryDetails = document.getElementById('summaryDetails');
     
-    if (summaryCurrentName) {
-        summaryCurrentName.textContent = `${enhanced.name} (${enhanced.year} CE)`;
+    // Get current language
+    const currentLang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : 'en';
+    const isVietnamese = currentLang === 'vi';
+    
+    // Update brief info (shown by default)
+    if (summaryBriefInfo) {
+        const modernName = isVietnamese && enhanced.modernName_vi ? enhanced.modernName_vi : enhanced.modernName;
+        summaryBriefInfo.innerHTML = `
+            <div class="mb-2">
+                <strong>Station:</strong> ${enhanced.name}
+            </div>
+            <div class="mb-2">
+                <strong>Year:</strong> ${enhanced.year} CE
+            </div>
+            <div class="mb-2">
+                <strong>Location:</strong> ${modernName}
+            </div>
+        `;
     }
     
     if (summaryProgressText) {
@@ -503,6 +519,40 @@ function updateSummaryPanel(location, enhanced, tFunc) {
 }
 
 
+// Toggle illustration panel visibility
+function toggleIllustrationPanel() {
+    const panel = document.getElementById('illustrationPanel');
+    const btn = document.getElementById('showImagesBtn');
+    
+    if (panel.classList.contains('active')) {
+        panel.classList.remove('active');
+        btn.textContent = '📷 Show Images';
+        btn.style.display = 'block';
+    } else {
+        panel.classList.add('active');
+        btn.style.display = 'none';
+    }
+}
+
+// Toggle details in summary panel
+function toggleDetails() {
+    const collapsible = document.getElementById('summaryDetailsCollapsible');
+    const btn = document.getElementById('toggleDetailsBtn');
+    const btnText = document.getElementById('toggleDetailsText');
+    
+    if (collapsible.classList.contains('expanded')) {
+        collapsible.classList.remove('expanded');
+        btnText.textContent = 'Show More Details';
+    } else {
+        collapsible.classList.add('expanded');
+        btnText.textContent = 'Hide Details';
+    }
+}
+
+// Make functions globally accessible
+window.toggleIllustrationPanel = toggleIllustrationPanel;
+window.toggleDetails = toggleDetails;
+
 // Update the left illustration panel with images
 function updateIllustrationPanel(location, enhanced, tFunc) {
     const illustrationTitle = document.getElementById('illustrationTitle');
@@ -523,9 +573,10 @@ function updateIllustrationPanel(location, enhanced, tFunc) {
     if (carouselImages) {
         carouselImages.innerHTML = '';
         
-        // Add images if available
+        // Add images if available (limit to 3 images)
         if (enhanced.images && enhanced.images.length > 0) {
-            enhanced.images.forEach((image, index) => {
+            const imagesToShow = enhanced.images.slice(0, 3); // Show max 3 images
+            imagesToShow.forEach((image, index) => {
                 const img = document.createElement('img');
                 
                 // Implement lazy loading for performance
