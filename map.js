@@ -80,6 +80,7 @@ function updateBookmarkButton() {
 
 // Make toggleBookmark globally accessible
 window.toggleBookmark = toggleBookmark;
+*/
 
 // Update share buttons for current location
 function updateShareButtons(location, enhanced, tFunc) {
