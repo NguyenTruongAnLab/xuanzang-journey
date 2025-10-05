@@ -68,9 +68,10 @@ This document details the comprehensive enhancements made to the Xuanzang Journe
 
 #### Removed Features:
 - ❌ Bookmark button completely removed from HTML and JavaScript
-- ❌ Share buttons (Copy Link, Twitter, Facebook) removed
+- ❌ Share buttons (Copy Link, Twitter, Facebook) completely removed
+- ❌ All share/bookmark functions removed: `updateShareButtons()`, `copyShareLink()`, `fallbackCopyToClipboard()`, `showShareNotification()`, `shareOnTwitter()`, `shareOnFacebook()`
 - ❌ Related localStorage bookmark functions disabled
-- ❌ Share notification system disabled
+- ❌ Share notification system removed
 
 #### New Content Structure:
 Added new fields to location data:
@@ -105,8 +106,12 @@ Added new fields to location data:
 - ✅ Chang'an (Location 1) - Complete with all new fields
 - ✅ Dunhuang (Location 3) - Complete with all new fields  
 - ✅ Turfan (Location 5) - Complete with all new fields
+- ✅ Samarkand (Location 10) - Buddhist context and Xuanzang experience added
+- ✅ Balkh (Location 11) - Buddhist context and Xuanzang experience added
+- ✅ Bamiyan (Location 12) - Buddhist context and Xuanzang experience added
+- ✅ Nalanda (Location 21) - Buddhist context and Xuanzang experience added
 
-**Result:** ✅ New content structure implemented, bookmark/share removed, Buddhist context framework ready for all locations.
+**Result:** ✅ New content structure implemented, bookmark/share completely removed, Buddhist context framework ready for all locations. 7 major locations now have comprehensive Buddhist and experiential content.
 
 ### 4. Internationalization (i18n) ✅
 

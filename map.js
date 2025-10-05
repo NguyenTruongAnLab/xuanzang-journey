@@ -80,105 +80,11 @@ function updateBookmarkButton() {
 
 // Make toggleBookmark globally accessible
 window.toggleBookmark = toggleBookmark;
+*/
 
-// Update share buttons for current location
-function updateShareButtons(location, enhanced, tFunc) {
-    const shareButtonsContainer = document.getElementById('shareButtons');
-    if (!shareButtonsContainer) return;
-    
-    // Generate shareable URL
-    const locationSlug = location.name.toLowerCase().replace(/['\s]/g, '-').replace(/--+/g, '-');
-    const shareUrl = `${window.location.origin}${window.location.pathname}#${locationSlug}`;
-    const shareText = `${enhanced.name} - Xuanzang's Journey (${location.year} CE)`;
-    
-    shareButtonsContainer.innerHTML = `
-        <button class="btn btn-sm btn-outline-primary share-btn" onclick="copyShareLink('${shareUrl}')" title="${tFunc('share.copyLink')}">
-            🔗 ${tFunc('share.copyLink')}
-        </button>
-        <button class="btn btn-sm btn-outline-info share-btn" onclick="shareOnTwitter('${encodeURIComponent(shareText)}', '${encodeURIComponent(shareUrl)}')" title="Share on Twitter/X">
-            𝕏 Twitter
-        </button>
-        <button class="btn btn-sm btn-outline-primary share-btn" onclick="shareOnFacebook('${encodeURIComponent(shareUrl)}')" title="Share on Facebook">
-            📘 Facebook
-        </button>
-    `;
-}
-
-// Copy share link to clipboard
-window.copyShareLink = function(url) {
-    const tFunc = typeof t === 'function' ? t : (key) => key;
-    
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(url).then(() => {
-            showShareNotification(tFunc('share.linkCopied'));
-        }).catch(err => {
-            console.error('Failed to copy:', err);
-            fallbackCopyToClipboard(url);
-        });
-    } else {
-        fallbackCopyToClipboard(url);
-    }
-};
-
-// Fallback copy method for older browsers
-function fallbackCopyToClipboard(text) {
-    const tFunc = typeof t === 'function' ? t : (key) => key;
-    const textArea = document.createElement('textarea');
-    textArea.value = text;
-    textArea.style.position = 'fixed';
-    textArea.style.left = '-999999px';
-    document.body.appendChild(textArea);
-    textArea.select();
-    
-    try {
-        document.execCommand('copy');
-        showShareNotification(tFunc('share.linkCopied'));
-    } catch (err) {
-        console.error('Fallback copy failed:', err);
-    }
-    
-    document.body.removeChild(textArea);
-}
-
-// Show notification after sharing
-function showShareNotification(message) {
-    const notification = document.createElement('div');
-    notification.className = 'share-notification';
-    notification.textContent = message;
-    notification.style.cssText = `
-        position: fixed;
-        top: 80px;
-        right: 20px;
-        background: #198754;
-        color: white;
-        padding: 12px 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        z-index: 9999;
-        animation: slideIn 0.3s ease-out;
-    `;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.style.animation = 'slideOut 0.3s ease-out';
-        setTimeout(() => {
-            document.body.removeChild(notification);
-        }, 300);
-    }, 2000);
-}
-
-// Share on Twitter/X
-window.shareOnTwitter = function(text, url) {
-    const twitterUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
-    window.open(twitterUrl, '_blank', 'width=600,height=400');
-};
-
-// Share on Facebook
-window.shareOnFacebook = function(url) {
-    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-    window.open(facebookUrl, '_blank', 'width=600,height=400');
-};
+// NOTE: Share and bookmark functionality removed per requirements
+// All sharing and bookmarking features have been disabled to focus on
+// educational content about Buddhism and Xuanzang's journey
 
 // Initialize the map
 function initMap() {
