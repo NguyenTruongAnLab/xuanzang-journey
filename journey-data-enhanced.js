@@ -12,7 +12,11 @@ const journeyEnhancements = {
         modernName_vi: "Tây An, Trung Quốc",
         description_vi: "Thủ đô của triều đại Đường. Huyền Trang bí mật rời đi không có phép của hoàng đế, bắt đầu hành trình sử thi để lấy kinh điển Phật giáo.",
         historicalContext_vi: "Trường An là một trong những thành phố lớn nhất thế giới thời Đường, là đầu mối phía đông của Con đường Tơ lụa.",
-        duration_vi: "Điểm khởi đầu"
+        duration_vi: "Điểm khởi đầu",
+        quote: "I would rather die going to the West than live by going back to the East.",
+        quote_vi: "Ta thà chết trên đường đến Tây Phương còn hơn sống mà quay về Đông Phương.",
+        expandedDescription: "In the spring of 629 CE, the 27-year-old monk Xuanzang defied imperial orders and secretly departed from Chang'an, then one of the world's greatest cities. His goal was audacious: to travel to India, the birthplace of Buddhism, to resolve doctrinal disputes and bring back authentic Buddhist scriptures. The Tang Dynasty had forbidden travel westward, but Xuanzang's determination to seek true Buddhist knowledge overcame his fear of punishment.",
+        expandedDescription_vi: "Vào mùa xuân năm 629, nhà sư 27 tuổi Huyền Trang đã bất chấp mệnh lệnh hoàng đế và bí mật rời khỏi Trường An, khi đó là một trong những thành phố vĩ đại nhất thế giới. Mục tiêu của ông thật táo bạo: đi đến Ấn Độ, nơi khai sinh Phật giáo, để giải quyết các tranh cãi giáo lý và mang về kinh điển Phật giáo chân chính."
     },
     2: {
         ancientName: "涼州 (Liángzhōu)",
@@ -36,7 +40,11 @@ const journeyEnhancements = {
         modernName_vi: "Đôn Hoàng, Cam Túc, Trung Quốc",
         description_vi: "Thành phố ốc đảo nổi tiếng ở rìa sa mạc Gobi. Huyền Trang nhận được sự giúp đỡ từ các nhà sư địa phương trước khi băng qua sa mạc.",
         historicalContext_vi: "Nơi có Động Mạc Cao, di tích nghệ thuật Phật giáo quan trọng. Điểm dừng chân quan trọng trên Con đường Tơ lụa.",
-        duration_vi: "1 tháng"
+        duration_vi: "1 tháng",
+        quote: "The desert stretches vast and empty, with not a bird in the sky nor a beast on the ground.",
+        quote_vi: "Sa mạc trải dài bao la và trống vắng, không một con chim trên trời hay một con thú dưới đất.",
+        expandedDescription: "At Dunhuang, the gateway to the Western Regions, Xuanzang prepared for the most dangerous leg of his journey - crossing the Gobi Desert. Local Buddhist monks provided him with supplies and guidance. The Mogao Caves, carved into cliffs near Dunhuang, contained hundreds of Buddhist temples and became a spiritual inspiration for his journey ahead.",
+        expandedDescription_vi: "Tại Đôn Hoàng, cửa ngõ đến Tây Vực, Huyền Trang chuẩn bị cho chặng đường nguy hiểm nhất - băng qua sa mạc Gobi. Các nhà sư Phật giáo địa phương cung cấp cho ông vật tư và hướng dẫn."
     },
     4: {
         ancientName: "伊吾 (Yīwú)",
@@ -240,7 +248,11 @@ const journeyEnhancements = {
         modernName_vi: "Bodh Gaya, Bihar, Ấn Độ",
         description_vi: "Địa điểm linh thiêng nhất trong Phật giáo - nơi Phật đạt được giác ngộ. Huyền Trang đã dành nhiều thời gian ở đây thiền định và học tập.",
         historicalContext_vi: "Địa điểm linh thiêng nhất trong Phật giáo, vị trí của cây Bồ Đề mà Phật đạt được giác ngộ bên dưới.",
-        duration_vi: "3 tháng"
+        duration_vi: "3 tháng",
+        quote: "Here the World-Honored One, after six years of painful austerities, attained perfect enlightenment.",
+        quote_vi: "Tại đây, Thế Tôn, sau sáu năm khổ hạnh đau đớn, đã đạt được giác ngộ hoàn hảo.",
+        expandedDescription: "At Bodh Gaya, Xuanzang visited the sacred Bodhi Tree and Mahabodhi Temple, where Buddha achieved enlightenment 1,100 years earlier. He spent three months in meditation and contemplation at this holiest of Buddhist sites, walking in the footsteps of the Buddha himself. The experience deeply moved him and reinforced his commitment to bringing authentic Buddhist teachings back to China.",
+        expandedDescription_vi: "Tại Bodh Gaya, Huyền Trang đã viếng thăm cây Bồ Đề thiêng liêng và đền Mahabodhi, nơi Phật đạt được giác ngộ 1.100 năm trước đó. Ông đã dành ba tháng thiền định và trầm tư tại địa điểm linh thiêng nhất của Phật giáo này."
     },
     21: {
         ancientName: "那爛陀寺 (Nàlàtuósì)",
@@ -252,7 +264,11 @@ const journeyEnhancements = {
         modernName_vi: "Nalanda, Bihar, Ấn Độ",
         description_vi: "Đại học Phật giáo vĩ đại nhất của Ấn Độ cổ đại. Huyền Trang học tập ở đây dưới sự hướng dẫn của trụ trì Shilabhadra và các học giả nổi tiếng khác. Đây là điểm nổi bật của hành trình của ông.",
         historicalContext_vi: "Đại học nội trú đầu tiên trên thế giới, với hàng ngàn sinh viên từ khắp châu Á. Trung tâm học tập và triết học Phật giáo.",
-        duration_vi: "5 năm"
+        duration_vi: "5 năm",
+        quote: "The sangharama of Nalanda is majestic and beautiful. Ten thousand monks dwell here, and the rules of discipline are strictly observed.",
+        quote_vi: "Tăng già lam của Nalanda thật hùng vĩ và đẹp đẽ. Mười ngàn nhà sư sống ở đây, và các quy tắc kỷ luật được tuân thủ nghiêm ngặt.",
+        expandedDescription: "Nalanda University was the pinnacle of Xuanzang's journey. For five years, he studied under the great master Shilabhadra, learning Sanskrit, Buddhist philosophy, and logic. The university housed 10,000 students and 2,000 teachers, with a library of nine million manuscripts. Here, Xuanzang mastered the Yogacara school of Mahayana Buddhism and collected the precious texts he would carry back to China. His reputation as a scholar grew so great that he was invited to debate with other learned monks, and he emerged victorious in philosophical disputations.",
+        expandedDescription_vi: "Đại học Nalanda là đỉnh cao của hành trình Huyền Trang. Trong năm năm, ông học tập dưới sự hướng dẫn của đại sư Shilabhadra, học tiếng Phạn, triết học Phật giáo và logic. Đại học có 10.000 sinh viên và 2.000 giáo viên, với thư viện chín triệu bản thảo."
     },
     22: {
         ancientName: "波吒釐子城 (Bōzhālízǐchéng)",
@@ -348,7 +364,11 @@ const journeyEnhancements = {
         modernName_vi: "Tây An, Trung Quốc",
         description_vi: "Trở về thành công đến Trường An với 657 văn bản Phật giáo, 150 xá lợi và 7 tượng Phật. Hoàng đế Thái Tông chào đón ông như một anh hùng. Dành phần đời còn lại dịch kinh.",
         historicalContext_vi: "Sự trở về của ông được tôn vinh như một thành tựu lớn. Các văn bản ông mang về đã cách mạng hóa Phật giáo Trung Quốc.",
-        duration_vi: "Kết thúc hành trình"
+        duration_vi: "Kết thúc hành trình",
+        quote: "I have traveled 50,000 li through 138 kingdoms, and now return with sacred texts to enlighten our land.",
+        quote_vi: "Ta đã đi được 50.000 dặm qua 138 vương quốc, và giờ trở về với kinh điển thiêng liêng để soi sáng đất nước chúng ta.",
+        expandedDescription: "After 16 years and over 10,000 miles of travel, Xuanzang returned triumphantly to Chang'an in 645 CE. Emperor Taizong, who had initially forbidden the journey, welcomed him as a hero. Xuanzang brought back 657 Buddhist texts, 150 relics, and 7 Buddha statues. He spent the remaining 19 years of his life translating these Sanskrit texts into Chinese, producing 1,335 volumes of Buddhist scriptures. His translations and his travelogue, 'Great Tang Records on the Western Regions,' revolutionized Chinese Buddhism and provided invaluable historical records of Central and South Asia in the 7th century.",
+        expandedDescription_vi: "Sau 16 năm và hơn 10.000 dặm đi lại, Huyền Trang trở về thành công đến Trường An vào năm 645. Hoàng đế Thái Tông, người ban đầu đã cấm cuộc hành trình, chào đón ông như một anh hùng. Huyền Trang mang về 657 văn bản Phật giáo, 150 xá lợi và 7 tượng Phật."
     }
 };
 
@@ -365,6 +385,8 @@ function getEnhancedLocation(location) {
         arrivalMonth: enhancement.arrivalMonth || null,
         departureMonth: enhancement.departureMonth || null,
         travelTime: enhancement.travelTime || null,
+        quote: lang === 'vi' ? enhancement.quote_vi || enhancement.quote : enhancement.quote,
+        expandedDescription: lang === 'vi' ? enhancement.expandedDescription_vi || enhancement.expandedDescription : enhancement.expandedDescription,
         modernName: typeof location.modernName === 'string' 
             ? (lang === 'vi' ? enhancement.modernName_vi || location.modernName : location.modernName)
             : (location.modernName[lang] || location.modernName['en']),
