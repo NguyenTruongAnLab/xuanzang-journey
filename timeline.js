@@ -65,6 +65,10 @@ class EnhancedTimeline {
         markersContainer.innerHTML = '';
         this.markers = [];
         
+        // Get current language
+        const currentLang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : 'en';
+        const isVietnamese = currentLang === 'vi';
+        
         this.journeyData.forEach((location, index) => {
             const position = this.calculatePosition(location.year);
             const enhanced = typeof getEnhancedLocation === 'function' 
@@ -76,8 +80,9 @@ class EnhancedTimeline {
             marker.style.left = `${position}%`;
             marker.dataset.index = index;
             
-            // Extract city and country from modernName
-            const nameParts = location.modernName.split(',');
+            // Extract city and country from modernName (use Vietnamese if available)
+            const modernName = isVietnamese && enhanced.modernName_vi ? enhanced.modernName_vi : location.modernName;
+            const nameParts = modernName.split(',');
             const city = nameParts[0].trim();
             const country = nameParts.length > 1 ? nameParts[nameParts.length - 1].trim() : '';
             
@@ -93,7 +98,7 @@ class EnhancedTimeline {
             `;
             
             // Add tooltip with full information
-            marker.title = `${enhanced.name} (${location.year})\n${location.modernName}\n${location.duration}`;
+            marker.title = `${enhanced.name} (${location.year})\n${modernName}\n${location.duration}`;
             
             markersContainer.appendChild(marker);
             this.markers.push(marker);
