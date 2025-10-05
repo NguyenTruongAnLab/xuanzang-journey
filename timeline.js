@@ -154,10 +154,23 @@ class EnhancedTimeline {
     }
     
     onMarkerClick(index) {
-        // This will be set by the main map.js
+        // Update current index
+        if (typeof window.currentStepIndex !== 'undefined') {
+            window.currentStepIndex = index;
+        }
+        
+        // Move monk avatar to clicked location
+        if (window.monkAvatar && window.journeyData && window.journeyData[index]) {
+            window.monkAvatar.moveToLocation(window.journeyData[index].coordinates, 1000);
+        }
+        
+        // Call the map update function
         if (window.onTimelineMarkerClick) {
             window.onTimelineMarkerClick(index);
         }
+        
+        // Update timeline to show current position
+        this.updatePosition(index);
     }
     
     setCurrentIndex(index) {

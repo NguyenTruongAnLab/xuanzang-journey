@@ -54,11 +54,16 @@ body {
     position: absolute;
     top: 100px;
     left: 10px;
-    width: 760px;
+    width: 400px;
     max-height: calc(100vh - 250px);
     z-index: 998;
     background: transparent;
     transition: opacity 0.3s ease-in-out;
+    display: none; /* Hidden by default */
+}
+
+.illustration-panel.active {
+    display: block;
 }
 
 .illustration-panel .card {
@@ -83,7 +88,7 @@ body {
     position: absolute;
     top: 100px;
     right: 10px;
-    width: 640px;
+    width: 450px;
     max-height: calc(100vh - 250px);
     overflow-y: auto;
     z-index: 998;
@@ -122,6 +127,61 @@ body {
 
 .summary-item.compact strong {
     margin-right: 5px;
+}
+
+/* Toggle buttons for panels */
+.panel-toggle-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 1001;
+    background: rgba(13, 110, 253, 0.9);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.panel-toggle-btn:hover {
+    background: rgba(13, 110, 253, 1);
+    transform: scale(1.05);
+}
+
+/* Toggle button for showing illustration panel */
+.show-images-btn {
+    position: fixed;
+    top: 110px;
+    left: 10px;
+    z-index: 999;
+    background: rgba(13, 110, 253, 0.9);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.show-images-btn:hover {
+    background: rgba(13, 110, 253, 1);
+    transform: scale(1.05);
+}
+
+/* Collapsible details section */
+.details-collapsible {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.details-collapsible.expanded {
+    max-height: 2000px;
+    transition: max-height 0.5s ease-in;
 }
 
 .summary-item.compact::after {
@@ -192,14 +252,15 @@ body {
 
 /* Map location labels */
 .location-label {
-    background: rgba(33, 37, 41, 0.85) !important;
+    background: transparent !important;
     border: none !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-    font-size: 0.75rem !important;
+    border-radius: 0 !important;
+    padding: 2px 4px !important;
+    font-size: 0.7rem !important;
     font-weight: 600 !important;
     color: #fff !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8), 0 0 5px rgba(0, 0, 0, 0.6) !important;
+    box-shadow: none !important;
     text-align: center !important;
     white-space: nowrap !important;
 }
@@ -209,13 +270,15 @@ body {
 }
 
 .location-label-hover {
-    background: rgba(13, 110, 253, 0.9) !important;
+    background: transparent !important;
     border: none !important;
-    border-radius: 4px !important;
-    padding: 3px 6px !important;
-    font-size: 0.7rem !important;
+    border-radius: 0 !important;
+    padding: 2px 4px !important;
+    font-size: 0.65rem !important;
+    font-weight: 600 !important;
     color: #fff !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8), 0 0 5px rgba(0, 0, 0, 0.6) !important;
+    box-shadow: none !important;
 }
 
 /* Journey direction arrows */

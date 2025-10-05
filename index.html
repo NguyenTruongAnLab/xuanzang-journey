@@ -49,10 +49,14 @@
     <div class="container-fluid p-0">
         <div id="map"></div>
         
+        <!-- Show Images Button -->
+        <button id="showImagesBtn" class="show-images-btn" onclick="toggleIllustrationPanel()">📷 Show Images</button>
+        
         <!-- Left Illustration Panel -->
         <div id="illustrationPanel" class="illustration-panel" role="region" aria-label="Location illustrations">
             <div class="card">
                 <div class="card-body">
+                    <button class="panel-toggle-btn" onclick="toggleIllustrationPanel()">✕</button>
                     <h6 class="card-title" id="illustrationTitle">Location Images</h6>
                     <div id="illustrationCarousel" class="illustration-carousel">
                         <div class="carousel-container" role="img" aria-live="polite">
@@ -73,28 +77,31 @@
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title" id="summaryTitle">Journey Summary</h6>
-                    <div id="summaryContent" role="list">
-                        <div class="summary-item" role="listitem">
-                            <strong id="summaryTotalDuration">Duration:</strong>
-                            <span>16 years (629-645 CE)</span>
-                        </div>
-                        <div class="summary-item" role="listitem">
-                            <strong id="summaryTotalDistance">Distance:</strong>
-                            <span>Over 16,000 km</span>
-                        </div>
-                        <div class="summary-item" role="listitem">
-                            <strong id="summaryCurrentLocation">Current:</strong>
-                            <span id="summaryCurrentName">Chang'an</span>
-                        </div>
-                        <div class="summary-item" role="listitem">
-                            <strong id="summaryProgress">Progress:</strong>
-                            <span id="summaryProgressText">0 / 29 locations</span>
-                        </div>
+                    <div id="summaryBriefInfo">
+                        <!-- Brief info will be inserted here -->
                     </div>
-                    <div class="mt-3">
-                        <h6 id="summaryDetailsTitle">Location Details</h6>
-                        <div id="summaryDetails" role="region" aria-live="polite">
-                            <p class="text-muted">Select a location to see details</p>
+                    <button id="toggleDetailsBtn" class="btn btn-sm btn-outline-primary mt-2 w-100" onclick="toggleDetails()">
+                        <span id="toggleDetailsText">Show More Details</span>
+                    </button>
+                    <div id="summaryDetailsCollapsible" class="details-collapsible">
+                        <div id="summaryContent" role="list" class="mt-3">
+                            <div class="summary-item" role="listitem">
+                                <strong id="summaryTotalDuration">Duration:</strong>
+                                <span>16 years (629-645 CE)</span>
+                            </div>
+                            <div class="summary-item" role="listitem">
+                                <strong id="summaryTotalDistance">Distance:</strong>
+                                <span>Over 16,000 km</span>
+                            </div>
+                            <div class="summary-item" role="listitem">
+                                <strong id="summaryProgress">Progress:</strong>
+                                <span id="summaryProgressText">0 / 29 locations</span>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <div id="summaryDetails" role="region" aria-live="polite">
+                                <p class="text-muted">Select a location to see details</p>
+                            </div>
                         </div>
                     </div>
                 </div>
