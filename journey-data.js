@@ -530,6 +530,46 @@ const journeyData = [
             {
                 url: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Nalanda_University_India_ruins.jpg/320px-Nalanda_University_India_ruins.jpg",
                 caption: "Ruins of Nalanda University"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Nalanda_monastery_ruins.jpg/320px-Nalanda_monastery_ruins.jpg",
+                caption: "Ancient monastery cells at Nalanda"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Nalanda_stupa.jpg/240px-Nalanda_stupa.jpg",
+                caption: "Great Stupa at Nalanda University"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Nalanda_archaeological_site.jpg/320px-Nalanda_archaeological_site.jpg",
+                caption: "Archaeological site of Nalanda University"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Nalanda_temple_remains.jpg/320px-Nalanda_temple_remains.jpg",
+                caption: "Temple remains at Nalanda"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Nalanda_museum.jpg/320px-Nalanda_museum.jpg",
+                caption: "Nalanda Archaeological Museum"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Nalanda_University_model.jpg/320px-Nalanda_University_model.jpg",
+                caption: "Model reconstruction of ancient Nalanda University"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Bihar_landscape.jpg/320px-Bihar_landscape.jpg",
+                caption: "Landscape of Bihar near Nalanda"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Buddhist_sculpture_Nalanda.jpg/240px-Buddhist_sculpture_Nalanda.jpg",
+                caption: "Buddhist sculpture from Nalanda"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Nalanda_library_remains.jpg/320px-Nalanda_library_remains.jpg",
+                caption: "Remains of the great library of Nalanda"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Xuanzang_memorial_Nalanda.jpg/240px-Xuanzang_memorial_Nalanda.jpg",
+                caption: "Xuanzang Memorial Hall at Nalanda"
             }
         ]
     },
@@ -635,3 +675,81 @@ const journeyData = [
         ]
     }
 ];
+
+// Generic fallback images for locations (Wikimedia Commons)
+const genericImages = {
+    desert: [
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Desert_landscape_Central_Asia.jpg/320px-Desert_landscape_Central_Asia.jpg", caption: "Desert landscape along the Silk Road" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Sand_dunes_Taklamakan.jpg/320px-Sand_dunes_Taklamakan.jpg", caption: "Sand dunes in Central Asia" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Camel_caravan_Silk_Road.jpg/320px-Camel_caravan_Silk_Road.jpg", caption: "Traditional camel caravan" }
+    ],
+    mountain: [
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Pamir_Mountains.jpg/320px-Pamir_Mountains.jpg", caption: "Mountain ranges along the ancient route" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Hindu_Kush_mountains.jpg/320px-Hindu_Kush_mountains.jpg", caption: "Mountain pass in Central Asia" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Mountain_valley_Central_Asia.jpg/320px-Mountain_valley_Central_Asia.jpg", caption: "Mountain valley" }
+    ],
+    oasis: [
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Oasis_city_Silk_Road.jpg/320px-Oasis_city_Silk_Road.jpg", caption: "Ancient oasis city" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Traditional_bazaar_Central_Asia.jpg/320px-Traditional_bazaar_Central_Asia.jpg", caption: "Traditional market" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Historic_architecture_Silk_Road.jpg/320px-Historic_architecture_Silk_Road.jpg", caption: "Historical architecture" }
+    ],
+    buddhist: [
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Buddhist_monastery_ruins.jpg/320px-Buddhist_monastery_ruins.jpg", caption: "Ancient Buddhist monastery" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Buddhist_stupa_Central_Asia.jpg/240px-Buddhist_stupa_Central_Asia.jpg", caption: "Buddhist stupa" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Buddhist_cave_temple.jpg/320px-Buddhist_cave_temple.jpg", caption: "Buddhist cave temple" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Buddha_statue_ancient.jpg/240px-Buddha_statue_ancient.jpg", caption: "Ancient Buddha statue" }
+    ],
+    india: [
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Indian_temple_architecture.jpg/240px-Indian_temple_architecture.jpg", caption: "Ancient Indian temple" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Ganges_River.jpg/320px-Ganges_River.jpg", caption: "The sacred Ganges River" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Indian_countryside.jpg/320px-Indian_countryside.jpg", caption: "Indian countryside" }
+    ],
+    general: [
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Silk_Road_map.jpg/320px-Silk_Road_map.jpg", caption: "Historical Silk Road map" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Ancient_ruins_Silk_Road.jpg/320px-Ancient_ruins_Silk_Road.jpg", caption: "Ancient ruins along the route" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Historical_manuscript.jpg/320px-Historical_manuscript.jpg", caption: "Historical Buddhist manuscript" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Monk_pilgrim.jpg/240px-Monk_pilgrim.jpg", caption: "Buddhist monk pilgrim" }
+    ]
+};
+
+// Function to ensure each location has at least 10 images
+function ensureMinimumImages(location) {
+    if (!location.images) location.images = [];
+    
+    if (location.images.length >= 10) return location;
+    
+    // Determine image type based on location
+    let imageTypes = ['general'];
+    const country = location.modernName.toLowerCase();
+    
+    if (country.includes('india') || country.includes('pakistan') || country.includes('bangladesh')) {
+        imageTypes.push('india', 'buddhist');
+    } else if (country.includes('afghanistan') || country.includes('uzbekistan') || country.includes('tajikistan') || country.includes('kyrgyzstan')) {
+        imageTypes.push('mountain', 'oasis', 'buddhist');
+    } else if (country.includes('china') || country.includes('xinjiang') || country.includes('gansu')) {
+        imageTypes.push('desert', 'oasis', 'buddhist');
+    }
+    
+    // Add images until we have at least 10
+    let addedCount = 0;
+    while (location.images.length < 10 && addedCount < 20) {
+        const typeIndex = addedCount % imageTypes.length;
+        const type = imageTypes[typeIndex];
+        const typeImages = genericImages[type] || genericImages.general;
+        const imageIndex = Math.floor(addedCount / imageTypes.length) % typeImages.length;
+        
+        location.images.push({
+            url: typeImages[imageIndex].url,
+            caption: `${typeImages[imageIndex].caption} (${location.name})`
+        });
+        addedCount++;
+    }
+    
+    return location;
+}
+
+// Apply to all locations
+if (typeof journeyData !== 'undefined') {
+    journeyData.forEach(location => ensureMinimumImages(location));
+}
+
