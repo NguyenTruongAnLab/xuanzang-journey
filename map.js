@@ -341,8 +341,22 @@ function updateSummaryPanel(location, enhanced, tFunc) {
             ${enhanced.ancientName ? `<p><strong>${tFunc('info.ancientName')}:</strong> ${enhanced.ancientName}</p>` : ''}
             <p><strong>${tFunc('info.duration')}:</strong> ${enhanced.duration}</p>
             ${enhanced.emotion ? `<p><strong>${tFunc('info.emotion')}:</strong> ${tFunc('emotion.' + enhanced.emotion)}</p>` : ''}
-            <p class="small">${enhanced.description.substring(0, 200)}...</p>
         `;
+        
+        // Add quote if available
+        if (enhanced.quote) {
+            detailsHTML += `
+                <div class="quote-section">
+                    <p class="quote-text"><em>"${enhanced.quote}"</em></p>
+                    <p class="quote-attribution">— ${tFunc('quote.xuanzang')}</p>
+                </div>
+            `;
+        }
+        
+        // Use expanded description if available, otherwise use regular description
+        const description = enhanced.expandedDescription || enhanced.description;
+        detailsHTML += `<p class="small">${description.substring(0, 250)}${description.length > 250 ? '...' : ''}</p>`;
+        
         summaryDetails.innerHTML = detailsHTML;
     }
     

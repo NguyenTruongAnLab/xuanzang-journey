@@ -131,6 +131,31 @@ body {
     margin-bottom: 10px;
 }
 
+/* Quote styling */
+.quote-section {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-left: 4px solid #0d6efd;
+    padding: 10px 12px;
+    margin: 12px 0;
+    border-radius: 6px;
+}
+
+.quote-text {
+    font-size: 0.9rem;
+    color: #2c3e50;
+    line-height: 1.5;
+    margin-bottom: 6px;
+    font-style: italic;
+}
+
+.quote-attribution {
+    font-size: 0.8rem;
+    color: #6c757d;
+    text-align: right;
+    margin: 0;
+    font-weight: 500;
+}
+
 /* Carousel Styles */
 .illustration-carousel {
     position: relative;

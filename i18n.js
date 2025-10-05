@@ -63,6 +63,9 @@ const translations = {
         'bookmark.button': 'Bookmark',
         'bookmark.saved': 'Bookmarked',
         
+        // Quote
+        'quote.xuanzang': 'Xuanzang',
+        
         // Search
         'search.placeholder': 'Search locations...',
         'search.label': 'Search journey locations',
@@ -159,6 +162,9 @@ const translations = {
         // Bookmark
         'bookmark.button': 'Đánh Dấu',
         'bookmark.saved': 'Đã Đánh Dấu',
+        
+        // Quote
+        'quote.xuanzang': 'Huyền Trang',
         
         // Search
         'search.placeholder': 'Tìm kiếm địa điểm...',
