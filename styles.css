@@ -627,11 +627,13 @@ body {
 @media (min-width: 769px) and (max-width: 1024px) {
     /* Tablet optimization */
     .illustration-panel {
-        width: 300px;
+        width: 500px;
+        top: 80px;
     }
     
     .summary-panel {
-        width: 280px;
+        width: 450px;
+        top: 80px;
     }
     
     .carousel-container {

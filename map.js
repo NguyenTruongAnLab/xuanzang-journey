@@ -508,8 +508,15 @@ function updateIllustrationPanel(location, enhanced, tFunc) {
     const carouselImages = document.getElementById('carouselImages');
     const carouselCaption = document.getElementById('carouselCaption');
     
+    // Get current language
+    const currentLang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : 'en';
+    const isVietnamese = currentLang === 'vi';
+    
     if (illustrationTitle) {
-        illustrationTitle.textContent = enhanced.name;
+        // Use Vietnamese name if available
+        const modernName = isVietnamese && enhanced.modernName_vi ? enhanced.modernName_vi : enhanced.modernName;
+        const cityName = modernName.split(',')[0].trim();
+        illustrationTitle.textContent = cityName;
     }
     
     if (carouselImages) {
@@ -952,6 +959,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Position avatar at first location
             if (window.monkAvatar && journeyData[0]) {
                 window.monkAvatar.moveToLocation(journeyData[0].coordinates, 0);
+                window.monkAvatar.show(); // Ensure avatar is visible
             }
         }, 500);
     }
@@ -972,11 +980,10 @@ window.addEventListener('resize', () => {
 
 // Handle language change
 document.addEventListener('languageChanged', () => {
-    // Update all markers' popups
-    markers.forEach((marker, index) => {
-        const location = journeyData[index];
-        marker.setPopupContent(createPopupContent(location));
-    });
+    // Clear and re-create markers with updated labels
+    markers.forEach(marker => map.removeLayer(marker));
+    markers = [];
+    addMarkers();
     
     // Update info panel if visible
     if (currentStepIndex >= 0 && currentStepIndex < journeyData.length) {
@@ -988,6 +995,12 @@ document.addEventListener('languageChanged', () => {
     
     // Update language buttons
     updateLanguageButtons();
+    
+    // Re-render timeline markers with updated language
+    if (window.enhancedTimeline) {
+        window.enhancedTimeline.render();
+        window.enhancedTimeline.setCurrentIndex(currentStepIndex);
+    }
 });
 
 // Connect timeline clicks to map
