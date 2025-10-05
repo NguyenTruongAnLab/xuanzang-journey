@@ -15,6 +15,47 @@ class EnhancedTimeline {
         this.attachEventListeners();
     }
     
+    getCountryRegion(location) {
+        const name = location.modernName.toLowerCase();
+        
+        if (name.includes('china') || name.includes('xi\'an') || name.includes('gansu')) {
+            return 'china';
+        } else if (name.includes('xinjiang') || name.includes('hami') || name.includes('turpan') || name.includes('aksu')) {
+            return 'desert';
+        } else if (name.includes('uzbekistan') || name.includes('samarkand') || name.includes('bukhara') || name.includes('tashkent')) {
+            return 'central-asia';
+        } else if (name.includes('afghanistan') || name.includes('tajikistan') || name.includes('kyrgyzstan') || name.includes('kashgar') || name.includes('pamir') || name.includes('hindu kush')) {
+            return 'mountain';
+        } else if (name.includes('india') || name.includes('pakistan') || name.includes('bangladesh') || name.includes('nalanda') || name.includes('bodh gaya')) {
+            return 'india';
+        }
+        return 'general';
+    }
+    
+    getBackgroundImageForRegion(region) {
+        const backgrounds = {
+            'china': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Giant_Wild_Goose_Pagoda.jpg/800px-Giant_Wild_Goose_Pagoda.jpg',
+            'desert': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Taklamakan_desert.jpg/800px-Taklamakan_desert.jpg',
+            'central-asia': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Registan_Samarkand.jpg/800px-Registan_Samarkand.jpg',
+            'mountain': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Pamir_Mountains.jpg/800px-Pamir_Mountains.jpg',
+            'india': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Mahabodhi_temple.jpg/800px-Mahabodhi_temple.jpg',
+            'general': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Silk_Road_map.jpg/800px-Silk_Road_map.jpg'
+        };
+        return backgrounds[region] || backgrounds['general'];
+    }
+    
+    setTimelineBackground() {
+        const timelineViz = document.getElementById('timelineVisualization');
+        if (!timelineViz || !this.journeyData || this.journeyData.length === 0) return;
+        
+        // Determine dominant region from current index or middle of journey
+        const location = this.journeyData[this.currentIndex] || this.journeyData[Math.floor(this.journeyData.length / 2)];
+        const region = this.getCountryRegion(location);
+        const backgroundImage = this.getBackgroundImageForRegion(region);
+        
+        timelineViz.style.backgroundImage = `url('${backgroundImage}')`;
+    }
+    
     render() {
         const tFunc = typeof t === 'function' ? t : (key) => key;
         
@@ -23,24 +64,24 @@ class EnhancedTimeline {
                 <h6 class="timeline-title">${tFunc('timeline.title')}</h6>
                 <div class="timeline-phases">
                     <div class="timeline-phase">
-                        <span class="phase-indicator phase-1">🇨🇳</span>
+                        <span class="phase-indicator phase-1"></span>
                         <span>${tFunc('timeline.phase1')}</span>
                     </div>
                     <div class="timeline-phase">
-                        <span class="phase-indicator phase-2">🏜️</span>
+                        <span class="phase-indicator phase-2"></span>
                         <span>${tFunc('timeline.phase2')}</span>
                     </div>
                     <div class="timeline-phase">
-                        <span class="phase-indicator phase-3">🇮🇳</span>
+                        <span class="phase-indicator phase-3"></span>
                         <span>${tFunc('timeline.phase3')}</span>
                     </div>
                     <div class="timeline-phase">
-                        <span class="phase-indicator phase-4">🏔️</span>
+                        <span class="phase-indicator phase-4"></span>
                         <span>${tFunc('timeline.phase4')}</span>
                     </div>
                 </div>
             </div>
-            <div class="timeline-visualization">
+            <div class="timeline-visualization" id="timelineVisualization">
                 <div class="timeline-track"></div>
                 <div class="timeline-markers" id="timelineMarkers"></div>
                 <div class="timeline-current-position" id="currentPosition">
@@ -56,6 +97,7 @@ class EnhancedTimeline {
             </div>
         `;
         
+        this.setTimelineBackground();
         this.renderMarkers();
         this.updatePosition(0);
     }
@@ -87,18 +129,20 @@ class EnhancedTimeline {
             const country = nameParts.length > 1 ? nameParts[nameParts.length - 1].trim() : '';
             
             const emotion = enhanced.emotion || 'peaceful';
+            const stopNumber = index + 1;
             marker.innerHTML = `
                 <div class="marker-dot ${location.type}"></div>
                 <div class="marker-label">
-                    <div class="marker-year">${location.year}</div>
+                    <div class="marker-number">#${stopNumber}</div>
                     <div class="marker-city">${city}</div>
                     ${country ? `<div class="marker-country">${country}</div>` : ''}
+                    <div class="marker-year">${location.year}</div>
                 </div>
                 <div class="marker-emotion emotion-${emotion}"></div>
             `;
             
             // Add tooltip with full information
-            marker.title = `${enhanced.name} (${location.year})\n${modernName}\n${location.duration}`;
+            marker.title = `Stop ${stopNumber}: ${enhanced.name} (${location.year})\n${modernName}\n${location.duration}`;
             
             markersContainer.appendChild(marker);
             this.markers.push(marker);
@@ -132,6 +176,9 @@ class EnhancedTimeline {
         this.markers.forEach((marker, idx) => {
             marker.classList.toggle('active', idx === index);
         });
+        
+        // Update timeline background based on current location
+        this.setTimelineBackground();
     }
     
     attachEventListeners() {
