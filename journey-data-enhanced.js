@@ -147,7 +147,11 @@ const journeyEnhancements = {
         modernName_vi: "Samarkand, Uzbekistan",
         description_vi: "Một trong những thành phố có người ở liên tục lâu đời nhất, trung tâm của văn hóa Sogdia. Huyền Trang ghi nhận sự pha trộn của các tập tục Phật giáo và Zoroastrian.",
         historicalContext_vi: "Thành phố Con đường Tơ lụa lớn, thủ đô của Sogdiana và nồi nấu văn hóa.",
-        duration_vi: "1 tháng"
+        duration_vi: "1 tháng",
+        buddhistContext: "While Samarkand was predominantly Zoroastrian and had declining Buddhism by Xuanzang's time, it once housed important Buddhist monasteries. Xuanzang noted the mix of religious traditions and documented the remaining Buddhist communities alongside fire temples.",
+        buddhistContext_vi: "Mặc dù Samarkand chủ yếu theo đạo Zoroastrian và Phật giáo đang suy tàn vào thời Huyền Trang, nơi đây từng có các tu viện Phật giáo quan trọng. Huyền Trang ghi nhận sự pha trộn của các truyền thống tôn giáo.",
+        xuanzangExperience: "Xuanzang was received by local rulers and observed the cultural diversity. He noted the decline of Buddhism in Central Asia and the predominance of Zoroastrianism, which reinforced his determination to reach India to study at the source of Buddhist teachings.",
+        xuanzangExperience_vi: "Huyền Trang được các nhà cai trị địa phương tiếp đón và quan sát sự đa dạng văn hóa. Ông ghi nhận sự suy tàn của Phật giáo ở Trung Á và sự thống trị của đạo Zoroastrian."
     },
     11: {
         ancientName: "縛喝國 (Fúhèguó)",
@@ -159,7 +163,11 @@ const journeyEnhancements = {
         modernName_vi: "Balkh, Afghanistan",
         description_vi: "Trung tâm Phật giáo lớn được biết đến là 'Mẹ của các thành phố'. Huyền Trang học tại nhiều tu viện và gặp các nhà sư học giả.",
         historicalContext_vi: "Thành phố cổ đại, một trong những thành phố lâu đời nhất trên thế giới, và là trung tâm Phật giáo lớn trước Hồi giáo.",
-        duration_vi: "3 tháng"
+        duration_vi: "3 tháng",
+        buddhistContext: "Balkh was known as the 'Mother of Cities' and a major center of Buddhism in Bactria. The city had over 100 monasteries, including the famous Nava Vihara (New Monastery), one of the greatest Buddhist learning centers in Central Asia. It housed thousands of monks studying Mahayana and Hinayana traditions.",
+        buddhistContext_vi: "Balkh được biết đến là 'Mẹ của các thành phố' và là trung tâm Phật giáo lớn ở Bactria. Thành phố có hơn 100 tu viện, bao gồm Nava Vihara (Tu viện Mới) nổi tiếng, một trong những trung tâm học tập Phật giáo vĩ đại nhất ở Trung Á.",
+        xuanzangExperience: "Xuanzang spent three months in Balkh studying with learned monks at the Nava Vihara monastery. He acquired important Sanskrit texts and deepened his understanding of both Mahayana and Hinayana Buddhism. The scholars here prepared him intellectually for his studies at Nalanda.",
+        xuanzangExperience_vi: "Huyền Trang dành ba tháng ở Balkh học tập với các nhà sư uyên bác tại tu viện Nava Vihara. Ông thu thập các văn bản Sanskrit quan trọng và làm sâu sắc thêm hiểu biết về cả Phật giáo Đại thừa và Tiểu thừa."
     },
     12: {
         ancientName: "梵衍那國 (Fànyǎnnàguó)",
@@ -171,7 +179,11 @@ const journeyEnhancements = {
         modernName_vi: "Bamiyan, Afghanistan",
         description_vi: "Địa điểm của các bức tượng Phật khổng lồ nổi tiếng được chạm khắc vào vách đá. Huyền Trang mô tả chúng chi tiết trong các tác phẩm của mình.",
         historicalContext_vi: "Nơi có các bức tượng Phật khổng lồ (bị phá hủy năm 2001), biểu tượng của di sản Phật giáo của khu vực.",
-        duration_vi: "2 tuần"
+        duration_vi: "2 tuần",
+        buddhistContext: "Bamiyan was home to two colossal Buddha statues (55m and 38m tall) carved into cliff faces, surrounded by numerous cave monasteries. The valley was a thriving Buddhist center with thousands of monks. Xuanzang's detailed descriptions became crucial historical records after the statues were destroyed in 2001.",
+        buddhistContext_vi: "Bamiyan là nơi có hai bức tượng Phật khổng lồ (cao 55m và 38m) được chạm khắc vào vách đá, xung quanh là nhiều tu viện trong hang động. Thung lũng này là một trung tâm Phật giáo phát triển với hàng ngàn nhà sư.",
+        xuanzangExperience: "Xuanzang was awestruck by the massive Buddha statues and the devotion of the local Buddhist community. He spent two weeks studying and meditating in the cave monasteries, documenting the artistry and spiritual atmosphere. His writings provide the most detailed account of Bamiyan before its destruction.",
+        xuanzangExperience_vi: "Huyền Trang kinh ngạc trước những bức tượng Phật khổng lồ và lòng sùng kính của cộng đồng Phật giáo địa phương. Ông dành hai tuần học tập và thiền định trong các tu viện trong hang động."
     },
     13: {
         ancientName: "迦畢試國 (Jiābìshìguó)",
@@ -287,7 +299,11 @@ const journeyEnhancements = {
         quote: "The sangharama of Nalanda is majestic and beautiful. Ten thousand monks dwell here, and the rules of discipline are strictly observed.",
         quote_vi: "Tăng già lam của Nalanda thật hùng vĩ và đẹp đẽ. Mười ngàn nhà sư sống ở đây, và các quy tắc kỷ luật được tuân thủ nghiêm ngặt.",
         expandedDescription: "Nalanda University was the pinnacle of Xuanzang's journey. For five years, he studied under the great master Shilabhadra, learning Sanskrit, Buddhist philosophy, and logic. The university housed 10,000 students and 2,000 teachers, with a library of nine million manuscripts. Here, Xuanzang mastered the Yogacara school of Mahayana Buddhism and collected the precious texts he would carry back to China. His reputation as a scholar grew so great that he was invited to debate with other learned monks, and he emerged victorious in philosophical disputations.",
-        expandedDescription_vi: "Đại học Nalanda là đỉnh cao của hành trình Huyền Trang. Trong năm năm, ông học tập dưới sự hướng dẫn của đại sư Shilabhadra, học tiếng Phạn, triết học Phật giáo và logic. Đại học có 10.000 sinh viên và 2.000 giáo viên, với thư viện chín triệu bản thảo."
+        expandedDescription_vi: "Đại học Nalanda là đỉnh cao của hành trình Huyền Trang. Trong năm năm, ông học tập dưới sự hướng dẫn của đại sư Shilabhadra, học tiếng Phạn, triết học Phật giáo và logic. Đại học có 10.000 sinh viên và 2.000 giáo viên, với thư viện chín triệu bản thảo.",
+        buddhistContext: "Nalanda was the world's first residential university and the greatest center of Buddhist learning in ancient India. Founded in the 5th century CE, it attracted students from Tibet, China, Korea, Japan, Mongolia, Turkey, Sri Lanka, and Southeast Asia. The curriculum included the study of all Buddhist schools (Mahayana and Hinayana), Sanskrit grammar, logic, medicine, mathematics, and astronomy. The monastery complex had eight separate compounds, ten temples, meditation halls, classrooms, lakes, and parks.",
+        buddhistContext_vi: "Nalanda là đại học nội trú đầu tiên trên thế giới và là trung tâm học tập Phật giáo vĩ đại nhất ở Ấn Độ cổ đại. Được thành lập vào thế kỷ thứ 5 sau Công nguyên, nó thu hút sinh viên từ Tây Tạng, Trung Quốc, Triều Tiên, Nhật Bản, Mông Cổ, Thổ Nhĩ Kỳ, Sri Lanka và Đông Nam Á.",
+        xuanzangExperience: "Xuanzang's five years at Nalanda transformed him from a pilgrim into one of the greatest Buddhist scholars of his time. Under the 106-year-old abbot Shilabhadra, he studied the Yogacara philosophy intensively. He was assigned a spacious room and provided with all necessities. Daily life included lectures, debates, meditation, and manuscript copying. His intellect impressed everyone, and he was given the honorific title 'Master of the Tripitaka.' When he finally prepared to return to China, he had collected 657 Buddhist texts, 150 relics, and seven Buddha statues.",
+        xuanzangExperience_vi: "Năm năm tại Nalanda đã biến Huyền Trang từ một nhà hành hương thành một trong những học giả Phật giáo vĩ đại nhất thời đại của ông. Dưới sự hướng dẫn của trụ trì Shilabhadra 106 tuổi, ông nghiên cứu triết học Yogacara một cách chuyên sâu."
     },
     22: {
         ancientName: "波吒釐子城 (Bōzhālízǐchéng)",
