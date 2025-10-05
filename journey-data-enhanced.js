@@ -81,7 +81,13 @@ const journeyEnhancements = {
         modernName_vi: "Turpan, Tân Cương, Trung Quốc",
         description_vi: "Vua của Cao Xương trở thành người bảo trợ của Huyền Trang, cung cấp vật tư và thư giới thiệu cho hành trình phía trước.",
         historicalContext_vi: "Trung tâm thương mại lớn và vương quốc Phật giáo ở lưu vực Tarim.",
-        duration_vi: "2 tháng"
+        duration_vi: "2 tháng",
+        buddhistContext: "The Kingdom of Gaochang (Turfan) was a thriving Buddhist state with numerous monasteries and temples. The Bezeklik Thousand Buddha Caves near Turfan contain well-preserved Buddhist murals from this period.",
+        buddhistContext_vi: "Vương quốc Cao Xương (Turpan) là một quốc gia Phật giáo phát triển với nhiều tu viện và chùa chiền. Động Ngàn Phật Bezeklik gần Turpan chứa tranh tường Phật giáo được bảo quản tốt từ thời kỳ này.",
+        xuanzangExperience: "King Qu Wentai of Gaochang became Xuanzang's devoted patron and tried to convince him to stay permanently. Xuanzang went on a hunger strike to continue his journey. The king relented and provided generous supplies, letters of introduction, and 30 assistants for the journey ahead.",
+        xuanzangExperience_vi: "Vua Cúc Văn Thái của Cao Xương trở thành người bảo trợ tận tụy của Huyền Trang và cố gắng thuyết phục ông ở lại vĩnh viễn. Huyền Trang đã tuyệt thực để tiếp tục hành trình.",
+        historicalEvents: "Gaochang was a major Buddhist kingdom and trading center on the Silk Road. It maintained close cultural ties with China while also being influenced by Central Asian Buddhist traditions.",
+        historicalEvents_vi: "Cao Xương là một vương quốc Phật giáo lớn và trung tâm thương mại trên Con đường Tơ lụa. Nó duy trì quan hệ văn hóa chặt chẽ với Trung Quốc."
     },
     6: {
         ancientName: "龜茲 (Qiūcí)",
