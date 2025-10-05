@@ -138,7 +138,6 @@ class EnhancedTimeline {
                     ${country ? `<div class="marker-country">${country}</div>` : ''}
                     <div class="marker-year">${location.year}</div>
                 </div>
-                <div class="marker-emotion emotion-${emotion}"></div>
             `;
             
             // Add tooltip with full information

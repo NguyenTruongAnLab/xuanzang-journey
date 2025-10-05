@@ -227,16 +227,16 @@ function createJourneyPath() {
 
 // Add directional arrows along the journey path
 function addDirectionalArrows(pathCoordinates) {
-    // Create arrow markers at regular intervals
+    // Create arrow markers at the end of each path segment (not middle)
     for (let i = 0; i < pathCoordinates.length - 1; i++) {
         const start = pathCoordinates[i];
         const end = pathCoordinates[i + 1];
         
-        // Calculate midpoint
-        const midLat = (start[0] + end[0]) / 2;
-        const midLng = (start[1] + end[1]) / 2;
+        // Place arrow near the end of the segment (80% along the path)
+        const arrowLat = start[0] + (end[0] - start[0]) * 0.8;
+        const arrowLng = start[1] + (end[1] - start[1]) * 0.8;
         
-        // Calculate angle
+        // Calculate angle for arrow direction
         const angle = Math.atan2(end[1] - start[1], end[0] - start[0]) * 180 / Math.PI;
         
         // Create arrow icon with better styling
@@ -247,8 +247,8 @@ function addDirectionalArrows(pathCoordinates) {
             iconAnchor: [12, 12]
         });
         
-        // Add arrow marker at midpoint
-        L.marker([midLat, midLng], {
+        // Add arrow marker near the end of segment
+        L.marker([arrowLat, arrowLng], {
             icon: arrowIcon,
             interactive: false,
             keyboard: false
@@ -361,7 +361,6 @@ function showLocationDetails(location) {
 // Update the right summary panel
 function updateSummaryPanel(location, enhanced, tFunc) {
     const summaryBriefInfo = document.getElementById('summaryBriefInfo');
-    const summaryProgressText = document.getElementById('summaryProgressText');
     const summaryDetails = document.getElementById('summaryDetails');
     
     // Get current language
@@ -371,21 +370,15 @@ function updateSummaryPanel(location, enhanced, tFunc) {
     // Update brief info (shown by default)
     if (summaryBriefInfo) {
         const modernName = isVietnamese && enhanced.modernName_vi ? enhanced.modernName_vi : enhanced.modernName;
+        // Merge Station and Year into one line
         summaryBriefInfo.innerHTML = `
             <div class="mb-2">
-                <strong>Station:</strong> ${enhanced.name}
-            </div>
-            <div class="mb-2">
-                <strong>Year:</strong> ${enhanced.year} CE
+                <strong>Station:</strong> ${enhanced.name} (${enhanced.year} CE)
             </div>
             <div class="mb-2">
                 <strong>Location:</strong> ${modernName}
             </div>
         `;
-    }
-    
-    if (summaryProgressText) {
-        summaryProgressText.textContent = `${currentStepIndex + 1} / ${journeyData.length} locations`;
     }
     
     if (summaryDetails) {
@@ -573,52 +566,57 @@ function updateIllustrationPanel(location, enhanced, tFunc) {
     if (carouselImages) {
         carouselImages.innerHTML = '';
         
-        // Add images if available (limit to 3 images)
-        if (enhanced.images && enhanced.images.length > 0) {
-            const imagesToShow = enhanced.images.slice(0, 3); // Show max 3 images
-            imagesToShow.forEach((image, index) => {
-                const img = document.createElement('img');
-                
-                // Implement lazy loading for performance
-                img.loading = 'lazy';
-                
-                // Set responsive image attributes
-                img.src = image.url;
-                img.alt = image.caption || `Image of ${enhanced.name}`;
-                img.className = 'carousel-image';
-                img.dataset.caption = image.caption;
-                
-                // Add error handling for broken images
-                img.onerror = function() {
-                    console.warn(`Failed to load image: ${image.url}`);
-                    // Replace with placeholder on error
-                    const errorPlaceholder = createImagePlaceholder(enhanced, tFunc, true);
-                    this.parentNode.replaceChild(errorPlaceholder, this);
-                };
-                
-                // Add loading state
-                img.onload = function() {
-                    this.classList.add('loaded');
-                };
-                
-                carouselImages.appendChild(img);
-            });
+        // Load images from local images folder based on site index
+        // Format: {index}_{city}_{code}.jpg where code is 0001-0004
+        // Show only 0004.jpg by default (road condition), others available for scrolling
+        const siteIndex = String(location.id).padStart(2, '0');
+        // Get city name and replace spaces with underscores to match filename
+        const cityName = enhanced.modernName.split(',')[0].trim().replace(/ /g, '_');
+        
+        // Image codes: 0004, 0001, 0002, 0003 for gallery, 0004 first as default (road condition)
+        const imageCodes = ['0004', '0001', '0002', '0003']; // 0004 first as default
+        const imageDescriptions = [
+            'Road condition illustration',
+            'Historical site view',
+            'Archaeological perspective', 
+            'Buddhist temple/monastery'
+        ];
+        
+        imageCodes.forEach((code, index) => {
+            const img = document.createElement('img');
             
-            // Show first image caption
-            if (carouselCaption && enhanced.images[0]) {
-                carouselCaption.textContent = enhanced.images[0].caption;
-            }
+            // Implement lazy loading for performance
+            img.loading = 'lazy';
             
-            // Setup carousel controls
-            setupCarousel();
-        } else {
-            // Show placeholder when no images available
-            carouselImages.appendChild(createImagePlaceholder(enhanced, tFunc, false));
+            // Set image path from local images folder
+            img.src = `images/${siteIndex}_${cityName}_${code}.jpg`;
+            img.alt = `${enhanced.name} - ${imageDescriptions[index]}`;
+            img.className = 'carousel-image';
+            img.dataset.caption = `${enhanced.name} - ${imageDescriptions[index]}`;
             
-            if (carouselCaption) {
-                carouselCaption.textContent = '';
-            }
+            // Add error handling for broken images
+            img.onerror = function() {
+                console.warn(`Failed to load image: ${img.src}`);
+                // Replace with placeholder on error
+                const errorPlaceholder = createImagePlaceholder(enhanced, tFunc, true);
+                this.parentNode.replaceChild(errorPlaceholder, this);
+            };
+            
+            // Add loading state
+            img.onload = function() {
+                this.classList.add('loaded');
+            };
+            
+            carouselImages.appendChild(img);
+        });
+        
+        // Show first image caption (0004 - road condition)
+        if (carouselCaption) {
+            carouselCaption.textContent = `${enhanced.name} - ${imageDescriptions[0]}`;
         }
+        
+        // Setup carousel controls
+        setupCarousel();
     }
 }
 
@@ -1016,8 +1014,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 500);
     }
     
-    // Add location search functionality
-    addLocationSearchUI();
+    // NOTE: Location search functionality removed per requirements
 });
 
 // Handle hash changes (when user uses browser back/forward)
@@ -1062,122 +1059,6 @@ window.onTimelineMarkerClick = function(index) {
     stopPlaying();
 };
 
-// Add location search functionality
-function addLocationSearchUI() {
-    const tFunc = typeof t === 'function' ? t : (key) => key;
-    
-    // Create search container
-    const searchContainer = document.createElement('div');
-    searchContainer.id = 'locationSearch';
-    searchContainer.className = 'location-search';
-    searchContainer.innerHTML = `
-        <input type="text" 
-               id="searchInput" 
-               class="form-control form-control-sm" 
-               placeholder="${tFunc('search.placeholder')}"
-               aria-label="${tFunc('search.label')}"
-               autocomplete="off">
-        <div id="searchResults" class="search-results"></div>
-    `;
-    
-    // Insert after the navbar
-    const navbar = document.querySelector('.navbar');
-    if (navbar && navbar.nextSibling) {
-        navbar.parentNode.insertBefore(searchContainer, navbar.nextSibling);
-    }
-    
-    // Set up search functionality
-    const searchInput = document.getElementById('searchInput');
-    const searchResults = document.getElementById('searchResults');
-    
-    let searchTimeout;
-    searchInput.addEventListener('input', (e) => {
-        clearTimeout(searchTimeout);
-        const query = e.target.value.trim().toLowerCase();
-        
-        if (query.length < 2) {
-            searchResults.innerHTML = '';
-            searchResults.style.display = 'none';
-            return;
-        }
-        
-        searchTimeout = setTimeout(() => {
-            performLocationSearch(query, searchResults);
-        }, 300); // Debounce search
-    });
-    
-    // Close search results when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!searchContainer.contains(e.target)) {
-            searchResults.style.display = 'none';
-        }
-    });
-    
-    // Show results when focusing on input
-    searchInput.addEventListener('focus', () => {
-        if (searchInput.value.trim().length >= 2) {
-            performLocationSearch(searchInput.value.trim().toLowerCase(), searchResults);
-        }
-    });
-}
-
-// Perform location search and display results
-function performLocationSearch(query, resultsContainer) {
-    const tFunc = typeof t === 'function' ? t : (key) => key;
-    
-    // Search in name, modern name, and description
-    const results = journeyData.filter((location, index) => {
-        const enhanced = typeof getEnhancedLocation === 'function' ? getEnhancedLocation(location) : location;
-        
-        return (
-            enhanced.name.toLowerCase().includes(query) ||
-            enhanced.modernName.toLowerCase().includes(query) ||
-            enhanced.description.toLowerCase().includes(query) ||
-            (enhanced.ancientName && enhanced.ancientName.toLowerCase().includes(query))
-        );
-    });
-    
-    if (results.length === 0) {
-        resultsContainer.innerHTML = `<div class="search-result-item no-results">${tFunc('search.noResults')}</div>`;
-        resultsContainer.style.display = 'block';
-        return;
-    }
-    
-    // Display results
-    resultsContainer.innerHTML = results.map(location => {
-        const enhanced = typeof getEnhancedLocation === 'function' ? getEnhancedLocation(location) : location;
-        const locationIndex = journeyData.findIndex(l => l.id === location.id);
-        
-        return `
-            <div class="search-result-item" data-index="${locationIndex}">
-                <strong>${enhanced.name}</strong>
-                <div class="search-result-meta">
-                    <span class="text-muted">${enhanced.modernName}</span>
-                    <span class="badge bg-secondary">${location.year} CE</span>
-                </div>
-            </div>
-        `;
-    }).join('');
-    
-    resultsContainer.style.display = 'block';
-    
-    // Add click handlers to results
-    resultsContainer.querySelectorAll('.search-result-item[data-index]').forEach(item => {
-        item.addEventListener('click', () => {
-            const index = parseInt(item.dataset.index);
-            currentStepIndex = index;
-            updateTimeline();
-            stopPlaying();
-            
-            // Close search results
-            resultsContainer.style.display = 'none';
-            document.getElementById('searchInput').value = '';
-            
-            // Zoom to location
-            map.setView(journeyData[index].coordinates, 8, {
-                animate: true,
-                duration: 1
-            });
-        });
-    });
-}
+// NOTE: Location search functionality removed per requirements
+// The search function has been removed from the UI to simplify the interface
+// and focus on the journey visualization

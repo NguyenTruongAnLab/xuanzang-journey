@@ -195,21 +195,7 @@
     font-weight: 700;
 }
 
-.marker-emotion {
-    position: absolute;
-    top: 55px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 1.2rem;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-}
-
-.timeline-marker:hover .marker-emotion,
-.timeline-marker.active .marker-emotion {
-    opacity: 1;
-}
+/* Emotion display removed per requirements */
 
 .timeline-current-position {
     position: absolute;
@@ -266,14 +252,7 @@
     font-weight: 500;
 }
 
-/* Emotion emojis */
-.emotion-determined::before { content: '💪'; }
-.emotion-excited::before { content: '😊'; }
-.emotion-tired::before { content: '😓'; }
-.emotion-contemplative::before { content: '🤔'; }
-.emotion-peaceful::before { content: '😌'; }
-.emotion-reverent::before { content: '🙏'; }
-.emotion-triumphant::before { content: '🎉'; }
+/* Emotion emojis removed per requirements */
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
