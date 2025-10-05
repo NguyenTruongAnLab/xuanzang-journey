@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Timeline Test</title>
+    <link rel="stylesheet" href="timeline.css">
+    <style>
+        body { margin: 0; padding: 20px; background: #1a1a1a; }
+        .test-container { max-width: 1200px; margin: 0 auto; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h2 style="color: white;">Simplified Timeline Test</h2>
+        <div id="enhancedTimelineContainer" class="enhanced-timeline-container"></div>
+    </div>
+    
+    <script src="journey-data.js"></script>
+    <script src="journey-data-enhanced.js"></script>
+    <script src="timeline.js"></script>
+    <script>
+        // Initialize timeline
+        if (typeof initEnhancedTimeline === 'function') {
+            initEnhancedTimeline();
+        }
+    </script>
+</body>
+</html>
