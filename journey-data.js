@@ -719,11 +719,13 @@ function loadLocalImages(location) {
     
     // Get city name from modernName for folder matching
     const cityName = location.modernName.split(',')[0].trim();
+    // Replace spaces with underscores for file matching
+    const cityNameForFile = cityName.replace(/ /g, '_');
     
     // Try to load up to 10 local images based on the naming pattern: {id}_{city}_{number}.jpg
     for (let i = 1; i <= 10; i++) {
         const imageNumber = String(i).padStart(4, '0');
-        const imagePath = `images/${String(locationId).padStart(2, '0')}_${cityName.replace(/'/g, "'")}_${imageNumber}.jpg`;
+        const imagePath = `images/${String(locationId).padStart(2, '0')}_${cityNameForFile}_${imageNumber}.jpg`;
         
         localImages.push({
             url: imagePath,

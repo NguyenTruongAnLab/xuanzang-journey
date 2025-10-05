@@ -157,9 +157,9 @@
 
 .timeline-current-position {
     position: absolute;
-    top: 30px;
+    top: 23px;
     width: 3px;
-    height: 24px;
+    height: 14px;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.3));
     z-index: 100;
     pointer-events: none;
@@ -181,14 +181,14 @@
 
 .timeline-current-info {
     position: absolute;
-    top: -35px;
+    top: -30px;
     left: 50%;
     transform: translateX(-50%);
     background: rgba(255, 255, 255, 0.95);
     color: #212529;
-    padding: 4px 10px;
+    padding: 3px 8px;
     border-radius: 4px;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 600;
     white-space: nowrap;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -215,36 +215,38 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .enhanced-timeline-container {
-        bottom: 100px;
-        padding: 10px 15px 8px;
+        bottom: 80px;
+        padding: 6px 15px;
     }
     
     .timeline-visualization {
-        height: 70px;
-    }
-    
-    .timeline-phases {
-        display: none;
+        height: 50px;
     }
     
     .marker-label {
-        font-size: 0.6rem;
+        font-size: 0.55rem;
+        padding: 3px 6px;
+        min-width: 60px;
+    }
+    
+    .marker-year {
+        font-size: 0.7rem;
+    }
+    
+    .marker-city {
+        font-size: 0.55rem;
     }
     
     .timeline-year-markers {
-        top: 50px;
+        top: 40px;
     }
     
     .year-marker {
-        font-size: 0.65rem;
+        font-size: 0.6rem;
     }
 }
 
 @media (max-width: 576px) {
-    .timeline-title {
-        font-size: 0.8rem;
-    }
-    
     .marker-dot {
         width: 10px;
         height: 10px;
