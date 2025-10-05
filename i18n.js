@@ -44,6 +44,7 @@ const translations = {
         'info.historicalContext': 'Historical Context',
         'info.emotion': 'Emotion',
         'info.noImagesAvailable': 'Historical images not available',
+        'info.imageLoadError': 'Image failed to load',
         
         // Summary Panel
         'summary.title': 'Journey Summary',
@@ -61,6 +62,16 @@ const translations = {
         // Bookmark
         'bookmark.button': 'Bookmark',
         'bookmark.saved': 'Bookmarked',
+        
+        // Search
+        'search.placeholder': 'Search locations...',
+        'search.label': 'Search journey locations',
+        'search.noResults': 'No locations found',
+        
+        // Share
+        'share.title': 'Share this location',
+        'share.copyLink': 'Copy Link',
+        'share.linkCopied': 'Link copied!',
         
         // Modal
         'modal.aboutTitle': "About Xuanzang's Journey",
@@ -130,6 +141,7 @@ const translations = {
         'info.historicalContext': 'Bối Cảnh Lịch Sử',
         'info.emotion': 'Tâm Trạng',
         'info.noImagesAvailable': 'Không có hình ảnh lịch sử',
+        'info.imageLoadError': 'Không tải được hình ảnh',
         
         // Summary Panel
         'summary.title': 'Tổng Quan Hành Trình',
@@ -147,6 +159,16 @@ const translations = {
         // Bookmark
         'bookmark.button': 'Đánh Dấu',
         'bookmark.saved': 'Đã Đánh Dấu',
+        
+        // Search
+        'search.placeholder': 'Tìm kiếm địa điểm...',
+        'search.label': 'Tìm kiếm địa điểm trong hành trình',
+        'search.noResults': 'Không tìm thấy địa điểm',
+        
+        // Share
+        'share.title': 'Chia sẻ địa điểm này',
+        'share.copyLink': 'Sao chép liên kết',
+        'share.linkCopied': 'Đã sao chép liên kết!',
         
         // Modal
         'modal.aboutTitle': 'Về Hành Trình Huyền Trang',

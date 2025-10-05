@@ -78,6 +78,105 @@ function updateBookmarkButton() {
 // Make toggleBookmark globally accessible
 window.toggleBookmark = toggleBookmark;
 
+// Update share buttons for current location
+function updateShareButtons(location, enhanced, tFunc) {
+    const shareButtonsContainer = document.getElementById('shareButtons');
+    if (!shareButtonsContainer) return;
+    
+    // Generate shareable URL
+    const locationSlug = location.name.toLowerCase().replace(/['\s]/g, '-').replace(/--+/g, '-');
+    const shareUrl = `${window.location.origin}${window.location.pathname}#${locationSlug}`;
+    const shareText = `${enhanced.name} - Xuanzang's Journey (${location.year} CE)`;
+    
+    shareButtonsContainer.innerHTML = `
+        <button class="btn btn-sm btn-outline-primary share-btn" onclick="copyShareLink('${shareUrl}')" title="${tFunc('share.copyLink')}">
+            🔗 ${tFunc('share.copyLink')}
+        </button>
+        <button class="btn btn-sm btn-outline-info share-btn" onclick="shareOnTwitter('${encodeURIComponent(shareText)}', '${encodeURIComponent(shareUrl)}')" title="Share on Twitter/X">
+            𝕏 Twitter
+        </button>
+        <button class="btn btn-sm btn-outline-primary share-btn" onclick="shareOnFacebook('${encodeURIComponent(shareUrl)}')" title="Share on Facebook">
+            📘 Facebook
+        </button>
+    `;
+}
+
+// Copy share link to clipboard
+window.copyShareLink = function(url) {
+    const tFunc = typeof t === 'function' ? t : (key) => key;
+    
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(() => {
+            showShareNotification(tFunc('share.linkCopied'));
+        }).catch(err => {
+            console.error('Failed to copy:', err);
+            fallbackCopyToClipboard(url);
+        });
+    } else {
+        fallbackCopyToClipboard(url);
+    }
+};
+
+// Fallback copy method for older browsers
+function fallbackCopyToClipboard(text) {
+    const tFunc = typeof t === 'function' ? t : (key) => key;
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
+        showShareNotification(tFunc('share.linkCopied'));
+    } catch (err) {
+        console.error('Fallback copy failed:', err);
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+// Show notification after sharing
+function showShareNotification(message) {
+    const notification = document.createElement('div');
+    notification.className = 'share-notification';
+    notification.textContent = message;
+    notification.style.cssText = `
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        background: #198754;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        z-index: 9999;
+        animation: slideIn 0.3s ease-out;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 2000);
+}
+
+// Share on Twitter/X
+window.shareOnTwitter = function(text, url) {
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+    window.open(twitterUrl, '_blank', 'width=600,height=400');
+};
+
+// Share on Facebook
+window.shareOnFacebook = function(url) {
+    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+    window.open(facebookUrl, '_blank', 'width=600,height=400');
+};
+
 // Initialize the map
 function initMap() {
     // Initialize i18n first
@@ -249,6 +348,9 @@ function updateSummaryPanel(location, enhanced, tFunc) {
     
     // Update bookmark button state
     updateBookmarkButton();
+    
+    // Update share buttons
+    updateShareButtons(location, enhanced, tFunc);
 }
 
 // Update the left illustration panel with images
@@ -268,10 +370,29 @@ function updateIllustrationPanel(location, enhanced, tFunc) {
         if (enhanced.images && enhanced.images.length > 0) {
             enhanced.images.forEach((image, index) => {
                 const img = document.createElement('img');
+                
+                // Implement lazy loading for performance
+                img.loading = 'lazy';
+                
+                // Set responsive image attributes
                 img.src = image.url;
-                img.alt = image.caption;
+                img.alt = image.caption || `Image of ${enhanced.name}`;
                 img.className = 'carousel-image';
                 img.dataset.caption = image.caption;
+                
+                // Add error handling for broken images
+                img.onerror = function() {
+                    console.warn(`Failed to load image: ${image.url}`);
+                    // Replace with placeholder on error
+                    const errorPlaceholder = createImagePlaceholder(enhanced, tFunc, true);
+                    this.parentNode.replaceChild(errorPlaceholder, this);
+                };
+                
+                // Add loading state
+                img.onload = function() {
+                    this.classList.add('loaded');
+                };
+                
                 carouselImages.appendChild(img);
             });
             
@@ -284,33 +405,43 @@ function updateIllustrationPanel(location, enhanced, tFunc) {
             setupCarousel();
         } else {
             // Show placeholder when no images available
-            const placeholder = document.createElement('div');
-            placeholder.className = 'carousel-placeholder';
-            
-            // Choose icon based on location type or emotion
-            let icon = '🏛️'; // default
-            if (enhanced.emotion === 'tired') icon = '🏜️';
-            else if (enhanced.emotion === 'peaceful' || enhanced.emotion === 'reverent') icon = '🛕';
-            else if (enhanced.emotion === 'excited') icon = '🏔️';
-            else if (enhanced.emotion === 'determined') icon = '🚶';
-            else if (enhanced.emotion === 'contemplative') icon = '🌄';
-            else if (enhanced.emotion === 'triumphant') icon = '🎉';
-            
-            placeholder.innerHTML = `
-                <div>
-                    <div class="location-icon">${icon}</div>
-                    <h5>${enhanced.name}</h5>
-                    <p>📍 ${enhanced.modernName}</p>
-                    <p style="font-size: 0.85rem; margin-top: 10px;">${tFunc('info.noImagesAvailable') || 'Historical images not available'}</p>
-                </div>
-            `;
-            carouselImages.appendChild(placeholder);
+            carouselImages.appendChild(createImagePlaceholder(enhanced, tFunc, false));
             
             if (carouselCaption) {
                 carouselCaption.textContent = '';
             }
         }
     }
+}
+
+// Helper function to create image placeholder
+function createImagePlaceholder(enhanced, tFunc, isError) {
+    const placeholder = document.createElement('div');
+    placeholder.className = 'carousel-placeholder';
+    
+    // Choose icon based on location type or emotion
+    let icon = '🏛️'; // default
+    if (enhanced.emotion === 'tired') icon = '🏜️';
+    else if (enhanced.emotion === 'peaceful' || enhanced.emotion === 'reverent') icon = '🛕';
+    else if (enhanced.emotion === 'excited') icon = '🏔️';
+    else if (enhanced.emotion === 'determined') icon = '🚶';
+    else if (enhanced.emotion === 'contemplative') icon = '🌄';
+    else if (enhanced.emotion === 'triumphant') icon = '🎉';
+    
+    const message = isError 
+        ? (tFunc('info.imageLoadError') || 'Image failed to load')
+        : (tFunc('info.noImagesAvailable') || 'Historical images not available');
+    
+    placeholder.innerHTML = `
+        <div>
+            <div class="location-icon">${icon}</div>
+            <h5>${enhanced.name}</h5>
+            <p>📍 ${enhanced.modernName}</p>
+            <p style="font-size: 0.85rem; margin-top: 10px;">${message}</p>
+        </div>
+    `;
+    
+    return placeholder;
 }
 
 // Setup carousel navigation
@@ -475,6 +606,9 @@ function highlightCurrentLocation() {
     // Show location details
     showLocationDetails(currentLocation);
     
+    // Update URL hash for deep-linking
+    updateLocationHash(currentLocation);
+    
     // Move avatar to current location
     if (window.monkAvatar) {
         window.monkAvatar.moveToLocation(currentLocation.coordinates, 1000);
@@ -484,7 +618,7 @@ function highlightCurrentLocation() {
     // markers[currentStepIndex].openPopup();
 }
 
-// Update journey path to show completed portion
+// Update journey path to show completed portion with animation
 function updateJourneyProgress() {
     // Remove old progress line if it exists
     if (window.progressLine) {
@@ -496,12 +630,39 @@ function updateJourneyProgress() {
         .slice(0, currentStepIndex + 1)
         .map(location => location.coordinates);
     
-    window.progressLine = L.polyline(completedCoordinates, {
-        color: '#198754',
-        weight: 4,
-        opacity: 0.9,
-        smoothFactor: 1
-    }).addTo(map);
+    // Only draw if we have at least 2 points
+    if (completedCoordinates.length >= 2) {
+        window.progressLine = L.polyline(completedCoordinates, {
+            color: '#198754',
+            weight: 4,
+            opacity: 0.9,
+            smoothFactor: 1,
+            className: 'animated-path' // Add CSS class for animations
+        }).addTo(map);
+        
+        // Animate the path drawing if we're playing
+        if (isPlaying) {
+            animatePathSegment(window.progressLine);
+        }
+    }
+}
+
+// Animate the drawing of a path segment
+function animatePathSegment(polyline) {
+    if (!polyline || !polyline._path) return;
+    
+    const path = polyline._path;
+    const length = path.getTotalLength();
+    
+    // Set up the starting positions
+    path.style.strokeDasharray = length + ' ' + length;
+    path.style.strokeDashoffset = length;
+    
+    // Trigger animation
+    requestAnimationFrame(() => {
+        path.style.transition = 'stroke-dashoffset 1s ease-in-out';
+        path.style.strokeDashoffset = '0';
+    });
 }
 
 // Start animated playback
@@ -576,6 +737,39 @@ function updateLanguageButtons() {
     document.getElementById('langVi').classList.toggle('active', currentLang === 'vi');
 }
 
+// Deep-linking support - parse URL hash and navigate to location
+function handleDeepLink() {
+    const hash = window.location.hash.substring(1); // Remove the #
+    
+    if (hash) {
+        // Try to find location by name (case-insensitive, handle URL encoding)
+        const locationName = decodeURIComponent(hash).toLowerCase().replace(/-/g, ' ');
+        const locationIndex = journeyData.findIndex(loc => 
+            loc.name.toLowerCase() === locationName ||
+            loc.name.toLowerCase().replace(/['\s]/g, '') === locationName.replace(/['\s]/g, '')
+        );
+        
+        if (locationIndex !== -1) {
+            currentStepIndex = locationIndex;
+            updateTimeline();
+            
+            // Scroll to location smoothly
+            setTimeout(() => {
+                map.setView(journeyData[locationIndex].coordinates, 8, {
+                    animate: true,
+                    duration: 1.5
+                });
+            }, 100);
+        }
+    }
+}
+
+// Update URL hash when location changes (for deep-linking)
+function updateLocationHash(location) {
+    const locationSlug = location.name.toLowerCase().replace(/['\s]/g, '-').replace(/--+/g, '-');
+    window.history.replaceState(null, '', `#${locationSlug}`);
+}
+
 // Initialize map when page loads
 document.addEventListener('DOMContentLoaded', () => {
     // Load bookmarks first
@@ -595,16 +789,31 @@ document.addEventListener('DOMContentLoaded', () => {
         window.monkAvatar.setMap(map);
     }
     
-    // Show first location by default
-    setTimeout(() => {
-        showLocationDetails(journeyData[0]);
-        updateTimeline();
-        
-        // Position avatar at first location
-        if (window.monkAvatar && journeyData[0]) {
-            window.monkAvatar.moveToLocation(journeyData[0].coordinates, 0);
-        }
-    }, 500);
+    // Check for deep link first
+    const hasDeepLink = window.location.hash.length > 1;
+    
+    if (hasDeepLink) {
+        handleDeepLink();
+    } else {
+        // Show first location by default
+        setTimeout(() => {
+            showLocationDetails(journeyData[0]);
+            updateTimeline();
+            
+            // Position avatar at first location
+            if (window.monkAvatar && journeyData[0]) {
+                window.monkAvatar.moveToLocation(journeyData[0].coordinates, 0);
+            }
+        }, 500);
+    }
+    
+    // Add location search functionality
+    addLocationSearchUI();
+});
+
+// Handle hash changes (when user uses browser back/forward)
+window.addEventListener('hashchange', () => {
+    handleDeepLink();
 });
 
 // Handle window resize
@@ -638,3 +847,123 @@ window.onTimelineMarkerClick = function(index) {
     updateTimeline();
     stopPlaying();
 };
+
+// Add location search functionality
+function addLocationSearchUI() {
+    const tFunc = typeof t === 'function' ? t : (key) => key;
+    
+    // Create search container
+    const searchContainer = document.createElement('div');
+    searchContainer.id = 'locationSearch';
+    searchContainer.className = 'location-search';
+    searchContainer.innerHTML = `
+        <input type="text" 
+               id="searchInput" 
+               class="form-control form-control-sm" 
+               placeholder="${tFunc('search.placeholder')}"
+               aria-label="${tFunc('search.label')}"
+               autocomplete="off">
+        <div id="searchResults" class="search-results"></div>
+    `;
+    
+    // Insert after the navbar
+    const navbar = document.querySelector('.navbar');
+    if (navbar && navbar.nextSibling) {
+        navbar.parentNode.insertBefore(searchContainer, navbar.nextSibling);
+    }
+    
+    // Set up search functionality
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    
+    let searchTimeout;
+    searchInput.addEventListener('input', (e) => {
+        clearTimeout(searchTimeout);
+        const query = e.target.value.trim().toLowerCase();
+        
+        if (query.length < 2) {
+            searchResults.innerHTML = '';
+            searchResults.style.display = 'none';
+            return;
+        }
+        
+        searchTimeout = setTimeout(() => {
+            performLocationSearch(query, searchResults);
+        }, 300); // Debounce search
+    });
+    
+    // Close search results when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!searchContainer.contains(e.target)) {
+            searchResults.style.display = 'none';
+        }
+    });
+    
+    // Show results when focusing on input
+    searchInput.addEventListener('focus', () => {
+        if (searchInput.value.trim().length >= 2) {
+            performLocationSearch(searchInput.value.trim().toLowerCase(), searchResults);
+        }
+    });
+}
+
+// Perform location search and display results
+function performLocationSearch(query, resultsContainer) {
+    const tFunc = typeof t === 'function' ? t : (key) => key;
+    
+    // Search in name, modern name, and description
+    const results = journeyData.filter((location, index) => {
+        const enhanced = typeof getEnhancedLocation === 'function' ? getEnhancedLocation(location) : location;
+        
+        return (
+            enhanced.name.toLowerCase().includes(query) ||
+            enhanced.modernName.toLowerCase().includes(query) ||
+            enhanced.description.toLowerCase().includes(query) ||
+            (enhanced.ancientName && enhanced.ancientName.toLowerCase().includes(query))
+        );
+    });
+    
+    if (results.length === 0) {
+        resultsContainer.innerHTML = `<div class="search-result-item no-results">${tFunc('search.noResults')}</div>`;
+        resultsContainer.style.display = 'block';
+        return;
+    }
+    
+    // Display results
+    resultsContainer.innerHTML = results.map(location => {
+        const enhanced = typeof getEnhancedLocation === 'function' ? getEnhancedLocation(location) : location;
+        const locationIndex = journeyData.findIndex(l => l.id === location.id);
+        
+        return `
+            <div class="search-result-item" data-index="${locationIndex}">
+                <strong>${enhanced.name}</strong>
+                <div class="search-result-meta">
+                    <span class="text-muted">${enhanced.modernName}</span>
+                    <span class="badge bg-secondary">${location.year} CE</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    resultsContainer.style.display = 'block';
+    
+    // Add click handlers to results
+    resultsContainer.querySelectorAll('.search-result-item[data-index]').forEach(item => {
+        item.addEventListener('click', () => {
+            const index = parseInt(item.dataset.index);
+            currentStepIndex = index;
+            updateTimeline();
+            stopPlaying();
+            
+            // Close search results
+            resultsContainer.style.display = 'none';
+            document.getElementById('searchInput').value = '';
+            
+            // Zoom to location
+            map.setView(journeyData[index].coordinates, 8, {
+                animate: true,
+                duration: 1
+            });
+        });
+    });
+}
