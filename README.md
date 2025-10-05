@@ -95,18 +95,12 @@ His detailed travelogue, "Great Tang Records on the Western Regions," became an 
   - Current location details and context
   - Historical quotes from Xuanzang's writings at key locations
   - Expanded descriptions with rich historical context
-  - Bookmark feature to save favorite locations (stored in browser)
-  - Social sharing buttons (Twitter/X, Facebook, Copy Link)
+  - Buddhist context information where available
+  - Xuanzang's personal experiences and challenges at each stop
   - Real-time updates as you navigate the timeline
 - **No Popup Clutter**: All information displayed in clean side panels instead of map popups
 
-#### 6. Bookmark Feature 🔖
-- **Save Favorites**: Mark locations you want to revisit
-- **Persistent Storage**: Bookmarks saved in browser localStorage
-- **Visual Feedback**: Gold star icon indicates bookmarked locations
-- **Bilingual Labels**: Bookmark button adapts to selected language
-
-#### 7. Location Search 🔍 (New!)
+#### 6. Enhanced Location Search 🔍
 - **Fast Search**: Type-ahead search with debouncing for smooth performance
 - **Comprehensive Results**: Search by location name, modern name, ancient name, or description
 - **Smart Matching**: Case-insensitive search with partial matching
@@ -114,14 +108,21 @@ His detailed travelogue, "Great Tang Records on the Western Regions," became an 
 - **Keyboard Navigation**: Fully accessible with keyboard
 - **Mobile Optimized**: Responsive search bar that adapts to screen size
 
-#### 8. Deep Linking & Sharing 🔗 (New!)
-- **Shareable URLs**: Direct links to specific locations (e.g., #nalanda, #bodhgaya)
-- **Browser History**: Back/forward buttons work with location navigation
-- **Social Sharing**: Share locations on Twitter/X and Facebook
-- **Copy Link**: One-click copy to clipboard with visual feedback
-- **Bookmarkable**: Users can bookmark specific stops in their browser
+#### 7. Buddhist Educational Content 📿
+- **Buddhist Context**: Information about temples, monasteries, and religious significance at each stop
+- **Xuanzang's Experiences**: Personal challenges, studies, and interactions with local communities
+- **Historical Events**: Political and cultural context during his journey
+- **7 Major Locations** with comprehensive Buddhist content:
+  - Chang'an: Departure and Tang Dynasty Buddhism
+  - Dunhuang: Mogao Caves and Buddhist art
+  - Turfan: Bezeklik Caves and Buddhist kingdom
+  - Samarkand: Religious diversity on the Silk Road
+  - Balkh: 100+ monasteries and Nava Vihara
+  - Bamiyan: Colossal Buddha statues and cave monasteries
+  - Nalanda: World's first university and 5 years of study
+- **Bilingual Content**: All Buddhist content available in English and Vietnamese
 
-#### 9. Enhanced Content 📖 (New!)
+#### 8. Enhanced Content 📖
 - **Expanded Descriptions**: Rich historical context for major locations
 - **Xuanzang's Quotes**: Authentic quotes from his writings at key stops
   - "I would rather die going to the West than live by going back to the East." (Chang'an)
@@ -278,11 +279,9 @@ Add or modify emotions in `journey-data-enhanced.js`.
 6. **Switch Language**: Click EN/VI buttons in the top navigation to change language
 7. **Interactive Timeline**: Click on any marker in the visual timeline to jump to that location
 8. **Watch the Monk**: The animated monk avatar performs different actions based on location emotions
-9. **Search Locations**: Use the search bar at the top to quickly find locations by name
-10. **Share Locations**: Use social sharing buttons to share interesting stops on social media
-11. **Deep Linking**: Share direct links to specific locations (URLs like #nalanda)
-12. **Read Quotes**: See authentic quotes from Xuanzang's writings at key locations
-13. **Keyboard Navigation**: 
+9. **Read Buddhist Context**: Learn about Buddhist temples, monasteries, and religious significance
+10. **Understand Xuanzang's Experiences**: Read about his personal challenges and studies at each location
+11. **Keyboard Navigation**: 
    - Use ← → arrow keys to move between locations
    - Press Space to play/pause the journey
    - Tab through all interactive elements
@@ -373,7 +372,15 @@ This project is open source and available under the MIT License.
 
 ## 🆕 Recent Updates
 
-### Version 2.0 (Current)
+### Version 2.1 (Current - December 2024)
+- 🐛 **Critical Fix**: Fixed syntax error that broke website functionality
+- ❌ **Removed Share/Bookmark Features**: Eliminated social sharing and bookmarking to focus on education
+- 📿 **Enhanced Buddhist Content**: Added comprehensive Buddhist context to 7 major locations
+- 🧘 **Xuanzang's Experiences**: Personal stories and challenges at key stops
+- 🏛️ **Historical Detail**: Expanded content about monasteries, universities, and Buddhist art
+- 🌏 **Bilingual Buddhist Content**: All new content available in English and Vietnamese
+
+### Version 2.0
 - ✨ Added multilanguage support (English/Vietnamese)
 - 🎨 Enhanced visual timeline with journey phases
 - 🧘 Animated Buddhist monk avatar with emotions
