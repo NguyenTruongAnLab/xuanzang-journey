@@ -218,8 +218,41 @@ function createJourneyPath() {
         smoothFactor: 1
     }).addTo(map);
     
+    // Add directional arrows along the path
+    addDirectionalArrows(pathCoordinates);
+    
     // Fit map to show the entire journey
     map.fitBounds(journeyLine.getBounds());
+}
+
+// Add directional arrows along the journey path
+function addDirectionalArrows(pathCoordinates) {
+    // Create arrow markers at regular intervals
+    for (let i = 0; i < pathCoordinates.length - 1; i++) {
+        const start = pathCoordinates[i];
+        const end = pathCoordinates[i + 1];
+        
+        // Calculate midpoint
+        const midLat = (start[0] + end[0]) / 2;
+        const midLng = (start[1] + end[1]) / 2;
+        
+        // Calculate angle
+        const angle = Math.atan2(end[1] - start[1], end[0] - start[0]) * 180 / Math.PI;
+        
+        // Create arrow icon
+        const arrowIcon = L.divIcon({
+            className: 'journey-arrow',
+            html: `<div style="transform: rotate(${angle}deg);">➤</div>`,
+            iconSize: [20, 20],
+            iconAnchor: [10, 10]
+        });
+        
+        // Add arrow marker at midpoint
+        L.marker([midLat, midLng], {
+            icon: arrowIcon,
+            interactive: false
+        }).addTo(map);
+    }
 }
 
 // Add markers for all locations
@@ -241,6 +274,33 @@ function addMarkers() {
             icon: customIcon,
             title: location.name
         }).addTo(map);
+        
+        // Get current language for labels
+        const currentLang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : 'en';
+        const isVietnamese = currentLang === 'vi';
+        const enhanced = typeof getEnhancedLocation === 'function' ? getEnhancedLocation(location) : location;
+        
+        // Add text label for city and country
+        const modernName = isVietnamese && enhanced.modernName_vi ? enhanced.modernName_vi : enhanced.modernName;
+        const cityName = modernName.split(',')[0].trim();
+        const country = modernName.split(',').pop().trim();
+        
+        // Create tooltip that is always visible for major stops
+        if (location.type === 'start' || location.type === 'end' || location.type === 'major') {
+            marker.bindTooltip(`${cityName}<br>${country}`, {
+                permanent: true,
+                direction: 'top',
+                className: 'location-label',
+                offset: [0, -10]
+            });
+        } else {
+            // For regular stops, show on hover
+            marker.bindTooltip(`${cityName}, ${country}`, {
+                permanent: false,
+                direction: 'top',
+                className: 'location-label-hover'
+            });
+        }
         
         // DISABLE popups - use side panels instead
         // const popupContent = createPopupContent(location);
@@ -312,44 +372,83 @@ function updateSummaryPanel(location, enhanced, tFunc) {
     }
     
     if (summaryDetails) {
-        let detailsHTML = `
-            <p><strong>${tFunc('info.modernName')}:</strong> ${enhanced.modernName}</p>
-            ${enhanced.ancientName ? `<p><strong>${tFunc('info.ancientName')}:</strong> ${enhanced.ancientName}</p>` : ''}
-        `;
+        // Get current language
+        const currentLang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : 'en';
+        const isVietnamese = currentLang === 'vi';
         
-        // Extract country from modernName (usually last part after comma)
-        const country = enhanced.modernName.split(',').pop().trim();
-        if (country) {
-            detailsHTML += `<p><strong>${tFunc('info.country')}:</strong> ${country}</p>`;
+        // Get modernName and ancientName based on language
+        const modernName = isVietnamese && enhanced.modernName_vi ? enhanced.modernName_vi : enhanced.modernName;
+        
+        // For Vietnamese, convert Chinese names to Vietnamese transliteration
+        let ancientName = enhanced.ancientName || '';
+        if (isVietnamese && ancientName) {
+            // Extract just the transliteration from format "漢字 (Pinyin)"
+            const match = ancientName.match(/\(([^)]+)\)/);
+            if (match) {
+                ancientName = match[1]; // Just use the romanized version
+            }
         }
         
-        detailsHTML += `<p><strong>${tFunc('info.duration')}:</strong> ${enhanced.duration}</p>`;
+        // Extract country from modernName
+        const country = modernName.split(',').pop().trim();
+        
+        // Get duration based on language
+        const duration = isVietnamese && enhanced.duration_vi ? enhanced.duration_vi : enhanced.duration;
+        
+        let detailsHTML = '';
+        
+        if (isVietnamese) {
+            // Compact format for Vietnamese: all on one line
+            detailsHTML += `<p class="compact-info">`;
+            detailsHTML += `<strong>${tFunc('info.modernName')}:</strong> ${modernName}`;
+            if (ancientName) {
+                detailsHTML += `; <strong>${tFunc('info.ancientName')}:</strong> ${ancientName}`;
+            }
+            if (country) {
+                detailsHTML += `; <strong>${tFunc('info.country')}:</strong> ${country}`;
+            }
+            detailsHTML += `; <strong>${tFunc('info.duration')}:</strong> ${duration}`;
+            detailsHTML += `</p>`;
+        } else {
+            // Standard format for English
+            detailsHTML += `<p><strong>${tFunc('info.modernName')}:</strong> ${modernName}</p>`;
+            if (ancientName) {
+                detailsHTML += `<p><strong>${tFunc('info.ancientName')}:</strong> ${ancientName}</p>`;
+            }
+            if (country) {
+                detailsHTML += `<p><strong>${tFunc('info.country')}:</strong> ${country}</p>`;
+            }
+            detailsHTML += `<p><strong>${tFunc('info.duration')}:</strong> ${duration}</p>`;
+        }
         
         // Add Buddhist Context if available
         if (enhanced.buddhistContext) {
+            const buddhistContextText = isVietnamese && enhanced.buddhistContext_vi ? enhanced.buddhistContext_vi : enhanced.buddhistContext;
             detailsHTML += `
                 <div class="content-section">
                     <h6>${tFunc('info.buddhistContext')}</h6>
-                    <p class="small">${enhanced.buddhistContext}</p>
+                    <p class="small">${buddhistContextText}</p>
                 </div>
             `;
         }
         
         // Add Xuanzang's Experience if available
         if (enhanced.xuanzangExperience) {
+            const xuanzangExpText = isVietnamese && enhanced.xuanzangExperience_vi ? enhanced.xuanzangExperience_vi : enhanced.xuanzangExperience;
             detailsHTML += `
                 <div class="content-section">
                     <h6>${tFunc('info.xuanzangExperience')}</h6>
-                    <p class="small">${enhanced.xuanzangExperience}</p>
+                    <p class="small">${xuanzangExpText}</p>
                 </div>
             `;
         }
         
         // Add quote if available
         if (enhanced.quote) {
+            const quoteText = isVietnamese && enhanced.quote_vi ? enhanced.quote_vi : enhanced.quote;
             detailsHTML += `
                 <div class="quote-section">
-                    <p class="quote-text"><em>"${enhanced.quote}"</em></p>
+                    <p class="quote-text"><em>"${quoteText}"</em></p>
                     <p class="quote-attribution">— ${tFunc('quote.xuanzang')}</p>
                 </div>
             `;
@@ -357,16 +456,19 @@ function updateSummaryPanel(location, enhanced, tFunc) {
         
         // Add Historical Events if available
         if (enhanced.historicalEvents) {
+            const histEventsText = isVietnamese && enhanced.historicalEvents_vi ? enhanced.historicalEvents_vi : enhanced.historicalEvents;
             detailsHTML += `
                 <div class="content-section">
                     <h6>${tFunc('info.historicalEvents')}</h6>
-                    <p class="small">${enhanced.historicalEvents}</p>
+                    <p class="small">${histEventsText}</p>
                 </div>
             `;
         }
         
         // Add description
-        const description = enhanced.expandedDescription || enhanced.description;
+        const description = isVietnamese 
+            ? (enhanced.expandedDescription_vi || enhanced.description_vi || enhanced.description)
+            : (enhanced.expandedDescription || enhanced.description);
         detailsHTML += `
             <div class="content-section">
                 <h6>${tFunc('info.description')}</h6>
@@ -375,11 +477,12 @@ function updateSummaryPanel(location, enhanced, tFunc) {
         `;
         
         // Add Historical Context
-        if (enhanced.historicalContext || location.historicalContext) {
+        const historicalContext = isVietnamese && enhanced.historicalContext_vi ? enhanced.historicalContext_vi : (enhanced.historicalContext || location.historicalContext);
+        if (historicalContext) {
             detailsHTML += `
                 <div class="content-section">
                     <h6>${tFunc('info.historicalContext')}</h6>
-                    <p class="small">${enhanced.historicalContext || location.historicalContext}</p>
+                    <p class="small">${historicalContext}</p>
                 </div>
             `;
         }

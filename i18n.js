@@ -86,7 +86,7 @@ const translations = {
         'modal.intro': 'This interactive map shows the remarkable 16-year journey (629-645 CE) of the Chinese Buddhist monk Xuanzang, who traveled from China to India and back to bring Buddhist scriptures to China.',
         'modal.keyFacts': 'Key Facts:',
         'modal.duration': 'Journey Duration: 16 years (629-645 CE)',
-        'modal.distance': 'Total Distance: Over 10,000 miles',
+        'modal.distance': 'Total Distance: Over 16,000 km',
         'modal.purpose': 'Purpose: To obtain Buddhist scriptures from India',
         'modal.legacy': 'Legacy: His journey inspired "Journey to the West"',
         
@@ -198,7 +198,7 @@ const translations = {
         'modal.intro': 'Bản đồ tương tác này thể hiện hành trình 16 năm đáng kinh ngạc (629-645) của nhà sư Phật giáo Trung Quốc Huyền Trang, người đã đi từ Trung Quốc đến Ấn Độ và trở về để mang kinh điển Phật giáo về Trung Quốc.',
         'modal.keyFacts': 'Thông Tin Chính:',
         'modal.duration': 'Thời gian hành trình: 16 năm (629-645)',
-        'modal.distance': 'Tổng quãng đường: Hơn 10.000 dặm',
+        'modal.distance': 'Tổng quãng đường: Hơn 16.000 km',
         'modal.purpose': 'Mục đích: Lấy kinh điển Phật giáo từ Ấn Độ',
         'modal.legacy': 'Di sản: Hành trình của ông đã truyền cảm hứng cho "Tây Du Ký"',
         

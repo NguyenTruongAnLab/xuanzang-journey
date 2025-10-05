@@ -15,6 +15,14 @@ body {
     z-index: 1;
 }
 
+/* Remove map grid lines */
+#map .leaflet-overlay-pane svg path[stroke="#ddd"],
+#map .leaflet-overlay-pane svg path[stroke="#ccc"],
+#map .leaflet-grid-line,
+.leaflet-grid-label {
+    display: none !important;
+}
+
 .timeline-controls {
     position: fixed;
     bottom: 0;
@@ -44,10 +52,10 @@ body {
 /* Left Illustration Panel */
 .illustration-panel {
     position: absolute;
-    top: 70px;
+    top: 100px;
     left: 10px;
-    width: 380px;
-    max-height: calc(100vh - 280px);
+    width: 760px;
+    max-height: calc(100vh - 250px);
     z-index: 999;
     background: transparent;
     transition: opacity 0.3s ease-in-out;
@@ -73,10 +81,10 @@ body {
 /* Right Summary Panel (Fixed) */
 .summary-panel {
     position: absolute;
-    top: 70px;
+    top: 100px;
     right: 10px;
-    width: 320px;
-    max-height: calc(100vh - 280px);
+    width: 640px;
+    max-height: calc(100vh - 250px);
     overflow-y: auto;
     z-index: 999;
     transition: opacity 0.3s ease-in-out;
@@ -108,6 +116,23 @@ body {
     align-items: center;
 }
 
+.summary-item.compact {
+    display: inline;
+}
+
+.summary-item.compact strong {
+    margin-right: 5px;
+}
+
+.summary-item.compact::after {
+    content: "; ";
+    margin-right: 5px;
+}
+
+.summary-item.compact:last-child::after {
+    content: "";
+}
+
 .summary-item strong {
     color: #495057;
     font-size: 0.9rem;
@@ -123,6 +148,15 @@ body {
     font-size: 0.85rem;
     color: #495057;
     line-height: 1.5;
+}
+
+.compact-info {
+    line-height: 1.8;
+    margin-bottom: 12px;
+}
+
+.compact-info strong {
+    color: #495057;
 }
 
 #summaryDetailsTitle {
@@ -154,6 +188,51 @@ body {
     text-align: right;
     margin: 0;
     font-weight: 500;
+}
+
+/* Map location labels */
+.location-label {
+    background: rgba(33, 37, 41, 0.85) !important;
+    border: none !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    color: #fff !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+}
+
+.location-label::before {
+    display: none !important;
+}
+
+.location-label-hover {
+    background: rgba(13, 110, 253, 0.9) !important;
+    border: none !important;
+    border-radius: 4px !important;
+    padding: 3px 6px !important;
+    font-size: 0.7rem !important;
+    color: #fff !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Journey direction arrows */
+.journey-arrow {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    pointer-events: none !important;
+}
+
+.journey-arrow div {
+    color: #dc3545;
+    font-size: 16px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Carousel Styles */
