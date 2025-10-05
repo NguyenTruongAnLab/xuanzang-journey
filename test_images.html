@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Image Loading</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .image-test { margin: 10px 0; }
+        img { max-width: 200px; margin: 5px; }
+    </style>
+</head>
+<body>
+    <h2>Test Local Image Loading</h2>
+    <div id="results"></div>
+    <script src="journey-data.js"></script>
+    <script>
+        const resultsDiv = document.getElementById('results');
+        
+        journeyData.slice(0, 5).forEach(location => {
+            const div = document.createElement('div');
+            div.className = 'image-test';
+            div.innerHTML = `<h3>${location.name} (ID: ${location.id})</h3>
+                <p>Modern Name: ${location.modernName}</p>
+                <p>Images found: ${location.images.length}</p>`;
+            
+            location.images.slice(0, 3).forEach(img => {
+                const imgEl = document.createElement('img');
+                imgEl.src = img.url;
+                imgEl.alt = img.caption;
+                imgEl.onerror = function() {
+                    this.style.border = '2px solid red';
+                    this.alt = 'Failed: ' + img.url;
+                };
+                imgEl.onload = function() {
+                    this.style.border = '2px solid green';
+                };
+                div.appendChild(imgEl);
+            });
+            
+            resultsDiv.appendChild(div);
+        });
+    </script>
+</body>
+</html>
