@@ -712,37 +712,71 @@ const genericImages = {
     ]
 };
 
+// Function to load local images from images folder
+function loadLocalImages(location) {
+    const localImages = [];
+    const locationId = location.id;
+    
+    // Get city name from modernName for folder matching
+    const cityName = location.modernName.split(',')[0].trim();
+    
+    // Try to load up to 10 local images based on the naming pattern: {id}_{city}_{number}.jpg
+    for (let i = 1; i <= 10; i++) {
+        const imageNumber = String(i).padStart(4, '0');
+        const imagePath = `images/${String(locationId).padStart(2, '0')}_${cityName.replace(/'/g, "'")}_${imageNumber}.jpg`;
+        
+        localImages.push({
+            url: imagePath,
+            caption: `${cityName} - Historical Site ${i}`,
+            isLocal: true
+        });
+    }
+    
+    return localImages;
+}
+
 // Function to ensure each location has at least 10 images
 function ensureMinimumImages(location) {
     if (!location.images) location.images = [];
     
     if (location.images.length >= 10) return location;
     
-    // Determine image type based on location
-    let imageTypes = ['general'];
-    const country = location.modernName.toLowerCase();
+    // First, try to add local images
+    const localImages = loadLocalImages(location);
+    localImages.forEach(img => {
+        if (location.images.length < 10) {
+            location.images.push(img);
+        }
+    });
     
-    if (country.includes('india') || country.includes('pakistan') || country.includes('bangladesh')) {
-        imageTypes.push('india', 'buddhist');
-    } else if (country.includes('afghanistan') || country.includes('uzbekistan') || country.includes('tajikistan') || country.includes('kyrgyzstan')) {
-        imageTypes.push('mountain', 'oasis', 'buddhist');
-    } else if (country.includes('china') || country.includes('xinjiang') || country.includes('gansu')) {
-        imageTypes.push('desert', 'oasis', 'buddhist');
-    }
-    
-    // Add images until we have at least 10
-    let addedCount = 0;
-    while (location.images.length < 10 && addedCount < 20) {
-        const typeIndex = addedCount % imageTypes.length;
-        const type = imageTypes[typeIndex];
-        const typeImages = genericImages[type] || genericImages.general;
-        const imageIndex = Math.floor(addedCount / imageTypes.length) % typeImages.length;
+    // If we still don't have enough images, add generic ones
+    if (location.images.length < 10) {
+        // Determine image type based on location
+        let imageTypes = ['general'];
+        const country = location.modernName.toLowerCase();
         
-        location.images.push({
-            url: typeImages[imageIndex].url,
-            caption: `${typeImages[imageIndex].caption} (${location.name})`
-        });
-        addedCount++;
+        if (country.includes('india') || country.includes('pakistan') || country.includes('bangladesh')) {
+            imageTypes.push('india', 'buddhist');
+        } else if (country.includes('afghanistan') || country.includes('uzbekistan') || country.includes('tajikistan') || country.includes('kyrgyzstan')) {
+            imageTypes.push('mountain', 'oasis', 'buddhist');
+        } else if (country.includes('china') || country.includes('xinjiang') || country.includes('gansu')) {
+            imageTypes.push('desert', 'oasis', 'buddhist');
+        }
+        
+        // Add images until we have at least 10
+        let addedCount = 0;
+        while (location.images.length < 10 && addedCount < 20) {
+            const typeIndex = addedCount % imageTypes.length;
+            const type = imageTypes[typeIndex];
+            const typeImages = genericImages[type] || genericImages.general;
+            const imageIndex = Math.floor(addedCount / imageTypes.length) % typeImages.length;
+            
+            location.images.push({
+                url: typeImages[imageIndex].url,
+                caption: `${typeImages[imageIndex].caption} (${location.name})`
+            });
+            addedCount++;
+        }
     }
     
     return location;

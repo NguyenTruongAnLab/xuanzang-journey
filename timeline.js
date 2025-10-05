@@ -60,27 +60,6 @@ class EnhancedTimeline {
         const tFunc = typeof t === 'function' ? t : (key) => key;
         
         this.container.innerHTML = `
-            <div class="timeline-header">
-                <h6 class="timeline-title">${tFunc('timeline.title')}</h6>
-                <div class="timeline-phases">
-                    <div class="timeline-phase">
-                        <span class="phase-indicator phase-1"></span>
-                        <span>${tFunc('timeline.phase1')}</span>
-                    </div>
-                    <div class="timeline-phase">
-                        <span class="phase-indicator phase-2"></span>
-                        <span>${tFunc('timeline.phase2')}</span>
-                    </div>
-                    <div class="timeline-phase">
-                        <span class="phase-indicator phase-3"></span>
-                        <span>${tFunc('timeline.phase3')}</span>
-                    </div>
-                    <div class="timeline-phase">
-                        <span class="phase-indicator phase-4"></span>
-                        <span>${tFunc('timeline.phase4')}</span>
-                    </div>
-                </div>
-            </div>
             <div class="timeline-visualization" id="timelineVisualization">
                 <div class="timeline-track"></div>
                 <div class="timeline-markers" id="timelineMarkers"></div>
@@ -133,10 +112,8 @@ class EnhancedTimeline {
             marker.innerHTML = `
                 <div class="marker-dot ${location.type}"></div>
                 <div class="marker-label">
-                    <div class="marker-number">#${stopNumber}</div>
-                    <div class="marker-city">${city}</div>
-                    ${country ? `<div class="marker-country">${country}</div>` : ''}
                     <div class="marker-year">${location.year}</div>
+                    <div class="marker-city">${city}</div>
                 </div>
             `;
             

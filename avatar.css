@@ -6,6 +6,7 @@
     left: 20px;
     z-index: 1001;
     pointer-events: none;
+    display: none; /* Hidden per user requirements */
 }
 
 /* Map-based monk avatar */
