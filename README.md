@@ -78,6 +78,17 @@ His detailed travelogue, "Great Tang Records on the Western Regions," became an 
   - Beautiful gradient placeholders with emotion-based icons when images unavailable
   - Lazy loading and responsive images for better performance
   - Robust error handling with graceful fallback to placeholders
+
+#### 6. Multiple Basemap Options 🗺️
+- **5 Different Basemap Styles**: Switch between map views to suit your preference
+  - 🌍 **ESRI National Geographic** (default): High-quality geographic basemap with terrain
+  - 🛰️ **ESRI World Imagery**: Satellite view for real-world context
+  - 🗺️ **ESRI Street Map**: Detailed street-level modern map
+  - ⛰️ **Shaded Relief**: Topographic map highlighting elevation and terrain
+  - 🗻 **OSM Topo**: OpenStreetMap topographic with detailed features
+- **Easy Layer Control**: Top-right control panel for quick switching
+- **Persistent Preference**: Your basemap choice is saved automatically
+- **Proper Attribution**: All basemaps display required copyright information
   - Keyboard accessible (Tab, Enter, Space)
 - **Right Summary Panel**:
   - Always visible journey statistics (duration, distance, progress)

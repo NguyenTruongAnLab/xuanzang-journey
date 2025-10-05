@@ -74,7 +74,20 @@ This document describes the comprehensive upgrade to the Xuanzang Journey intera
 - **Readable text sizes** on small screens
 - **Smooth scrolling** in info panels
 
-### 6. SEO & Social Media
+### 6. Basemap Switching System
+- **Multiple basemap options** for different viewing preferences:
+  1. **ESRI National Geographic** (default): High-quality geographic basemap with terrain and political boundaries
+  2. **ESRI World Imagery**: Satellite imagery for real-world context
+  3. **ESRI Street Map**: Detailed street-level map with modern infrastructure
+  4. **Shaded Relief**: Topographic map highlighting terrain and elevation (OpenTopoMap)
+  5. **OSM Topo**: OpenStreetMap topographic style with detailed terrain features
+- **User-friendly layer control**: Top-right positioned, collapsible control panel
+- **Persistent preference**: User's basemap selection saved in localStorage
+- **Proper attribution**: Copyright and source information displayed for each basemap
+- **Internationalized labels**: Basemap names support English and Vietnamese translations
+- **Seamless switching**: Instant basemap transitions without losing map position or zoom
+
+### 7. SEO & Social Media
 - **Meta descriptions** for search engines
 - **Open Graph tags** for Facebook sharing
 - **Twitter Card tags** for Twitter sharing
@@ -137,11 +150,12 @@ This document describes the comprehensive upgrade to the Xuanzang Journey intera
 - **HTML5**: Semantic markup with ARIA accessibility
 - **CSS3**: Custom styling with responsive design and animations
 - **JavaScript (ES6+)**: Vanilla JavaScript with ES6 classes
-- **Leaflet.js 1.9.4**: Interactive mapping library
+- **Leaflet.js 1.9.4**: Interactive mapping library with layer control
 - **Bootstrap 5.3**: UI framework for responsive components
-- **OpenStreetMap**: Free map tiles
+- **ESRI Basemaps**: National Geographic, World Imagery, and Street Map tiles
+- **OpenTopoMap**: Topographic and shaded relief basemaps
 - **SVG**: Vector graphics for monk avatar
-- **LocalStorage API**: Persistent language preference
+- **LocalStorage API**: Persistent language and basemap preferences
 - **CSS Animations**: Keyframe animations for avatar and effects
 
 ## New Technical Additions

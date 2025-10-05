@@ -90,6 +90,13 @@ const translations = {
         'mapStyle.modern': 'Modern Map',
         'mapStyle.ancient': 'Ancient Style',
         
+        // Basemap Layers
+        'basemap.esriNatGeo': 'ESRI Nat Geo',
+        'basemap.esriWorldImagery': 'ESRI World Imagery',
+        'basemap.esriStreet': 'ESRI Street',
+        'basemap.shadedRelief': 'Shaded Relief',
+        'basemap.osmTopo': 'OSM Topo',
+        
         // Accessibility
         'a11y.mapRegion': 'Interactive map showing Xuanzang\'s journey',
         'a11y.timelineSlider': 'Timeline slider to navigate through years',
@@ -189,6 +196,13 @@ const translations = {
         'mapStyle.switch': 'Kiểu Bản Đồ',
         'mapStyle.modern': 'Bản Đồ Hiện Đại',
         'mapStyle.ancient': 'Phong Cách Cổ Đại',
+        
+        // Basemap Layers
+        'basemap.esriNatGeo': 'ESRI Địa Lý',
+        'basemap.esriWorldImagery': 'ESRI Vệ Tinh',
+        'basemap.esriStreet': 'ESRI Đường Phố',
+        'basemap.shadedRelief': 'Bản Đồ Địa Hình',
+        'basemap.osmTopo': 'OSM Địa Hình',
         
         // Accessibility
         'a11y.mapRegion': 'Bản đồ tương tác hiển thị hành trình của Huyền Trang',
