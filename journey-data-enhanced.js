@@ -16,7 +16,14 @@ const journeyEnhancements = {
         quote: "I would rather die going to the West than live by going back to the East.",
         quote_vi: "Ta thà chết trên đường đến Tây Phương còn hơn sống mà quay về Đông Phương.",
         expandedDescription: "In the spring of 629 CE, the 27-year-old monk Xuanzang defied imperial orders and secretly departed from Chang'an, then one of the world's greatest cities. His goal was audacious: to travel to India, the birthplace of Buddhism, to resolve doctrinal disputes and bring back authentic Buddhist scriptures. The Tang Dynasty had forbidden travel westward, but Xuanzang's determination to seek true Buddhist knowledge overcame his fear of punishment.",
-        expandedDescription_vi: "Vào mùa xuân năm 629, nhà sư 27 tuổi Huyền Trang đã bất chấp mệnh lệnh hoàng đế và bí mật rời khỏi Trường An, khi đó là một trong những thành phố vĩ đại nhất thế giới. Mục tiêu của ông thật táo bạo: đi đến Ấn Độ, nơi khai sinh Phật giáo, để giải quyết các tranh cãi giáo lý và mang về kinh điển Phật giáo chân chính."
+        expandedDescription_vi: "Vào mùa xuân năm 629, nhà sư 27 tuổi Huyền Trang đã bất chấp mệnh lệnh hoàng đế và bí mật rời khỏi Trường An, khi đó là một trong những thành phố vĩ đại nhất thế giới. Mục tiêu của ông thật táo bạo: đi đến Ấn Độ, nơi khai sinh Phật giáo, để giải quyết các tranh cãi giáo lý và mang về kinh điển Phật giáo chân chính.",
+        buddhistContext: "Chang'an housed numerous Buddhist temples and monasteries, including the Great Ci'en Temple. During the early Tang Dynasty, Buddhism flourished under imperial patronage, but various schools had conflicting interpretations of Buddhist texts, which motivated Xuanzang's journey.",
+        buddhistContext_vi: "Trường An có nhiều chùa chiền và tu viện Phật giáo, bao gồm cả Đại Từ Ân Tự. Trong thời kỳ đầu nhà Đường, Phật giáo phát triển mạnh dưới sự bảo trợ của hoàng gia, nhưng các tông phái khác nhau có những diễn giải mâu thuẫn về kinh điển Phật giáo.",
+        xuanzangExperience: "Xuanzang secretly departed at night, risking execution for defying the imperial travel ban. He felt deep conflict between his duty to the emperor and his spiritual calling. Local officials sympathetic to his cause helped him escape the city walls under cover of darkness.",
+        xuanzangExperience_vi: "Huyền Trang bí mật rời đi vào ban đêm, mạo hiểm bị xử tử vì bất chấp lệnh cấm đi lại của hoàng đế. Ông cảm thấy xung đột sâu sắc giữa nhiệm vụ với hoàng đế và sứ mệnh tâm linh. Các quan chức địa phương đồng cảm với ông đã giúp ông trốn khỏi tường thành trong bóng tối.",
+        historicalEvents: "The Tang Dynasty under Emperor Taizong had just stabilized after years of civil war. Buddhism was experiencing a golden age in China, with thousands of monasteries and monks throughout the empire. However, access to original Sanskrit texts was limited.",
+        historicalEvents_vi: "Triều đại Đường dưới hoàng đế Đường Thái Tông vừa ổn định sau nhiều năm nội chiến. Phật giáo đang trải qua thời kỳ hoàng kim ở Trung Quốc, với hàng ngàn tu viện và nhà sư trên khắp đế quốc.",
+        sources: "Great Tang Records on the Western Regions (大唐西域記) by Xuanzang; Biography of the Tripitaka Master (大慈恩寺三藏法師傳) by Huili and Yancong"
     },
     2: {
         ancientName: "涼州 (Liángzhōu)",
@@ -44,7 +51,13 @@ const journeyEnhancements = {
         quote: "The desert stretches vast and empty, with not a bird in the sky nor a beast on the ground.",
         quote_vi: "Sa mạc trải dài bao la và trống vắng, không một con chim trên trời hay một con thú dưới đất.",
         expandedDescription: "At Dunhuang, the gateway to the Western Regions, Xuanzang prepared for the most dangerous leg of his journey - crossing the Gobi Desert. Local Buddhist monks provided him with supplies and guidance. The Mogao Caves, carved into cliffs near Dunhuang, contained hundreds of Buddhist temples and became a spiritual inspiration for his journey ahead.",
-        expandedDescription_vi: "Tại Đôn Hoàng, cửa ngõ đến Tây Vực, Huyền Trang chuẩn bị cho chặng đường nguy hiểm nhất - băng qua sa mạc Gobi. Các nhà sư Phật giáo địa phương cung cấp cho ông vật tư và hướng dẫn."
+        expandedDescription_vi: "Tại Đôn Hoàng, cửa ngõ đến Tây Vực, Huyền Trang chuẩn bị cho chặng đường nguy hiểm nhất - băng qua sa mạc Gobi. Các nhà sư Phật giáo địa phương cung cấp cho ông vật tư và hướng dẫn.",
+        buddhistContext: "The Mogao Caves contained over 1,000 cave temples filled with Buddhist murals and sculptures. Dunhuang was a major center for Buddhist art and scholarship on the Silk Road, where Chinese, Central Asian, and Indian Buddhist traditions merged.",
+        buddhistContext_vi: "Động Mạc Cao chứa hơn 1.000 hang động chùa chiền đầy tranh tường và tượng Phật. Đôn Hoàng là trung tâm lớn về nghệ thuật và học thuật Phật giáo trên Con đường Tơ lụa.",
+        xuanzangExperience: "Xuanzang spent a month studying at local monasteries and preparing mentally and physically for the perilous desert crossing. He met an elderly monk who warned him of the dangers ahead but also provided crucial guidance on navigation and survival. Against all warnings, he resolved to continue alone.",
+        xuanzangExperience_vi: "Huyền Trang dành một tháng nghiên cứu tại các tu viện địa phương và chuẩn bị tinh thần và thể chất cho chặng đường sa mạc nguy hiểm. Ông gặp một nhà sư lớn tuổi cảnh báo về những nguy hiểm phía trước.",
+        historicalEvents: "Dunhuang was at its peak as a Buddhist center during the Tang Dynasty. The Silk Road trade brought wealth and cultural exchange, making it a cosmopolitan oasis city with diverse religious and ethnic communities.",
+        historicalEvents_vi: "Đôn Hoàng đang ở đỉnh cao như một trung tâm Phật giáo trong thời nhà Đường. Thương mại Con đường Tơ lụa mang lại sự giàu có và trao đổi văn hóa."
     },
     4: {
         ancientName: "伊吾 (Yīwú)",
@@ -68,7 +81,13 @@ const journeyEnhancements = {
         modernName_vi: "Turpan, Tân Cương, Trung Quốc",
         description_vi: "Vua của Cao Xương trở thành người bảo trợ của Huyền Trang, cung cấp vật tư và thư giới thiệu cho hành trình phía trước.",
         historicalContext_vi: "Trung tâm thương mại lớn và vương quốc Phật giáo ở lưu vực Tarim.",
-        duration_vi: "2 tháng"
+        duration_vi: "2 tháng",
+        buddhistContext: "The Kingdom of Gaochang (Turfan) was a thriving Buddhist state with numerous monasteries and temples. The Bezeklik Thousand Buddha Caves near Turfan contain well-preserved Buddhist murals from this period.",
+        buddhistContext_vi: "Vương quốc Cao Xương (Turpan) là một quốc gia Phật giáo phát triển với nhiều tu viện và chùa chiền. Động Ngàn Phật Bezeklik gần Turpan chứa tranh tường Phật giáo được bảo quản tốt từ thời kỳ này.",
+        xuanzangExperience: "King Qu Wentai of Gaochang became Xuanzang's devoted patron and tried to convince him to stay permanently. Xuanzang went on a hunger strike to continue his journey. The king relented and provided generous supplies, letters of introduction, and 30 assistants for the journey ahead.",
+        xuanzangExperience_vi: "Vua Cúc Văn Thái của Cao Xương trở thành người bảo trợ tận tụy của Huyền Trang và cố gắng thuyết phục ông ở lại vĩnh viễn. Huyền Trang đã tuyệt thực để tiếp tục hành trình.",
+        historicalEvents: "Gaochang was a major Buddhist kingdom and trading center on the Silk Road. It maintained close cultural ties with China while also being influenced by Central Asian Buddhist traditions.",
+        historicalEvents_vi: "Cao Xương là một vương quốc Phật giáo lớn và trung tâm thương mại trên Con đường Tơ lụa. Nó duy trì quan hệ văn hóa chặt chẽ với Trung Quốc."
     },
     6: {
         ancientName: "龜茲 (Qiūcí)",

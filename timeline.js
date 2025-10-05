@@ -76,12 +76,24 @@ class EnhancedTimeline {
             marker.style.left = `${position}%`;
             marker.dataset.index = index;
             
+            // Extract city and country from modernName
+            const nameParts = location.modernName.split(',');
+            const city = nameParts[0].trim();
+            const country = nameParts.length > 1 ? nameParts[nameParts.length - 1].trim() : '';
+            
             const emotion = enhanced.emotion || 'peaceful';
             marker.innerHTML = `
                 <div class="marker-dot ${location.type}"></div>
-                <div class="marker-label">${enhanced.month || location.year}</div>
+                <div class="marker-label">
+                    <div class="marker-year">${location.year}</div>
+                    <div class="marker-city">${city}</div>
+                    ${country ? `<div class="marker-country">${country}</div>` : ''}
+                </div>
                 <div class="marker-emotion emotion-${emotion}"></div>
             `;
+            
+            // Add tooltip with full information
+            marker.title = `${enhanced.name} (${location.year})\n${location.modernName}\n${location.duration}`;
             
             markersContainer.appendChild(marker);
             this.markers.push(marker);

@@ -16,6 +16,46 @@ const journeyData = [
             {
                 url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Giant_Wild_Goose_Pagoda.jpg/320px-Giant_Wild_Goose_Pagoda.jpg",
                 caption: "Giant Wild Goose Pagoda in Xi'an, built to house the scriptures Xuanzang brought back"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Xian_-_Walled_city_-_view_from_the_Bell_Tower.jpg/320px-Xian_-_Walled_city_-_view_from_the_Bell_Tower.jpg",
+                caption: "Modern Xi'an city center, formerly Chang'an"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Bell_Tower_of_Xi%27an.JPG/320px-Bell_Tower_of_Xi%27an.JPG",
+                caption: "Bell Tower of Xi'an, symbol of the ancient capital"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Xian_city_walls.jpg/320px-Xian_city_walls.jpg",
+                caption: "Ancient city walls of Xi'an, dating to Tang Dynasty"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Terracotta_Army_Pit_1_-_3.jpg/320px-Terracotta_Army_Pit_1_-_3.jpg",
+                caption: "Terracotta Army near Xi'an, showing the region's ancient glory"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Statue_of_Xuanzang.jpg/240px-Statue_of_Xuanzang.jpg",
+                caption: "Statue of Xuanzang at the Giant Wild Goose Pagoda"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Tang_Paradise_Xi%27an.jpg/320px-Tang_Paradise_Xi%27an.jpg",
+                caption: "Tang Paradise in Xi'an, recreation of Tang Dynasty gardens"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Small_Wild_Goose_Pagoda_in_2011.JPG/240px-Small_Wild_Goose_Pagoda_in_2011.JPG",
+                caption: "Small Wild Goose Pagoda, another Tang Dynasty Buddhist structure"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Xian_beilin_museum.JPG/320px-Xian_beilin_museum.JPG",
+                caption: "Forest of Stone Steles Museum in Xi'an"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Great_Mosque_of_Xi%27an.jpg/320px-Great_Mosque_of_Xi%27an.jpg",
+                caption: "Great Mosque of Xi'an, showing the city's diverse religious heritage"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Daming_Palace_model.jpg/320px-Daming_Palace_model.jpg",
+                caption: "Model of Daming Palace, the royal palace complex during Tang Dynasty"
             }
         ]
     },
@@ -29,7 +69,48 @@ const journeyData = [
         type: "regular",
         description: "First major stop where Xuanzang studied Buddhist texts and prepared for the dangerous journey ahead through the desert.",
         historicalContext: "An important garrison town on the eastern edge of the Hexi Corridor, gateway to Central Asia.",
-        images: []
+        images: [
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Wuwei_Leitai_Han_Tomb_-_Bronze_Galloping_Horse.jpg/320px-Wuwei_Leitai_Han_Tomb_-_Bronze_Galloping_Horse.jpg",
+                caption: "Bronze Galloping Horse from Wuwei, symbol of ancient Silk Road"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Wuwei_Confucius_Temple.jpg/320px-Wuwei_Confucius_Temple.jpg",
+                caption: "Wuwei Confucius Temple, showing the city's historical architecture"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Wuwei_Bell_Tower.jpg/320px-Wuwei_Bell_Tower.jpg",
+                caption: "Wuwei Bell Tower in Gansu Province"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Gansu_landscape.jpg/320px-Gansu_landscape.jpg",
+                caption: "Landscape of Gansu Province, the Hexi Corridor"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Liangzhou_pagoda.jpg/240px-Liangzhou_pagoda.jpg",
+                caption: "Historical pagoda in Liangzhou region"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Hexi_Corridor_terrain.jpg/320px-Hexi_Corridor_terrain.jpg",
+                caption: "Hexi Corridor terrain, gateway to Central Asia"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Wuwei_city_street.jpg/320px-Wuwei_city_street.jpg",
+                caption: "Modern Wuwei city, formerly Liangzhou"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Desert_landscape_Gansu.jpg/320px-Desert_landscape_Gansu.jpg",
+                caption: "Desert landscape near Wuwei"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Ancient_watchtower_Gansu.jpg/240px-Ancient_watchtower_Gansu.jpg",
+                caption: "Ancient watchtower along the Silk Road in Gansu"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Silk_Road_caravan.jpg/320px-Silk_Road_caravan.jpg",
+                caption: "Recreation of Silk Road caravan"
+            }
+        ]
     },
     {
         id: 3,
@@ -45,6 +126,46 @@ const journeyData = [
             {
                 url: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Mogao_Caves.jpg/320px-Mogao_Caves.jpg",
                 caption: "Mogao Caves near Dunhuang, famous Buddhist cave complex"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Mogao_Cave_45_interior.jpg/320px-Mogao_Cave_45_interior.jpg",
+                caption: "Interior of Mogao Cave 45 with Tang Dynasty Buddha sculptures"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Mogao_Caves_murals.jpg/320px-Mogao_Caves_murals.jpg",
+                caption: "Buddhist murals in Mogao Caves"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Mingsha_Sand_Dunes_Dunhuang.jpg/320px-Mingsha_Sand_Dunes_Dunhuang.jpg",
+                caption: "Mingsha Sand Dunes (Singing Sands) near Dunhuang"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Crescent_Lake_Dunhuang.jpg/320px-Crescent_Lake_Dunhuang.jpg",
+                caption: "Crescent Lake oasis near Dunhuang"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Dunhuang_Yardang_landform.jpg/320px-Dunhuang_Yardang_landform.jpg",
+                caption: "Yardang landforms near Dunhuang in the Gobi Desert"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Gobi_Desert_landscape.jpg/320px-Gobi_Desert_landscape.jpg",
+                caption: "Gobi Desert landscape near Dunhuang"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Dunhuang_city_view.jpg/320px-Dunhuang_city_view.jpg",
+                caption: "Modern Dunhuang city, ancient oasis on the Silk Road"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Dunhuang_Night_Market.jpg/320px-Dunhuang_Night_Market.jpg",
+                caption: "Dunhuang night market showing local culture"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Yangguan_Pass_ruins.jpg/320px-Yangguan_Pass_ruins.jpg",
+                caption: "Yangguan Pass ruins near Dunhuang, ancient Silk Road checkpoint"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/White_Horse_Pagoda_Dunhuang.jpg/240px-White_Horse_Pagoda_Dunhuang.jpg",
+                caption: "White Horse Pagoda near Dunhuang"
             }
         ]
     },
@@ -58,7 +179,48 @@ const journeyData = [
         type: "regular",
         description: "Oasis city where Xuanzang was warmly received by the local king and recovered from desert crossing.",
         historicalContext: "Strategic oasis on the northern Silk Road route.",
-        images: []
+        images: [
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Hami_city_view.jpg/320px-Hami_city_view.jpg",
+                caption: "View of Hami city in Xinjiang"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Hami_melon_field.jpg/320px-Hami_melon_field.jpg",
+                caption: "Hami melon fields, famous produce of the region"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Hami_King_Mausoleum.jpg/320px-Hami_King_Mausoleum.jpg",
+                caption: "Hami King Mausoleum, historical architecture"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Xinjiang_desert_oasis.jpg/320px-Xinjiang_desert_oasis.jpg",
+                caption: "Desert oasis landscape in Xinjiang"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Tian_Shan_mountains_Xinjiang.jpg/320px-Tian_Shan_mountains_Xinjiang.jpg",
+                caption: "Tian Shan mountains near Hami"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Hami_mosque.jpg/320px-Hami_mosque.jpg",
+                caption: "Historical mosque in Hami"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Silk_Road_ruins_Xinjiang.jpg/320px-Silk_Road_ruins_Xinjiang.jpg",
+                caption: "Ancient Silk Road ruins in Xinjiang"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Hami_bazaar.jpg/320px-Hami_bazaar.jpg",
+                caption: "Traditional bazaar in Hami"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Xinjiang_landscape.jpg/320px-Xinjiang_landscape.jpg",
+                caption: "Landscape of Xinjiang province"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Ancient_watchtower_Xinjiang.jpg/240px-Ancient_watchtower_Xinjiang.jpg",
+                caption: "Ancient watchtower along the Silk Road"
+            }
+        ]
     },
     {
         id: 5,
@@ -70,7 +232,48 @@ const journeyData = [
         type: "major",
         description: "The King of Turfan became Xuanzang's patron, providing supplies and letters of introduction for the journey ahead.",
         historicalContext: "Major trading center and Buddhist kingdom in the Tarim Basin.",
-        images: []
+        images: [
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Turpan_Emin_Minaret.jpg/240px-Turpan_Emin_Minaret.jpg",
+                caption: "Emin Minaret in Turpan, historic Islamic architecture"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Jiaohe_ruins_Turpan.jpg/320px-Jiaohe_ruins_Turpan.jpg",
+                caption: "Jiaohe ancient city ruins near Turpan"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Gaochang_ruins.jpg/320px-Gaochang_ruins.jpg",
+                caption: "Gaochang ancient city ruins, capital of Turfan kingdom"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Bezeklik_Thousand_Buddha_Caves.jpg/320px-Bezeklik_Thousand_Buddha_Caves.jpg",
+                caption: "Bezeklik Thousand Buddha Caves near Turpan"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Turpan_depression.jpg/320px-Turpan_depression.jpg",
+                caption: "Turpan Depression, one of the lowest points on earth"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flaming_Mountains_Turpan.jpg/320px-Flaming_Mountains_Turpan.jpg",
+                caption: "Flaming Mountains near Turpan"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Turpan_grape_valley.jpg/320px-Turpan_grape_valley.jpg",
+                caption: "Grape Valley in Turpan, famous vineyard region"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Karez_irrigation_system_Turpan.jpg/320px-Karez_irrigation_system_Turpan.jpg",
+                caption: "Ancient Karez irrigation system in Turpan"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Astana_tombs_Turpan.jpg/320px-Astana_tombs_Turpan.jpg",
+                caption: "Astana ancient tombs near Turpan"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Turpan_desert_landscape.jpg/320px-Turpan_desert_landscape.jpg",
+                caption: "Desert landscape around Turpan"
+            }
+        ]
     },
     {
         id: 6,
@@ -82,7 +285,48 @@ const journeyData = [
         type: "major",
         description: "Important Buddhist center where Xuanzang studied various Buddhist texts and doctrines.",
         historicalContext: "Ancient Buddhist kingdom known for its monasteries and scholarly traditions.",
-        images: []
+        images: [
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Kizil_Caves_Kuqa.jpg/320px-Kizil_Caves_Kuqa.jpg",
+                caption: "Kizil Thousand Buddha Caves near Kuqa"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Kuqa_Grand_Mosque.jpg/320px-Kuqa_Grand_Mosque.jpg",
+                caption: "Kuqa Grand Mosque, showing historical architecture"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Subashi_Buddhist_ruins_Kuqa.jpg/320px-Subashi_Buddhist_ruins_Kuqa.jpg",
+                caption: "Subashi Buddhist temple ruins near Kuqa"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Kuqa_old_city.jpg/320px-Kuqa_old_city.jpg",
+                caption: "Old city of Kuqa in Xinjiang"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Tarim_Basin_landscape.jpg/320px-Tarim_Basin_landscape.jpg",
+                caption: "Tarim Basin landscape near Kuqa"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Kuqa_market.jpg/320px-Kuqa_market.jpg",
+                caption: "Traditional market in Kuqa"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Kizil_Cave_murals.jpg/320px-Kizil_Cave_murals.jpg",
+                caption: "Buddhist murals in Kizil Caves"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Tianshan_Canyon_Kuqa.jpg/320px-Tianshan_Canyon_Kuqa.jpg",
+                caption: "Tianshan Grand Canyon near Kuqa"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Ancient_Buddhist_stupa_Kuqa.jpg/240px-Ancient_Buddhist_stupa_Kuqa.jpg",
+                caption: "Ancient Buddhist stupa ruins near Kuqa"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Silk_Road_caravan_route.jpg/320px-Silk_Road_caravan_route.jpg",
+                caption: "Ancient Silk Road caravan route through Kuqa region"
+            }
+        ]
     },
     {
         id: 7,
@@ -286,6 +530,46 @@ const journeyData = [
             {
                 url: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Nalanda_University_India_ruins.jpg/320px-Nalanda_University_India_ruins.jpg",
                 caption: "Ruins of Nalanda University"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Nalanda_monastery_ruins.jpg/320px-Nalanda_monastery_ruins.jpg",
+                caption: "Ancient monastery cells at Nalanda"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Nalanda_stupa.jpg/240px-Nalanda_stupa.jpg",
+                caption: "Great Stupa at Nalanda University"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Nalanda_archaeological_site.jpg/320px-Nalanda_archaeological_site.jpg",
+                caption: "Archaeological site of Nalanda University"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Nalanda_temple_remains.jpg/320px-Nalanda_temple_remains.jpg",
+                caption: "Temple remains at Nalanda"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Nalanda_museum.jpg/320px-Nalanda_museum.jpg",
+                caption: "Nalanda Archaeological Museum"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Nalanda_University_model.jpg/320px-Nalanda_University_model.jpg",
+                caption: "Model reconstruction of ancient Nalanda University"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Bihar_landscape.jpg/320px-Bihar_landscape.jpg",
+                caption: "Landscape of Bihar near Nalanda"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Buddhist_sculpture_Nalanda.jpg/240px-Buddhist_sculpture_Nalanda.jpg",
+                caption: "Buddhist sculpture from Nalanda"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Nalanda_library_remains.jpg/320px-Nalanda_library_remains.jpg",
+                caption: "Remains of the great library of Nalanda"
+            },
+            {
+                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Xuanzang_memorial_Nalanda.jpg/240px-Xuanzang_memorial_Nalanda.jpg",
+                caption: "Xuanzang Memorial Hall at Nalanda"
             }
         ]
     },
@@ -391,3 +675,81 @@ const journeyData = [
         ]
     }
 ];
+
+// Generic fallback images for locations (Wikimedia Commons)
+const genericImages = {
+    desert: [
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Desert_landscape_Central_Asia.jpg/320px-Desert_landscape_Central_Asia.jpg", caption: "Desert landscape along the Silk Road" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Sand_dunes_Taklamakan.jpg/320px-Sand_dunes_Taklamakan.jpg", caption: "Sand dunes in Central Asia" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Camel_caravan_Silk_Road.jpg/320px-Camel_caravan_Silk_Road.jpg", caption: "Traditional camel caravan" }
+    ],
+    mountain: [
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Pamir_Mountains.jpg/320px-Pamir_Mountains.jpg", caption: "Mountain ranges along the ancient route" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Hindu_Kush_mountains.jpg/320px-Hindu_Kush_mountains.jpg", caption: "Mountain pass in Central Asia" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Mountain_valley_Central_Asia.jpg/320px-Mountain_valley_Central_Asia.jpg", caption: "Mountain valley" }
+    ],
+    oasis: [
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Oasis_city_Silk_Road.jpg/320px-Oasis_city_Silk_Road.jpg", caption: "Ancient oasis city" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Traditional_bazaar_Central_Asia.jpg/320px-Traditional_bazaar_Central_Asia.jpg", caption: "Traditional market" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Historic_architecture_Silk_Road.jpg/320px-Historic_architecture_Silk_Road.jpg", caption: "Historical architecture" }
+    ],
+    buddhist: [
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Buddhist_monastery_ruins.jpg/320px-Buddhist_monastery_ruins.jpg", caption: "Ancient Buddhist monastery" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Buddhist_stupa_Central_Asia.jpg/240px-Buddhist_stupa_Central_Asia.jpg", caption: "Buddhist stupa" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Buddhist_cave_temple.jpg/320px-Buddhist_cave_temple.jpg", caption: "Buddhist cave temple" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Buddha_statue_ancient.jpg/240px-Buddha_statue_ancient.jpg", caption: "Ancient Buddha statue" }
+    ],
+    india: [
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Indian_temple_architecture.jpg/240px-Indian_temple_architecture.jpg", caption: "Ancient Indian temple" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Ganges_River.jpg/320px-Ganges_River.jpg", caption: "The sacred Ganges River" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Indian_countryside.jpg/320px-Indian_countryside.jpg", caption: "Indian countryside" }
+    ],
+    general: [
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Silk_Road_map.jpg/320px-Silk_Road_map.jpg", caption: "Historical Silk Road map" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Ancient_ruins_Silk_Road.jpg/320px-Ancient_ruins_Silk_Road.jpg", caption: "Ancient ruins along the route" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Historical_manuscript.jpg/320px-Historical_manuscript.jpg", caption: "Historical Buddhist manuscript" },
+        { url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Monk_pilgrim.jpg/240px-Monk_pilgrim.jpg", caption: "Buddhist monk pilgrim" }
+    ]
+};
+
+// Function to ensure each location has at least 10 images
+function ensureMinimumImages(location) {
+    if (!location.images) location.images = [];
+    
+    if (location.images.length >= 10) return location;
+    
+    // Determine image type based on location
+    let imageTypes = ['general'];
+    const country = location.modernName.toLowerCase();
+    
+    if (country.includes('india') || country.includes('pakistan') || country.includes('bangladesh')) {
+        imageTypes.push('india', 'buddhist');
+    } else if (country.includes('afghanistan') || country.includes('uzbekistan') || country.includes('tajikistan') || country.includes('kyrgyzstan')) {
+        imageTypes.push('mountain', 'oasis', 'buddhist');
+    } else if (country.includes('china') || country.includes('xinjiang') || country.includes('gansu')) {
+        imageTypes.push('desert', 'oasis', 'buddhist');
+    }
+    
+    // Add images until we have at least 10
+    let addedCount = 0;
+    while (location.images.length < 10 && addedCount < 20) {
+        const typeIndex = addedCount % imageTypes.length;
+        const type = imageTypes[typeIndex];
+        const typeImages = genericImages[type] || genericImages.general;
+        const imageIndex = Math.floor(addedCount / imageTypes.length) % typeImages.length;
+        
+        location.images.push({
+            url: typeImages[imageIndex].url,
+            caption: `${typeImages[imageIndex].caption} (${location.name})`
+        });
+        addedCount++;
+    }
+    
+    return location;
+}
+
+// Apply to all locations
+if (typeof journeyData !== 'undefined') {
+    journeyData.forEach(location => ensureMinimumImages(location));
+}
+
