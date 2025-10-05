@@ -5,8 +5,11 @@ let journeyLine;
 let currentStepIndex = 0;
 let isPlaying = false;
 let playInterval;
-let bookmarkedLocations = new Set();
 
+// NOTE: Bookmark and share functionality disabled per requirements
+// let bookmarkedLocations = new Set();
+
+/*
 // Load bookmarks from localStorage
 function loadBookmarks() {
     const saved = localStorage.getItem('xuanzang_bookmarks');
@@ -406,9 +409,35 @@ function updateSummaryPanel(location, enhanced, tFunc) {
         let detailsHTML = `
             <p><strong>${tFunc('info.modernName')}:</strong> ${enhanced.modernName}</p>
             ${enhanced.ancientName ? `<p><strong>${tFunc('info.ancientName')}:</strong> ${enhanced.ancientName}</p>` : ''}
-            <p><strong>${tFunc('info.duration')}:</strong> ${enhanced.duration}</p>
-            ${enhanced.emotion ? `<p><strong>${tFunc('info.emotion')}:</strong> ${tFunc('emotion.' + enhanced.emotion)}</p>` : ''}
         `;
+        
+        // Extract country from modernName (usually last part after comma)
+        const country = enhanced.modernName.split(',').pop().trim();
+        if (country) {
+            detailsHTML += `<p><strong>${tFunc('info.country')}:</strong> ${country}</p>`;
+        }
+        
+        detailsHTML += `<p><strong>${tFunc('info.duration')}:</strong> ${enhanced.duration}</p>`;
+        
+        // Add Buddhist Context if available
+        if (enhanced.buddhistContext) {
+            detailsHTML += `
+                <div class="content-section">
+                    <h6>${tFunc('info.buddhistContext')}</h6>
+                    <p class="small">${enhanced.buddhistContext}</p>
+                </div>
+            `;
+        }
+        
+        // Add Xuanzang's Experience if available
+        if (enhanced.xuanzangExperience) {
+            detailsHTML += `
+                <div class="content-section">
+                    <h6>${tFunc('info.xuanzangExperience')}</h6>
+                    <p class="small">${enhanced.xuanzangExperience}</p>
+                </div>
+            `;
+        }
         
         // Add quote if available
         if (enhanced.quote) {
@@ -420,19 +449,49 @@ function updateSummaryPanel(location, enhanced, tFunc) {
             `;
         }
         
-        // Use expanded description if available, otherwise use regular description
+        // Add Historical Events if available
+        if (enhanced.historicalEvents) {
+            detailsHTML += `
+                <div class="content-section">
+                    <h6>${tFunc('info.historicalEvents')}</h6>
+                    <p class="small">${enhanced.historicalEvents}</p>
+                </div>
+            `;
+        }
+        
+        // Add description
         const description = enhanced.expandedDescription || enhanced.description;
-        detailsHTML += `<p class="small">${description.substring(0, 250)}${description.length > 250 ? '...' : ''}</p>`;
+        detailsHTML += `
+            <div class="content-section">
+                <h6>${tFunc('info.description')}</h6>
+                <p class="small">${description}</p>
+            </div>
+        `;
+        
+        // Add Historical Context
+        if (enhanced.historicalContext || location.historicalContext) {
+            detailsHTML += `
+                <div class="content-section">
+                    <h6>${tFunc('info.historicalContext')}</h6>
+                    <p class="small">${enhanced.historicalContext || location.historicalContext}</p>
+                </div>
+            `;
+        }
+        
+        // Add sources/references if available
+        if (enhanced.sources) {
+            detailsHTML += `
+                <div class="content-section">
+                    <h6>${tFunc('info.sources')}</h6>
+                    <p class="small">${enhanced.sources}</p>
+                </div>
+            `;
+        }
         
         summaryDetails.innerHTML = detailsHTML;
     }
-    
-    // Update bookmark button state
-    updateBookmarkButton();
-    
-    // Update share buttons
-    updateShareButtons(location, enhanced, tFunc);
 }
+
 
 // Update the left illustration panel with images
 function updateIllustrationPanel(location, enhanced, tFunc) {
@@ -853,8 +912,8 @@ function updateLocationHash(location) {
 
 // Initialize map when page loads
 document.addEventListener('DOMContentLoaded', () => {
-    // Load bookmarks first
-    loadBookmarks();
+    // Load bookmarks first - DISABLED
+    // loadBookmarks();
     
     initMap();
     
