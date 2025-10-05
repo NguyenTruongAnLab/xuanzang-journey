@@ -570,9 +570,10 @@ function updateIllustrationPanel(location, enhanced, tFunc) {
         // Format: {index}_{city}_{code}.jpg where code is 0001-0004
         // Show only 0004.jpg by default (road condition), others available for scrolling
         const siteIndex = String(location.id).padStart(2, '0');
-        const cityName = enhanced.modernName.split(',')[0].trim();
+        // Get city name and replace spaces with underscores to match filename
+        const cityName = enhanced.modernName.split(',')[0].trim().replace(/ /g, '_');
         
-        // Image codes: 0001, 0002, 0003 for gallery, 0004 for default (road condition)
+        // Image codes: 0004, 0001, 0002, 0003 for gallery, 0004 first as default (road condition)
         const imageCodes = ['0004', '0001', '0002', '0003']; // 0004 first as default
         const imageDescriptions = [
             'Road condition illustration',
