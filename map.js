@@ -239,18 +239,19 @@ function addDirectionalArrows(pathCoordinates) {
         // Calculate angle
         const angle = Math.atan2(end[1] - start[1], end[0] - start[0]) * 180 / Math.PI;
         
-        // Create arrow icon
+        // Create arrow icon with better styling
         const arrowIcon = L.divIcon({
             className: 'journey-arrow',
-            html: `<div style="transform: rotate(${angle}deg);">➤</div>`,
-            iconSize: [20, 20],
-            iconAnchor: [10, 10]
+            html: `<div style="transform: rotate(${angle}deg); font-size: 18px; font-weight: bold; text-shadow: 0 0 3px rgba(255,255,255,0.8), 1px 1px 2px rgba(0,0,0,0.8);">▶</div>`,
+            iconSize: [24, 24],
+            iconAnchor: [12, 12]
         });
         
         // Add arrow marker at midpoint
         L.marker([midLat, midLng], {
             icon: arrowIcon,
-            interactive: false
+            interactive: false,
+            keyboard: false
         }).addTo(map);
     }
 }
