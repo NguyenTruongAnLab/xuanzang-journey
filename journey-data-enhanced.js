@@ -555,6 +555,9 @@ function getEnhancedLocation(location) {
         travelTime: enhancement.travelTime || null,
         quote: lang === 'vi' ? enhancement.quote_vi || enhancement.quote : enhancement.quote,
         expandedDescription: lang === 'vi' ? enhancement.expandedDescription_vi || enhancement.expandedDescription : enhancement.expandedDescription,
+        buddhistContext: lang === 'vi' ? enhancement.buddhistContext_vi || enhancement.buddhistContext : enhancement.buddhistContext,
+        xuanzangExperience: lang === 'vi' ? enhancement.xuanzangExperience_vi || enhancement.xuanzangExperience : enhancement.xuanzangExperience,
+        historicalEvents: lang === 'vi' ? enhancement.historicalEvents_vi || enhancement.historicalEvents : enhancement.historicalEvents,
         modernName: typeof location.modernName === 'string' 
             ? (lang === 'vi' ? enhancement.modernName_vi || location.modernName : location.modernName)
             : (location.modernName[lang] || location.modernName['en']),
