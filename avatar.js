@@ -269,10 +269,20 @@ class MonkAvatar {
     }
     
     moveToLocation(coordinates, duration = 1000, targetIndex = null) {
+        console.log('🚶 MonkAvatar.moveToLocation() called:', { 
+            coordinates, 
+            duration, 
+            targetIndex,
+            hasMap: !!this.map,
+            hasMapMarker: !!this.mapMarker,
+            currentPosition: this.currentPosition
+        });
+        
         // Move avatar on the map to specific coordinates with animation along the route
         if (this.map && this.mapMarker && coordinates) {
             // Add marker to map if not already added
             if (!this.map.hasLayer(this.mapMarker)) {
+                console.log('🗺️ Adding monk marker to map');
                 this.mapMarker.addTo(this.map);
             }
             
@@ -281,11 +291,20 @@ class MonkAvatar {
             this.currentPosition = [currentLatLng.lat, currentLatLng.lng];
             const targetPosition = coordinates;
             
+            console.log('📍 Moving from:', this.currentPosition, 'to:', targetPosition);
+            
             // Find the path between current and target positions
             const path = this.getPathBetweenLocations(this.currentPosition, targetPosition);
+            console.log('🛤️ Path calculated with', path.length, 'points');
             
             // Animate along the path
             this.animateAlongPath(path, duration, targetIndex);
+        } else {
+            console.warn('⚠️ Cannot move monk avatar - missing requirements:', {
+                hasMap: !!this.map,
+                hasMapMarker: !!this.mapMarker,
+                hasCoordinates: !!coordinates
+            });
         }
     }
     
@@ -332,10 +351,20 @@ class MonkAvatar {
     }
     
     animateAlongPath(path, totalDuration, targetIndex = null) {
-        if (!path || path.length < 2) return;
+        console.log('🎬 animateAlongPath() starting:', { 
+            pathLength: path?.length, 
+            totalDuration, 
+            targetIndex 
+        });
+        
+        if (!path || path.length < 2) {
+            console.warn('⚠️ Invalid path for animation:', path);
+            return;
+        }
         
         // Cancel any ongoing animation (interrupt if needed)
         if (this.animationFrame) {
+            console.log('⏸️ Cancelling previous animation');
             cancelAnimationFrame(this.animationFrame);
             this.animationFrame = null;
         }
@@ -343,6 +372,7 @@ class MonkAvatar {
         const startTime = Date.now();
         const totalDistance = this.calculatePathDistance(path);
         
+        console.log('👣 Starting walking animation...');
         // Start walking animation
         this.startWalking();
         
@@ -365,16 +395,19 @@ class MonkAvatar {
                 this.animationFrame = requestAnimationFrame(animate);
             } else {
                 // Animation complete - stop walking
+                console.log('✅ Animation complete! Stopping walking animation');
                 this.stopWalking();
                 this.animationFrame = null;
                 
                 // Update window.currentStepIndex if targetIndex was provided
                 if (targetIndex !== null && typeof targetIndex !== 'undefined') {
+                    console.log('🎯 Setting window.currentStepIndex to:', targetIndex);
                     window.currentStepIndex = targetIndex;
                 }
             }
         };
         
+        console.log('▶️ Starting animation frame loop');
         this.animationFrame = requestAnimationFrame(animate);
     }
     

@@ -999,15 +999,30 @@ function updateLanguageButtons() {
 // update state consistently and interrupt any ongoing animation
 
 function navigateToLocation(index) {
-    if (!journeyData || index < 0 || index >= journeyData.length) return;
+    console.log('🧭 navigateToLocation() called with index:', index);
+    
+    if (!journeyData || index < 0 || index >= journeyData.length) {
+        console.warn('⚠️ Invalid navigation index:', index);
+        return;
+    }
     
     // Check if clicking the same location - ignore redundant clicks
-    if (window.currentStepIndex === index) return;
+    if (window.currentStepIndex === index) {
+        console.log('ℹ️ Already at this location, skipping navigation');
+        return;
+    }
     
     // Calculate duration based on distance from current position BEFORE updating
     const currentIndex = window.currentStepIndex !== undefined ? window.currentStepIndex : 0;
     const stepsDifference = Math.abs(index - currentIndex);
     const duration = Math.min(2000 + (stepsDifference * 300), 8000); // Cap at 8 seconds
+    
+    console.log('📏 Navigation details:', { 
+        from: currentIndex, 
+        to: index, 
+        steps: stepsDifference, 
+        duration 
+    });
     
     // Update current step index FIRST
     window.currentStepIndex = index;
@@ -1015,6 +1030,7 @@ function navigateToLocation(index) {
     
     // Get the location
     const location = journeyData[index];
+    console.log('📍 Navigating to location:', location.name);
     
     // Update URL hash for deep-linking
     updateLocationHash(location);
@@ -1073,8 +1089,20 @@ function navigateToLocation(index) {
     updateJourneyProgress();
     
     // Move monk avatar with interruption support - pass targetIndex for sync at end
+    console.log('🤔 Checking monk avatar:', {
+        hasMonkAvatar: !!window.monkAvatar,
+        hasLocation: !!location,
+        coordinates: location?.coordinates
+    });
+    
     if (window.monkAvatar && location) {
+        console.log('✅ Calling monkAvatar.moveToLocation()...');
         window.monkAvatar.moveToLocation(location.coordinates, duration, index);
+    } else {
+        console.warn('⚠️ Monk avatar not available:', {
+            monkAvatar: window.monkAvatar,
+            location: location
+        });
     }
     
     // Stop play mode if active
