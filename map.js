@@ -1126,6 +1126,7 @@ document.addEventListener('languageChanged', () => {
 window.onTimelineMarkerClick = function(index) {
     currentStepIndex = index;
     window.currentStepIndex = index;
+    showLocationDetails(journeyData[index]);
     updateTimeline();
     stopPlaying();
 };
