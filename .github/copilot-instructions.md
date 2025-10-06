@@ -174,6 +174,31 @@ If syncing between avatar, panel, map, or timeline breaks, always check if share
 ### Documentation
 Do not write/keep temporary `.md` "fix" or summary files—document major changes in `CHANGELOG.md` only.
 
+### Memory Bank & Source of Truth
+All current status, problem history, open issues, and solutions must be logged in two master markdown files in the repository root:
+1. **`status.md`**:  
+   - Tracks all unresolved and resolved bugs, critical symptoms/diagnosis, test coverage, and major root causes found.
+   - Keeps a running log of what is broken and what is *fixed*—always up to date.
+2. **`roadmap.md`**:  
+   - Lists all upcoming, planned, or stretch features.
+   - Tracks what work is in progress or planned, per release/milestone, with references to status items as needed.
+
+### Cleaning/Removing Temporary Test & Fix Docs
+**Rule:**
+- **Immediately delete all temporary "test", "fix", or throwaway markdown files** after each work cycle.
+- *Do not* keep files like `FIX_AVATAR_ANIMATION.md`, `TEST_AVATAR_ANIMATION.md`, or `CHANGES_*.md`, etc, once the issue is logged into `status.md` or `roadmap.md`.
+
+### Workflow for AI Agents and Developers
+1. **Whenever a new bug or feature is reported**, log it in `status.md` (bugs/fixes) or `roadmap.md` (feature/plan).
+2. **DO NOT** create new ad-hoc `.md` files for discussions, fixes, or tests—*always* consolidate into `status.md` or `roadmap.md`.
+3. **When investigating or fixing**, read `status.md` first to understand history and current focus.
+4. **After fixing a bug or completing a feature:**
+   - Mark the relevant entry as `[x]` in status.md (if bug), or move it to the "Resolved/Closed" section.
+   - Briefly summarize what was changed (commit hash + summary/methods).
+   - Remove any old, now-obsolete individual test/fix files.
+5. **Push changes with a message like:**  
+   `"Housekeeping: removed all temp test/fix md files, consolidated docs to status.md and roadmap.md as project memory bank."`
+
 ## 🤖 If You Are An AI Agent
 
 When asked about any file, feature, or how to add/modify content, UI, or data, always refer to this structure and workflow before answering.
