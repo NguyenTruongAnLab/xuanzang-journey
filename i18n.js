@@ -100,7 +100,6 @@ const translations = {
         'basemap.esriWorldImagery': 'ESRI World Imagery',
         'basemap.esriStreet': 'ESRI Street',
         'basemap.shadedRelief': 'Shaded Relief',
-        'basemap.osmTopo': 'OSM Topo',
         
         // Accessibility
         'a11y.mapRegion': 'Interactive map showing Xuanzang\'s journey',
@@ -212,7 +211,6 @@ const translations = {
         'basemap.esriWorldImagery': 'ESRI Vệ Tinh',
         'basemap.esriStreet': 'ESRI Đường Phố',
         'basemap.shadedRelief': 'Bản Đồ Địa Hình',
-        'basemap.osmTopo': 'OSM Địa Hình',
         
         // Accessibility
         'a11y.mapRegion': 'Bản đồ tương tác hiển thị hành trình của Huyền Trang',

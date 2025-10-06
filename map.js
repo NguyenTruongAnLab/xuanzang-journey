@@ -132,12 +132,6 @@ function initMap() {
         minZoom: 3
     });
 
-    const osmTopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-        attribution: 'Map data: &copy; OpenTopoMap (CC-BY-SA)',
-        maxZoom: 17,
-        minZoom: 3
-    });
-
     // Load saved basemap preference from localStorage or default to ESRI National Geographic
     const savedBasemap = localStorage.getItem('xuanzang_basemap') || 'esriNatGeo';
     
@@ -148,14 +142,13 @@ function initMap() {
     baseMaps[tFunc('basemap.esriWorldImagery')] = esriWorldImagery;
     baseMaps[tFunc('basemap.esriStreet')] = esriStreet;
     baseMaps[tFunc('basemap.shadedRelief')] = shadedRelief;
-    baseMaps[tFunc('basemap.osmTopo')] = osmTopo;
 
     // Add the default basemap based on saved preference
     let defaultBasemap = esriNatGeo;
     if (savedBasemap === 'esriWorldImagery') defaultBasemap = esriWorldImagery;
     else if (savedBasemap === 'esriStreet') defaultBasemap = esriStreet;
     else if (savedBasemap === 'shadedRelief') defaultBasemap = shadedRelief;
-    else if (savedBasemap === 'osmTopo') defaultBasemap = osmTopo;
+    else if (savedBasemap === 'osmTopo') defaultBasemap = shadedRelief; // Legacy compatibility
     
     defaultBasemap.addTo(map);
 
@@ -176,8 +169,6 @@ function initMap() {
             localStorage.setItem('xuanzang_basemap', 'esriStreet');
         } else if (basemapKey === tFunc('basemap.shadedRelief')) {
             localStorage.setItem('xuanzang_basemap', 'shadedRelief');
-        } else if (basemapKey === tFunc('basemap.osmTopo')) {
-            localStorage.setItem('xuanzang_basemap', 'osmTopo');
         }
     });
 
