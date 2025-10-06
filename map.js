@@ -202,18 +202,66 @@ function initMap() {
 function createJourneyPath() {
     const pathCoordinates = journeyData.map(location => location.coordinates);
     
-    journeyLine = L.polyline(pathCoordinates, {
+    // Add intermediate waypoints for realistic routing
+    const enhancedPath = addRealisticWaypoints(pathCoordinates);
+    
+    journeyLine = L.polyline(enhancedPath, {
         color: '#dc3545',
         weight: 3,
         opacity: 0.7,
         smoothFactor: 1
     }).addTo(map);
     
-    // Add directional arrows along the path
+    // Add directional arrows along the path (use original coordinates for clarity)
     addDirectionalArrows(pathCoordinates);
     
     // Fit map to show the entire journey
     map.fitBounds(journeyLine.getBounds());
+}
+
+// Add intermediate waypoints to create more realistic curved routes
+function addRealisticWaypoints(coordinates) {
+    const enhanced = [];
+    
+    for (let i = 0; i < coordinates.length - 1; i++) {
+        const start = coordinates[i];
+        const end = coordinates[i + 1];
+        
+        enhanced.push(start);
+        
+        // Add waypoints for specific segments to create realistic routes
+        // Route 9->10: Tashkent to Samarkand (following Syr Darya river valley)
+        if (i === 8) {
+            enhanced.push([40.5, 68.8]); // Waypoint in river valley
+            enhanced.push([40.0, 67.5]); // Another curve point
+        }
+        // Route 10->11: Samarkand to Balkh (through mountain passes)
+        else if (i === 9) {
+            enhanced.push([38.5, 67.5]); // Mountain pass waypoint
+            enhanced.push([37.5, 67.8]); // Approach to Balkh
+        }
+        // Route 12->13: Bamiyan to Kabul (mountain pass route)
+        else if (i === 11) {
+            enhanced.push([34.9, 68.0]); // Mountain pass
+            enhanced.push([34.7, 68.5]); // Valley approach
+        }
+        // Route 14->15: Peshawar to Taxila (ancient Grand Trunk Road)
+        else if (i === 13) {
+            enhanced.push([34.0, 72.5]); // Historical road waypoint
+        }
+        // Route 3->4: Dunhuang to Hami (Gobi Desert oasis route)
+        else if (i === 2) {
+            enhanced.push([41.0, 95.0]); // Oasis waypoint
+            enhanced.push([42.0, 92.5]); // Desert curve
+        }
+        // Route 4->5: Hami to Turfan (following terrain)
+        else if (i === 3) {
+            enhanced.push([43.2, 91.0]); // Mountain edge waypoint
+        }
+    }
+    
+    enhanced.push(coordinates[coordinates.length - 1]);
+    return enhanced;
 }
 
 // Add directional arrows along the journey path
@@ -868,7 +916,10 @@ function updateJourneyProgress() {
     
     // Only draw if we have at least 2 points
     if (completedCoordinates.length >= 2) {
-        window.progressLine = L.polyline(completedCoordinates, {
+        // Add realistic waypoints to the completed portion
+        const enhancedCompleted = addRealisticWaypoints(completedCoordinates);
+        
+        window.progressLine = L.polyline(enhancedCompleted, {
             color: '#198754',
             weight: 4,
             opacity: 0.9,
