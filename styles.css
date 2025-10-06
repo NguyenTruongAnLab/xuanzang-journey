@@ -1186,7 +1186,7 @@ body {
     }
     
     #map {
-        height: calc(100vh - 130px); /* 40px navbar + 90px bottom panel */
+        height: calc(100vh - 190px); /* 40px navbar + 150px bottom panel */
         width: 100%;
         margin-top: 40px;
     }
@@ -1207,11 +1207,11 @@ body {
         display: none !important;
     }
     
-    /* Mobile bottom panel adjustments - now compact */
+    /* Mobile bottom panel adjustments - expanded for better content visibility */
     .mobile-bottom-panel {
         height: auto;
-        min-height: 90px; /* Reduced from 220px */
-        max-height: 90px;
+        min-height: 150px; /* Increased from 90px for better content visibility */
+        max-height: 150px;
     }
     
     .mobile-bottom-panel .panel-content {
@@ -1224,7 +1224,8 @@ body {
     }
     
     .station-info-compact {
-        margin-bottom: 6px;
+        margin-bottom: 8px;
+        min-height: 45px; /* Ensure station info bar has adequate height */
     }
     
     .station-name {
@@ -1259,7 +1260,7 @@ body {
     }
     
     .mobile-timeline-container {
-        margin-bottom: 5px;
+        margin-bottom: 8px; /* Increased from 5px for better spacing */
     }
     
     .timeline-controls {
@@ -1278,7 +1279,7 @@ body {
     }
     
     #map {
-        height: calc(100vh - 60px - 90px); /* navbar + bottom panel */
+        height: calc(100vh - 60px - 150px); /* navbar + bottom panel */
     }
 }
 
