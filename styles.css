@@ -1088,6 +1088,122 @@ body {
 .panel-content {
     overflow-y: auto;
     flex: 1;
+    padding: 0; /* Remove padding, let children handle it */
+}
+
+/* Mobile Content Wrapper - Two column layout */
+.mobile-content-wrapper {
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Vertical Timeline on the left */
+.mobile-vertical-timeline {
+    width: 80px;
+    flex-shrink: 0;
+    background: rgba(33, 37, 41, 0.95);
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-right: 2px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 5px;
+    /* Hide scrollbar but keep functionality */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+.mobile-vertical-timeline::-webkit-scrollbar {
+    display: none; /* Chrome/Safari/Opera */
+}
+
+/* Timeline item in vertical layout */
+.mobile-timeline-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.mobile-timeline-item::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.mobile-timeline-item:last-child::after {
+    display: none;
+}
+
+.mobile-timeline-item.active {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+
+.mobile-timeline-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #6c757d;
+    margin-bottom: 4px;
+    transition: all 0.2s ease;
+}
+
+.mobile-timeline-item.active .mobile-timeline-dot {
+    width: 16px;
+    height: 16px;
+    border-color: #198754;
+    background: #198754;
+    box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.3);
+}
+
+.mobile-timeline-item.outward .mobile-timeline-dot {
+    border-color: #0d6efd;
+}
+
+.mobile-timeline-item.return .mobile-timeline-dot {
+    border-color: #dc3545;
+}
+
+.mobile-timeline-item.active.outward .mobile-timeline-dot {
+    background: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.mobile-timeline-item.active.return .mobile-timeline-dot {
+    background: #dc3545;
+    border-color: #dc3545;
+}
+
+.mobile-timeline-year {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #ffc107;
+    margin-bottom: 2px;
+    text-align: center;
+}
+
+.mobile-timeline-city {
+    font-size: 0.6rem;
+    color: #e9ecef;
+    text-align: center;
+    line-height: 1.1;
+    word-wrap: break-word;
+    max-width: 70px;
+}
+
+/* Main content area on the right */
+.mobile-main-content {
+    flex: 1;
+    overflow-y: auto;
     padding: 10px 15px 15px 15px;
 }
 

@@ -1277,17 +1277,137 @@ function updateMobileDetails(location, enhanced, tFunc, isVietnamese) {
 }
 
 function initMobileTimeline() {
-    const mobileTimelineContainer = document.getElementById('mobileTimelineContainer');
-    if (!mobileTimelineContainer || window.mobileTimelineInitialized) return;
+    // Initialize mobile vertical timeline
+    const verticalTimeline = document.getElementById('mobileVerticalTimeline');
+    if (!verticalTimeline || window.mobileTimelineInitialized) return;
     
     // Check if we're on mobile
     if (window.innerWidth > 768) return;
     
-    // Create a timeline instance for mobile
-    if (typeof EnhancedTimeline !== 'undefined' && journeyData) {
-        window.mobileTimeline = new EnhancedTimeline(mobileTimelineContainer, journeyData);
-        window.mobileTimelineInitialized = true;
+    if (!journeyData) return;
+    
+    // Get current language for display
+    const currentLang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : 'en';
+    const isVietnamese = currentLang === 'vi';
+    
+    // Clear existing content
+    verticalTimeline.innerHTML = '';
+    
+    // Create vertical timeline items
+    journeyData.forEach((location, index) => {
+        const enhanced = typeof getEnhancedLocation === 'function' 
+            ? getEnhancedLocation(location) 
+            : location;
+        
+        const item = document.createElement('div');
+        item.className = 'mobile-timeline-item';
+        item.dataset.index = index;
+        
+        // Determine if outward or return journey
+        const isReturn = index >= 15;
+        item.classList.add(isReturn ? 'return' : 'outward');
+        
+        // Create dot
+        const dot = document.createElement('div');
+        dot.className = 'mobile-timeline-dot';
+        
+        // Create year label
+        const year = document.createElement('div');
+        year.className = 'mobile-timeline-year';
+        year.textContent = location.year;
+        
+        // Create city label
+        const city = document.createElement('div');
+        city.className = 'mobile-timeline-city';
+        const modernName = isVietnamese && enhanced.modernName_vi 
+            ? enhanced.modernName_vi 
+            : enhanced.modernName;
+        const cityName = modernName.split(',')[0].trim();
+        city.textContent = cityName;
+        
+        // Add click handler
+        item.addEventListener('click', () => {
+            navigateMobileTimeline(index);
+        });
+        
+        item.appendChild(dot);
+        item.appendChild(year);
+        item.appendChild(city);
+        verticalTimeline.appendChild(item);
+    });
+    
+    // Set up scroll synchronization
+    setupMobileTimelineSync();
+    
+    window.mobileTimelineInitialized = true;
+    
+    // Set initial highlight
+    if (journeyData.length > 0) {
+        updateMobileTimelineHighlight(0);
     }
+}
+
+// Navigate to a specific location in mobile timeline
+function navigateMobileTimeline(index) {
+    if (!journeyData || index < 0 || index >= journeyData.length) return;
+    
+    // Update current step index
+    window.currentStepIndex = index;
+    
+    // Navigate to the location
+    const location = journeyData[index];
+    
+    // Move monk avatar
+    if (window.monkAvatar && location) {
+        window.monkAvatar.moveToLocation(location.coordinates, 1000);
+    }
+    
+    // Update all panels
+    showLocationDetails(location);
+    
+    // Update mobile panel
+    if (typeof updateMobilePanel === 'function') {
+        updateMobilePanel(location);
+    }
+    
+    // Update timeline highlight
+    updateMobileTimelineHighlight(index);
+}
+
+// Update mobile timeline highlight
+function updateMobileTimelineHighlight(index) {
+    const items = document.querySelectorAll('.mobile-timeline-item');
+    if (!items.length) return;
+    
+    items.forEach((item, idx) => {
+        item.classList.remove('active');
+        if (idx === index) {
+            item.classList.add('active');
+            // Scroll into view smoothly
+            item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    });
+}
+
+// Setup scroll synchronization between timeline and gallery
+function setupMobileTimelineSync() {
+    const mainContent = document.querySelector('.mobile-main-content');
+    const verticalTimeline = document.getElementById('mobileVerticalTimeline');
+    
+    if (!mainContent || !verticalTimeline) return;
+    
+    // When main content scrolls, highlight corresponding timeline item
+    let scrollTimeout;
+    mainContent.addEventListener('scroll', () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            // Update timeline based on current scroll position
+            // This is a placeholder - can be enhanced based on actual gallery implementation
+            const scrollPercentage = mainContent.scrollTop / (mainContent.scrollHeight - mainContent.clientHeight);
+            const approximateIndex = Math.round(scrollPercentage * (journeyData.length - 1));
+            updateMobileTimelineHighlight(approximateIndex);
+        }, 150);
+    });
 }
 
 // Update showLocationDetails to also update mobile panel
