@@ -6,6 +6,9 @@ let currentStepIndex = 0;
 let isPlaying = false;
 let playInterval;
 
+// Initialize global currentStepIndex for timeline and avatar coordination
+window.currentStepIndex = 0;
+
 // NOTE: Bookmark and share functionality disabled per requirements
 // let bookmarkedLocations = new Set();
 
@@ -320,6 +323,7 @@ function addMarkers() {
             showLocationDetails(location);
             const prevIndex = currentStepIndex;
             currentStepIndex = index;
+            window.currentStepIndex = index;
             updateTimeline();
             
             // Move avatar to clicked location with duration based on distance
@@ -788,6 +792,7 @@ function setupTimelineControls() {
     slider.addEventListener('input', (e) => {
         const percentage = e.target.value;
         currentStepIndex = Math.floor((percentage / 100) * (journeyData.length - 1));
+        window.currentStepIndex = currentStepIndex;
         updateTimeline();
         stopPlaying();
     });
@@ -947,6 +952,7 @@ function startPlaying() {
             currentStepIndex = 0; // Loop back to start
         }
         
+        window.currentStepIndex = currentStepIndex;
         updateTimeline();
         
         // Perform emotion-based animation at new location
@@ -1013,6 +1019,7 @@ function handleDeepLink() {
         
         if (locationIndex !== -1) {
             currentStepIndex = locationIndex;
+            window.currentStepIndex = locationIndex;
             updateTimeline();
             
             // Scroll to location smoothly
@@ -1118,6 +1125,7 @@ document.addEventListener('languageChanged', () => {
 // Connect timeline clicks to map
 window.onTimelineMarkerClick = function(index) {
     currentStepIndex = index;
+    window.currentStepIndex = index;
     updateTimeline();
     stopPlaying();
 };
