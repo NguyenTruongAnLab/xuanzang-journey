@@ -850,11 +850,15 @@ function updateTimeline() {
 function highlightCurrentLocation() {
     const currentLocation = journeyData[currentStepIndex];
     
-    // Pan to current location
-    map.panTo(currentLocation.coordinates);
+    // Pan to current location (if map exists)
+    if (map && map.panTo) {
+        map.panTo(currentLocation.coordinates);
+    }
     
-    // Highlight the marker
-    highlightMarker(currentStepIndex);
+    // Highlight the marker (if markers exist)
+    if (markers && markers.length > currentStepIndex) {
+        highlightMarker(currentStepIndex);
+    }
     
     // Update URL hash for deep-linking
     updateLocationHash(currentLocation);
@@ -866,6 +870,9 @@ function highlightCurrentLocation() {
 
 // Update journey path to show completed portion with animation
 function updateJourneyProgress() {
+    // Skip if Leaflet/map is not loaded
+    if (!map || !window.L || !window.L.polyline) return;
+    
     // Remove old progress line if it exists
     if (window.progressLine) {
         map.removeLayer(window.progressLine);
@@ -1012,11 +1019,15 @@ function navigateToLocation(index) {
     // Update URL hash for deep-linking
     updateLocationHash(location);
     
-    // Highlight the marker immediately
-    highlightMarker(index);
+    // Highlight the marker immediately (if markers exist)
+    if (markers && markers.length > index) {
+        highlightMarker(index);
+    }
     
-    // Pan to location on map
-    map.panTo(location.coordinates);
+    // Pan to location on map (if map exists)
+    if (map && map.panTo) {
+        map.panTo(location.coordinates);
+    }
     
     // Update all panels and displays
     showLocationDetails(location);
@@ -1156,7 +1167,9 @@ window.addEventListener('hashchange', () => {
 
 // Handle window resize
 window.addEventListener('resize', () => {
-    map.invalidateSize();
+    if (map && map.invalidateSize) {
+        map.invalidateSize();
+    }
 });
 
 // Handle language change
