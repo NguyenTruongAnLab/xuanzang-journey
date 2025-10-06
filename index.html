@@ -51,13 +51,11 @@
     <!-- Mobile Compact Navbar -->
     <nav class="mobile-compact-navbar mobile-only">
         <div class="navbar-left">
-            <button class="icon-btn" id="mobileMenuBtn" aria-label="Menu">☰</button>
-            <span class="navbar-title">HT 629-645</span>
+            <span class="navbar-title">Xuanzang 629-645</span>
         </div>
         <div class="navbar-right">
             <button class="icon-btn" id="mobileLangBtn" aria-label="Language" title="Language">🇬🇧</button>
             <button class="icon-btn" id="mobileAboutBtn" data-bs-toggle="modal" data-bs-target="#aboutModal" aria-label="About" title="About">ℹ️</button>
-            <button class="icon-btn" id="mobileGalleryBtn" aria-label="Toggle gallery" title="Toggle gallery">🖼️</button>
         </div>
     </nav>
 
@@ -94,38 +92,34 @@
         
         <!-- Mobile: Smart Bottom Panel -->
         <div id="mobileBottomPanel" class="mobile-bottom-panel mobile-only" role="region" aria-label="Journey information">
-            <div class="panel-handle" id="panelHandle">
-                <div class="handle-bar"></div>
-            </div>
-            
-            <div class="panel-content">
-                <div class="mobile-content-wrapper">
-                    <!-- Vertical Timeline (Left side) -->
-                    <div class="mobile-vertical-timeline" id="mobileVerticalTimeline">
-                        <!-- Timeline items will be generated here -->
-                    </div>
-                    
-                    <!-- Main Content (Right side) -->
-                    <div class="mobile-main-content">
-                        <!-- Single Line: Station Info + Mini Gallery -->
-                        <div class="station-info-compact" id="stationInfoCompact">
-                            <div class="station-info-text">
-                                <div class="station-name" id="mobileStationName">Chang'an</div>
-                                <div class="station-meta" id="mobileStationMeta">Xi'an, China • 629 CE</div>
-                            </div>
-                            <!-- Image Gallery (Inline Mini Thumbnails) -->
-                            <div class="mobile-gallery" id="mobileGallery">
-                                <div class="gallery-scroll" id="galleryScroll">
-                                    <!-- 4 mini images will be loaded here (40x30px each) -->
-                                </div>
+            <div class="mobile-content-wrapper">
+                <!-- Vertical Timeline (Left side) -->
+                <div class="mobile-vertical-timeline" id="mobileVerticalTimeline">
+                    <!-- Timeline items will be generated here -->
+                </div>
+                
+                <!-- Main Content (Right side) -->
+                <div class="mobile-main-content">
+                    <!-- Image Gallery (Full-width swipeable carousel) -->
+                    <div class="mobile-image-gallery" id="mobileImageGallery">
+                        <div class="gallery-carousel" id="galleryCarousel">
+                            <!-- Swipeable images will be loaded here -->
+                        </div>
+                        <div class="gallery-overlay" id="galleryOverlay">
+                            <div class="overlay-text">
+                                <div class="overlay-city" id="overlayCity">Chang'an</div>
+                                <div class="overlay-location" id="overlayLocation">Xi'an, China • 629 CE</div>
                             </div>
                         </div>
-                        
-                        <!-- Expanded Details (Hidden by default) -->
-                        <div class="expanded-details" id="expandedDetails">
-                            <div id="mobileStationDetails">
-                                <!-- Full details will be loaded here -->
-                            </div>
+                        <div class="gallery-pagination" id="galleryPagination">
+                            <!-- Pagination dots will be generated here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Description Panel (Scrollable details) -->
+                    <div class="mobile-description-panel" id="mobileDescriptionPanel">
+                        <div id="mobileStationDetails">
+                            <!-- Full details will be loaded here -->
                         </div>
                     </div>
                 </div>
