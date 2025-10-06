@@ -320,18 +320,8 @@ function addMarkers() {
         
         // Add click event to show detailed info in panel
         marker.on('click', () => {
-            showLocationDetails(location);
-            const prevIndex = currentStepIndex;
-            currentStepIndex = index;
-            window.currentStepIndex = index;
-            updateTimeline();
-            
-            // Move avatar to clicked location with duration based on distance
-            if (window.monkAvatar) {
-                const stepsDifference = Math.abs(index - prevIndex);
-                const duration = Math.min(2000 + (stepsDifference * 300), 8000);
-                window.monkAvatar.moveToLocation(location.coordinates, duration);
-            }
+            // Use centralized navigation handler
+            navigateToLocation(index);
         });
         
         markers.push(marker);
@@ -791,10 +781,8 @@ function setupTimelineControls() {
     // Slider change event
     slider.addEventListener('input', (e) => {
         const percentage = e.target.value;
-        currentStepIndex = Math.floor((percentage / 100) * (journeyData.length - 1));
-        window.currentStepIndex = currentStepIndex;
-        updateTimeline();
-        stopPlaying();
+        const newIndex = Math.floor((percentage / 100) * (journeyData.length - 1));
+        navigateToLocation(newIndex);
     });
     
     // Play button event
@@ -811,13 +799,12 @@ function setupTimelineControls() {
         // Arrow keys to navigate timeline
         if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
             e.preventDefault();
-            if (e.key === 'ArrowLeft' && currentStepIndex > 0) {
-                currentStepIndex--;
-            } else if (e.key === 'ArrowRight' && currentStepIndex < journeyData.length - 1) {
-                currentStepIndex++;
+            const currentIndex = window.currentStepIndex !== undefined ? window.currentStepIndex : 0;
+            if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                navigateToLocation(currentIndex - 1);
+            } else if (e.key === 'ArrowRight' && currentIndex < journeyData.length - 1) {
+                navigateToLocation(currentIndex + 1);
             }
-            updateTimeline();
-            stopPlaying();
         }
         // Space to play/pause
         else if (e.key === ' ' && e.target.tagName !== 'INPUT') {
@@ -832,6 +819,7 @@ function setupTimelineControls() {
 }
 
 // Update timeline visualization
+// NOTE: This is now mainly called by slider and keyboard navigation
 function updateTimeline() {
     const slider = document.getElementById('timelineSlider');
     const currentYearEl = document.getElementById('currentYear');
@@ -850,7 +838,7 @@ function updateTimeline() {
         window.enhancedTimeline.setCurrentIndex(currentStepIndex);
     }
     
-    // Highlight current location
+    // Highlight current location (just map highlighting, not full updates)
     highlightCurrentLocation();
     
     // Update the journey path to show progress
@@ -858,32 +846,33 @@ function updateTimeline() {
 }
 
 // Highlight the current location on the map
+// NOTE: This function should only be called from updateTimeline, not directly
 function highlightCurrentLocation() {
     const currentLocation = journeyData[currentStepIndex];
     
-    // Pan to current location
-    map.panTo(currentLocation.coordinates);
+    // Pan to current location (if map exists)
+    if (map && map.panTo) {
+        map.panTo(currentLocation.coordinates);
+    }
     
-    // Highlight the marker
-    highlightMarker(currentStepIndex);
-    
-    // Show location details
-    showLocationDetails(currentLocation);
+    // Highlight the marker (if markers exist)
+    if (markers && markers.length > currentStepIndex) {
+        highlightMarker(currentStepIndex);
+    }
     
     // Update URL hash for deep-linking
     updateLocationHash(currentLocation);
     
-    // Move avatar to current location
-    if (window.monkAvatar) {
-        window.monkAvatar.moveToLocation(currentLocation.coordinates, 1000);
-    }
-    
+    // DON'T show location details or move avatar here - those are handled by navigateToLocation
     // DON'T open popup - use side panels instead
     // markers[currentStepIndex].openPopup();
 }
 
 // Update journey path to show completed portion with animation
 function updateJourneyProgress() {
+    // Skip if Leaflet/map is not loaded
+    if (!map || !window.L || !window.L.polyline) return;
+    
     // Remove old progress line if it exists
     if (window.progressLine) {
         map.removeLayer(window.progressLine);
@@ -1020,20 +1009,28 @@ function navigateToLocation(index) {
     const stepsDifference = Math.abs(index - currentIndex);
     const duration = Math.min(2000 + (stepsDifference * 300), 8000); // Cap at 8 seconds
     
-    // Update current step index
+    // Update current step index FIRST
     window.currentStepIndex = index;
+    currentStepIndex = index; // Also update local variable for backward compatibility
     
     // Get the location
     const location = journeyData[index];
     
-    // Move monk avatar with interruption support - pass targetIndex for sync at end
-    if (window.monkAvatar && location) {
-        window.monkAvatar.moveToLocation(location.coordinates, duration, index);
+    // Update URL hash for deep-linking
+    updateLocationHash(location);
+    
+    // Highlight the marker immediately (if markers exist)
+    if (markers && markers.length > index) {
+        highlightMarker(index);
+    }
+    
+    // Pan to location on map (if map exists)
+    if (map && map.panTo) {
+        map.panTo(location.coordinates);
     }
     
     // Update all panels and displays
     showLocationDetails(location);
-    updateTimeline();
     
     // Update desktop side panel
     if (typeof updateDesktopSidePanel === 'function' && window.innerWidth >= 1024) {
@@ -1058,8 +1055,27 @@ function navigateToLocation(index) {
         updateMobileTimelineHighlight(index);
     }
     
-    // Update journey progress
+    // Update the timeline slider
+    const slider = document.getElementById('timelineSlider');
+    const currentYearEl = document.getElementById('currentYear');
+    const tFunc = typeof t === 'function' ? t : (key, params) => key;
+    
+    if (slider) {
+        const percentage = (index / (journeyData.length - 1)) * 100;
+        slider.value = percentage;
+    }
+    
+    if (currentYearEl) {
+        currentYearEl.textContent = tFunc('controls.currentYear', { year: location.year });
+    }
+    
+    // Update journey progress line
     updateJourneyProgress();
+    
+    // Move monk avatar with interruption support - pass targetIndex for sync at end
+    if (window.monkAvatar && location) {
+        window.monkAvatar.moveToLocation(location.coordinates, duration, index);
+    }
     
     // Stop play mode if active
     if (isPlaying) {
@@ -1083,11 +1099,10 @@ function handleDeepLink() {
         );
         
         if (locationIndex !== -1) {
-            currentStepIndex = locationIndex;
-            window.currentStepIndex = locationIndex;
-            updateTimeline();
+            // Use centralized navigation handler
+            navigateToLocation(locationIndex);
             
-            // Scroll to location smoothly
+            // Scroll to location smoothly with a slight delay
             setTimeout(() => {
                 map.setView(journeyData[locationIndex].coordinates, 8, {
                     animate: true,
@@ -1131,12 +1146,12 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         // Show first location by default
         setTimeout(() => {
-            showLocationDetails(journeyData[0]);
-            updateTimeline();
+            // Use centralized navigation with no animation for initial load
+            navigateToLocation(0);
             
-            // Position avatar at first location
+            // Position avatar at first location without animation
             if (window.monkAvatar && journeyData[0]) {
-                window.monkAvatar.moveToLocation(journeyData[0].coordinates, 0);
+                window.monkAvatar.moveToLocation(journeyData[0].coordinates, 0, 0);
                 window.monkAvatar.show(); // Ensure avatar is visible
             }
         }, 500);
@@ -1152,7 +1167,9 @@ window.addEventListener('hashchange', () => {
 
 // Handle window resize
 window.addEventListener('resize', () => {
-    map.invalidateSize();
+    if (map && map.invalidateSize) {
+        map.invalidateSize();
+    }
 });
 
 // Handle language change
