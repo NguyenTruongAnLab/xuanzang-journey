@@ -36,13 +36,14 @@
     <!-- Desktop Navbar (60px) -->
     <nav class="navbar navbar-dark bg-dark desktop-navbar">
         <div class="container-fluid">
-            <span class="navbar-brand mb-0 h1">Hành Trình Huyền Trang (629-645 CE)</span>
+            <span class="navbar-brand mb-0 h1" id="desktopNavTitle">Xuanzang's Journey (629-645 CE)</span>
             <div class="d-flex gap-2 align-items-center">
                 <div class="btn-group" role="group" aria-label="Language selector">
-                    <button type="button" class="btn btn-outline-light btn-sm" id="langEn" onclick="setLanguage('en')">🇬🇧 EN</button>
-                    <button type="button" class="btn btn-outline-light btn-sm" id="langVi" onclick="setLanguage('vi')">🇻🇳 VI</button>
+                    <button type="button" class="btn btn-outline-light btn-sm" id="langEn" onclick="setLanguage('en')">🇬🇧</button>
+                    <button type="button" class="btn btn-outline-light btn-sm" id="langVi" onclick="setLanguage('vi')">🇻🇳</button>
                 </div>
-                <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#aboutModal">ℹ️ About</button>
+                <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#aboutModal">ℹ️</button>
+                <button class="btn btn-outline-light btn-sm" onclick="toggleDesktopSidePanel()" title="Toggle Side Panel">⚙️</button>
             </div>
         </div>
     </nav>
