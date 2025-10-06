@@ -1177,7 +1177,7 @@ body {
 }
 
 .mobile-timeline-year {
-    font-size: 0.7rem;
+    font-size: 0.84rem; /* Increased by 20% from 0.7rem */
     font-weight: 700;
     color: #ffc107;
     margin-bottom: 3px;
@@ -1186,7 +1186,7 @@ body {
 }
 
 .mobile-timeline-city {
-    font-size: 0.45rem;
+    font-size: 0.54rem; /* Increased by 20% from 0.45rem */
     color: #e9ecef;
     text-align: center;
     line-height: 1.2;
@@ -1251,14 +1251,14 @@ body {
 }
 
 .overlay-city {
-    font-size: 1.05rem;
+    font-size: 1.26rem; /* Increased by 20% from 1.05rem */
     font-weight: 700;
     margin-bottom: 4px;
     line-height: 1.2;
 }
 
 .overlay-location {
-    font-size: 0.7rem;
+    font-size: 0.84rem; /* Increased by 20% from 0.7rem */
     font-weight: 500;
     opacity: 0.95;
 }
@@ -1298,13 +1298,13 @@ body {
 }
 
 #mobileStationDetails {
-    font-size: 0.67rem;
+    font-size: 0.8rem; /* Increased by 20% from 0.67rem */
     line-height: 1.7;
     color: #495057;
 }
 
 #mobileStationDetails h6 {
-    font-size: 0.77rem;
+    font-size: 0.92rem; /* Increased by 20% from 0.77rem */
     font-weight: 600;
     color: #198754;
     margin-bottom: 10px;
@@ -1463,7 +1463,7 @@ body {
     }
     
     #map {
-        height: 50vh; /* Map takes top 50% of screen */
+        height: 70vh; /* Map takes top 70% of screen */
         width: 100%;
         margin-top: 40px;
     }
@@ -1484,13 +1484,13 @@ body {
         display: none !important;
     }
     
-    /* Mobile bottom panel takes 50% of screen */
+    /* Mobile bottom panel takes 30% of screen */
     .mobile-bottom-panel {
-        height: 50vh;
+        height: 30vh;
     }
     
     .location-text {
-        font-size: 0.75rem;
+        font-size: 0.9rem; /* Increased by 20% from 0.75rem */
     }
     
     .gallery-image {
@@ -1515,14 +1515,14 @@ body {
     }
 }
 
-/* All mobile phones in vertical mode - map 50%, panel 50% */
+/* All mobile phones in vertical mode - map 70%, panel 30% */
 @media (max-width: 768px) {
     #map {
-        height: 50vh !important;
+        height: 70vh !important;
     }
     
     .mobile-bottom-panel {
-        height: 50vh !important;
+        height: 30vh !important;
     }
 }
 

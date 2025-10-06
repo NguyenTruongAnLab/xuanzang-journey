@@ -1454,85 +1454,16 @@ function initMobileTimeline() {
 
 // Setup scroll synchronization - timeline scroll triggers map movement
 function setupTimelineScrollSync() {
-    const verticalTimeline = document.getElementById('mobileVerticalTimeline');
-    if (!verticalTimeline) return;
+    // DISABLED: Auto-sync between timeline scroll and map movement is now disabled
+    // to allow users to freely explore the map without it auto-centering to stations.
+    // Users can still navigate by clicking on timeline items.
     
-    let scrollTimeout;
-    let isUserScrolling = false;
-    let lastProcessedIndex = -1;
-    let mapInteractionTimeout;
-    let isUserInteractingWithMap = false;
+    // Note: The timeline scroll sync has been intentionally disabled to improve
+    // user experience. Users can now zoom and pan the map freely without the map
+    // automatically flying back to nearby stations. To navigate to a specific
+    // location, users should click on the timeline item.
     
-    // Add map interaction listeners to pause timeline sync
-    if (map) {
-        // Detect when user starts interacting with map
-        const startMapInteraction = () => {
-            isUserInteractingWithMap = true;
-            clearTimeout(mapInteractionTimeout);
-        };
-        
-        // Resume timeline sync after user stops interacting with map for 2 seconds
-        const endMapInteraction = () => {
-            clearTimeout(mapInteractionTimeout);
-            mapInteractionTimeout = setTimeout(() => {
-                isUserInteractingWithMap = false;
-            }, 2000);
-        };
-        
-        // Listen to various map interaction events
-        map.on('zoomstart', startMapInteraction);
-        map.on('zoomend', endMapInteraction);
-        map.on('movestart', startMapInteraction);
-        map.on('moveend', endMapInteraction);
-        map.on('dragstart', startMapInteraction);
-        map.on('dragend', endMapInteraction);
-    }
-    
-    // Throttle function to limit execution rate
-    const throttle = (func, delay) => {
-        let lastCall = 0;
-        return function(...args) {
-            const now = Date.now();
-            if (now - lastCall >= delay) {
-                lastCall = now;
-                return func.apply(this, args);
-            }
-        };
-    };
-    
-    const handleScroll = throttle(() => {
-        // Don't sync if user is actively interacting with map
-        if (isUserInteractingWithMap) {
-            return;
-        }
-        
-        // Find which item is currently centered in the viewport
-        const timelineRect = verticalTimeline.getBoundingClientRect();
-        const centerY = timelineRect.top + timelineRect.height / 2;
-        
-        const items = document.querySelectorAll('.mobile-timeline-item');
-        let closestIndex = 0;
-        let closestDistance = Infinity;
-        
-        items.forEach((item, index) => {
-            const itemRect = item.getBoundingClientRect();
-            const itemCenterY = itemRect.top + itemRect.height / 2;
-            const distance = Math.abs(centerY - itemCenterY);
-            
-            if (distance < closestDistance) {
-                closestDistance = distance;
-                closestIndex = index;
-            }
-        });
-        
-        // Only navigate if different from current and last processed
-        if (closestIndex !== window.currentStepIndex && closestIndex !== lastProcessedIndex) {
-            lastProcessedIndex = closestIndex;
-            navigateMobileTimeline(closestIndex);
-        }
-    }, 200); // Throttle to once every 200ms
-    
-    verticalTimeline.addEventListener('scroll', handleScroll);
+    return;
 }
 
 // Navigate to a specific location in mobile timeline
