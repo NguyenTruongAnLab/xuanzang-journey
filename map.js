@@ -1201,11 +1201,11 @@ function updateMobileGallery(location, enhanced) {
     
     galleryScroll.innerHTML = '';
     
-    // Get site index (1-based for image filenames)
-    const siteIndex = journeyData.findIndex(loc => loc.name === location.name) + 1;
-    const cityName = location.name.toLowerCase().replace(/['\\s]/g, '-').replace(/--+/g, '-');
+    // Use same logic as desktop carousel for image paths
+    const siteIndex = String(location.id).padStart(2, '0');
+    const cityName = location.modernName.split(',')[0].trim().replace(/ /g, '_');
     
-    // Image codes: 0001, 0002, 0003, 0004
+    // Image codes: 0001, 0002, 0003, 0004 (same order as desktop for consistency)
     const imageCodes = ['0001', '0002', '0003', '0004'];
     
     imageCodes.forEach((code, index) => {
