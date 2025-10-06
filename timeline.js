@@ -212,5 +212,6 @@ function initEnhancedTimeline() {
     const container = document.getElementById('enhancedTimelineContainer');
     if (container && typeof journeyData !== 'undefined') {
         enhancedTimeline = new EnhancedTimeline(container, journeyData);
+        window.enhancedTimeline = enhancedTimeline; // Make globally accessible
     }
 }

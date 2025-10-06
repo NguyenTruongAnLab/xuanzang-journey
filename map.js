@@ -1126,6 +1126,7 @@ document.addEventListener('languageChanged', () => {
 window.onTimelineMarkerClick = function(index) {
     currentStepIndex = index;
     window.currentStepIndex = index;
+    showLocationDetails(journeyData[index]);
     updateTimeline();
     stopPlaying();
 };
@@ -1367,7 +1368,7 @@ function initMobileTimeline() {
     const verticalTimeline = document.getElementById('mobileVerticalTimeline');
     if (!verticalTimeline || window.mobileTimelineInitialized) return;
     
-    // Check if we're on mobile
+    // Check if we're on mobile (not tablet or desktop)
     if (window.innerWidth > 768) return;
     
     if (!journeyData) return;
@@ -1944,7 +1945,7 @@ function updateDesktopGallery(location, enhanced) {
 // Initialize Desktop Bottom Timeline (Full width, all 29 stops)
 function initDesktopTimeline() {
     const timelineContainer = document.getElementById('desktopTimelineContainer');
-    if (!timelineContainer || !journeyData || window.innerWidth < 1024) return;
+    if (!timelineContainer || !journeyData || window.innerWidth < 769) return;
     
     // Create timeline structure
     const timelineContent = document.createElement('div');
@@ -2137,13 +2138,13 @@ window.updateDesktopTimelineHighlight = updateDesktopTimelineHighlight;
 // Initialize desktop side panel and timeline with first location
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-        if (journeyData && journeyData.length > 0 && window.innerWidth >= 1024) {
+        if (journeyData && journeyData.length > 0 && window.innerWidth >= 769) {
             updateDesktopSidePanel(journeyData[0]);
             initDesktopTimeline();
         }
     });
 } else {
-    if (journeyData && journeyData.length > 0 && window.innerWidth >= 1024) {
+    if (journeyData && journeyData.length > 0 && window.innerWidth >= 769) {
         updateDesktopSidePanel(journeyData[0]);
         initDesktopTimeline();
     }
@@ -2151,8 +2152,8 @@ if (document.readyState === 'loading') {
 
 // Handle window resize
 window.addEventListener('resize', () => {
-    if (window.innerWidth >= 1024 && journeyData && journeyData[window.currentStepIndex || 0]) {
-        // On desktop, update desktop side panel and timeline
+    if (window.innerWidth >= 769 && journeyData && journeyData[window.currentStepIndex || 0]) {
+        // On desktop/tablet, update desktop side panel and timeline
         updateDesktopSidePanel(journeyData[window.currentStepIndex || 0]);
         if (!document.querySelector('.desktop-timeline-markers')) {
             initDesktopTimeline();
