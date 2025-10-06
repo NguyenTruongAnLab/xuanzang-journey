@@ -428,6 +428,7 @@ let monkAvatar = null;
 function initMonkAvatar() {
     if (!monkAvatar) {
         monkAvatar = new MonkAvatar();
+        window.monkAvatar = monkAvatar; // Make globally accessible
     }
     return monkAvatar;
 }

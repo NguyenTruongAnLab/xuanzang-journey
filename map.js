@@ -212,9 +212,6 @@ function createJourneyPath() {
         smoothFactor: 1
     }).addTo(map);
     
-    // Add directional arrows along the path (use original coordinates for clarity)
-    addDirectionalArrows(pathCoordinates);
-    
     // Fit map to show the entire journey
     map.fitBounds(journeyLine.getBounds());
 }
@@ -264,36 +261,8 @@ function addRealisticWaypoints(coordinates) {
     return enhanced;
 }
 
-// Add directional arrows along the journey path
-function addDirectionalArrows(pathCoordinates) {
-    // Create arrow markers at the end of each path segment (not middle)
-    for (let i = 0; i < pathCoordinates.length - 1; i++) {
-        const start = pathCoordinates[i];
-        const end = pathCoordinates[i + 1];
-        
-        // Place arrow near the end of the segment (80% along the path)
-        const arrowLat = start[0] + (end[0] - start[0]) * 0.8;
-        const arrowLng = start[1] + (end[1] - start[1]) * 0.8;
-        
-        // Calculate angle for arrow direction
-        const angle = Math.atan2(end[1] - start[1], end[0] - start[0]) * 180 / Math.PI;
-        
-        // Create arrow icon with better styling
-        const arrowIcon = L.divIcon({
-            className: 'journey-arrow',
-            html: `<div style="transform: rotate(${angle}deg); font-size: 18px; font-weight: bold; text-shadow: 0 0 3px rgba(255,255,255,0.8), 1px 1px 2px rgba(0,0,0,0.8);">▶</div>`,
-            iconSize: [24, 24],
-            iconAnchor: [12, 12]
-        });
-        
-        // Add arrow marker near the end of segment
-        L.marker([arrowLat, arrowLng], {
-            icon: arrowIcon,
-            interactive: false,
-            keyboard: false
-        }).addTo(map);
-    }
-}
+// NOTE: Directional arrows removed per user requirements
+// The arrow direction was not accurate and has been removed
 
 // Add markers for all locations
 function addMarkers() {
