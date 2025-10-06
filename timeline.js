@@ -177,19 +177,17 @@ class EnhancedTimeline {
     }
     
     onMarkerClick(index) {
-        // Update current index
-        if (typeof window.currentStepIndex !== 'undefined') {
-            window.currentStepIndex = index;
-        }
+        // Calculate duration based on distance from current position BEFORE updating
+        const currentIndex = window.currentStepIndex !== undefined ? window.currentStepIndex : 0;
+        const stepsDifference = Math.abs(index - currentIndex);
+        // Base duration of 2 seconds, plus 300ms per step
+        const duration = Math.min(2000 + (stepsDifference * 300), 8000); // Cap at 8 seconds
         
-        // Move monk avatar to clicked location with duration based on distance
+        // Update current index
+        window.currentStepIndex = index;
+        
+        // Move monk avatar to clicked location with calculated duration
         if (window.monkAvatar && window.journeyData && window.journeyData[index]) {
-            // Calculate duration based on number of steps between current and target
-            const currentIndex = window.currentStepIndex || 0;
-            const stepsDifference = Math.abs(index - currentIndex);
-            // Base duration of 2 seconds, plus 300ms per step
-            const duration = Math.min(2000 + (stepsDifference * 300), 8000); // Cap at 8 seconds
-            
             window.monkAvatar.moveToLocation(window.journeyData[index].coordinates, duration);
         }
         
