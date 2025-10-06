@@ -1587,7 +1587,10 @@ function updateDesktopSidePanel(location) {
     updateDesktopGallery(location, enhanced);
     
     // Update mini timeline
-    updateDesktopMiniTimeline(location);
+    // Update bottom timeline highlight (if initialized)
+    if (typeof updateDesktopTimelineHighlight === 'function') {
+        updateDesktopTimelineHighlight(location);
+    }
     
     // Update description
     const descriptionEl = document.getElementById('desktopDescription');
@@ -1628,86 +1631,178 @@ function updateDesktopGallery(location, enhanced) {
     
     galleryEl.innerHTML = '';
     
-    if (enhanced.images && enhanced.images.length > 0) {
-        enhanced.images.forEach((imgPath, index) => {
-            const img = document.createElement('img');
-            img.className = 'side-panel-gallery-image';
-            img.src = imgPath;
-            img.alt = `${enhanced.name} - Image ${index + 1}`;
-            img.loading = 'lazy';
-            
-            // Add click handler to open lightbox
-            img.addEventListener('click', () => {
-                const images = enhanced.images.map((path, idx) => ({
-                    src: path,
-                    alt: `${enhanced.name} - Image ${idx + 1}`
-                }));
-                if (typeof openLightbox === 'function') {
-                    openLightbox(images, index);
-                }
-            });
-            
-            galleryEl.appendChild(img);
+    // Use the exact same image loading logic as updateIllustrationPanel() for consistency
+    // Load images from local images folder based on site index
+    // Format: {index}_{city}_{code}.jpg where code is 0001-0004
+    const siteIndex = String(location.id).padStart(2, '0');
+    // IMPORTANT: Always use the original English city name for image paths, not translated names
+    // Image filenames are based on English names (e.g., "Xi'an" not "Tây An")
+    const cityName = location.modernName.split(',')[0].trim().replace(/ /g, '_');
+    
+    // Image codes: 0004, 0001, 0002, 0003 for gallery
+    const imageCodes = ['0004', '0001', '0002', '0003'];
+    const imageDescriptions = [
+        'Road condition illustration',
+        'Historical site view',
+        'Archaeological perspective', 
+        'Buddhist temple/monastery'
+    ];
+    
+    // Track loaded images for lightbox
+    const loadedImages = [];
+    
+    imageCodes.forEach((code, index) => {
+        const img = document.createElement('img');
+        
+        // Implement lazy loading for performance
+        img.loading = 'lazy';
+        
+        // Set image path from local images folder
+        img.src = `images/${siteIndex}_${cityName}_${code}.jpg`;
+        img.alt = `${enhanced.name} - ${imageDescriptions[index]}`;
+        img.className = 'side-panel-gallery-image';
+        
+        // Add to loaded images array for lightbox
+        loadedImages.push({
+            src: img.src,
+            alt: img.alt
         });
-    } else {
-        // Show placeholder
-        for (let i = 0; i < 4; i++) {
+        
+        // Add error handling for broken images
+        img.onerror = function() {
+            console.warn(`Failed to load image: ${img.src}`);
+            // Replace with placeholder on error
             const placeholder = document.createElement('div');
             placeholder.className = 'side-panel-gallery-placeholder';
             placeholder.textContent = '🏛️';
-            galleryEl.appendChild(placeholder);
-        }
+            this.parentNode.replaceChild(placeholder, this);
+        };
+        
+        // Add loading state
+        img.onload = function() {
+            this.classList.add('loaded');
+        };
+        
+        // Add click handler to open lightbox
+        img.addEventListener('click', () => {
+            if (typeof openLightbox === 'function') {
+                openLightbox(loadedImages, index);
+            }
+        });
+        
+        galleryEl.appendChild(img);
+    });
+}
+
+// Initialize Desktop Bottom Timeline (Full width, all 29 stops)
+function initDesktopTimeline() {
+    const timelineContainer = document.getElementById('desktopTimelineContainer');
+    if (!timelineContainer || !journeyData || window.innerWidth < 1024) return;
+    
+    // Create timeline structure
+    const timelineContent = document.createElement('div');
+    timelineContent.className = 'desktop-timeline-content';
+    
+    const timelineTrack = document.createElement('div');
+    timelineTrack.className = 'desktop-timeline-track';
+    
+    const timelineMarkers = document.createElement('div');
+    timelineMarkers.className = 'desktop-timeline-markers';
+    
+    // Get current language for display
+    const currentLang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : 'en';
+    const isVietnamese = currentLang === 'vi';
+    
+    // Create marker for each location (all 29 stops)
+    journeyData.forEach((location, index) => {
+        const enhanced = typeof getEnhancedLocation === 'function' 
+            ? getEnhancedLocation(location) 
+            : location;
+        
+        const marker = document.createElement('div');
+        marker.className = 'desktop-timeline-marker';
+        marker.dataset.index = index;
+        
+        // Determine if outward or return journey (approximate: first 15 are outward, rest return)
+        const isReturn = index >= 15;
+        marker.classList.add(isReturn ? 'return' : 'outward');
+        
+        // Year label
+        const yearEl = document.createElement('div');
+        yearEl.className = 'desktop-timeline-year';
+        yearEl.textContent = location.year;
+        
+        // Dot/marker
+        const dotEl = document.createElement('div');
+        dotEl.className = 'desktop-timeline-dot';
+        
+        // City name (use Vietnamese if available)
+        const cityEl = document.createElement('div');
+        cityEl.className = 'desktop-timeline-city';
+        const modernName = isVietnamese && enhanced.modernName_vi 
+            ? enhanced.modernName_vi 
+            : enhanced.modernName;
+        const cityName = modernName.split(',')[0].trim();
+        cityEl.textContent = cityName;
+        
+        // Add click handler
+        marker.addEventListener('click', () => {
+            if (window.currentStepIndex !== undefined) {
+                window.currentStepIndex = index;
+            }
+            
+            // Move monk avatar
+            if (window.monkAvatar && journeyData[index]) {
+                window.monkAvatar.moveToLocation(journeyData[index].coordinates, 1000);
+            }
+            
+            // Update all panels
+            showLocationDetails(journeyData[index]);
+            
+            // Update desktop side panel
+            if (typeof updateDesktopSidePanel === 'function') {
+                updateDesktopSidePanel(journeyData[index]);
+            }
+            
+            // Update timeline highlight
+            updateDesktopTimelineHighlight(journeyData[index]);
+        });
+        
+        marker.appendChild(yearEl);
+        marker.appendChild(dotEl);
+        marker.appendChild(cityEl);
+        timelineMarkers.appendChild(marker);
+    });
+    
+    timelineContent.appendChild(timelineTrack);
+    timelineContent.appendChild(timelineMarkers);
+    timelineContainer.innerHTML = '';
+    timelineContainer.appendChild(timelineContent);
+    
+    // Set initial highlight
+    if (journeyData.length > 0) {
+        updateDesktopTimelineHighlight(journeyData[0]);
     }
 }
 
-function updateDesktopMiniTimeline(currentLocation) {
-    const timelineEl = document.getElementById('desktopMiniTimeline');
-    if (!timelineEl || !journeyData) return;
+// Update Desktop Timeline to highlight current location
+function updateDesktopTimelineHighlight(currentLocation) {
+    if (window.innerWidth < 1024) return;
     
-    timelineEl.innerHTML = '';
+    const markers = document.querySelectorAll('.desktop-timeline-marker');
+    if (!markers.length || !journeyData) return;
     
     // Find current location index
     const currentIndex = journeyData.findIndex(loc => 
         loc.name === currentLocation.name && loc.year === currentLocation.year
     );
     
-    // Create mini timeline markers (show every 3rd location for space)
-    const step = Math.max(1, Math.floor(journeyData.length / 7));
-    
-    journeyData.forEach((location, index) => {
-        if (index % step === 0 || index === journeyData.length - 1 || index === currentIndex) {
-            const marker = document.createElement('div');
-            marker.className = 'mini-timeline-marker';
-            marker.title = `${location.name} (${location.year})`;
-            marker.dataset.index = index;
-            
-            if (index === currentIndex) {
-                marker.classList.add('active');
-            } else if (index < currentIndex) {
-                marker.classList.add('visited');
-            }
-            
-            // Add click handler
-            marker.addEventListener('click', () => {
-                if (window.currentStepIndex !== undefined) {
-                    window.currentStepIndex = index;
-                }
-                
-                // Move monk avatar
-                if (window.monkAvatar && journeyData[index]) {
-                    window.monkAvatar.moveToLocation(journeyData[index].coordinates, 1000);
-                }
-                
-                // Update all panels
-                showLocationDetails(journeyData[index]);
-                
-                // Update mobile panel if needed
-                if (window.innerWidth <= 768 && typeof updateMobilePanel === 'function') {
-                    updateMobilePanel(journeyData[index]);
-                }
-            });
-            
-            timelineEl.appendChild(marker);
+    markers.forEach((marker, index) => {
+        marker.classList.remove('active');
+        if (parseInt(marker.dataset.index) === currentIndex) {
+            marker.classList.add('active');
+            // Scroll marker into view
+            marker.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         }
     });
 }
@@ -1715,25 +1810,31 @@ function updateDesktopMiniTimeline(currentLocation) {
 // Make functions globally accessible
 window.toggleDesktopSidePanel = toggleDesktopSidePanel;
 window.updateDesktopSidePanel = updateDesktopSidePanel;
+window.updateDesktopTimelineHighlight = updateDesktopTimelineHighlight;
 
-// Initialize desktop side panel with first location
+// Initialize desktop side panel and timeline with first location
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         if (journeyData && journeyData.length > 0 && window.innerWidth >= 1024) {
             updateDesktopSidePanel(journeyData[0]);
+            initDesktopTimeline();
         }
     });
 } else {
     if (journeyData && journeyData.length > 0 && window.innerWidth >= 1024) {
         updateDesktopSidePanel(journeyData[0]);
+        initDesktopTimeline();
     }
 }
 
 // Handle window resize
 window.addEventListener('resize', () => {
     if (window.innerWidth >= 1024 && journeyData && journeyData[window.currentStepIndex || 0]) {
-        // On desktop, update desktop side panel
+        // On desktop, update desktop side panel and timeline
         updateDesktopSidePanel(journeyData[window.currentStepIndex || 0]);
+        if (!document.querySelector('.desktop-timeline-markers')) {
+            initDesktopTimeline();
+        }
     }
 });
 
