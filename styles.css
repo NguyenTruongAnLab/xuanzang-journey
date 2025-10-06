@@ -18,6 +18,72 @@ body {
     display: block !important;
 }
 
+/* Desktop Navbar */
+.desktop-navbar {
+    display: block;
+}
+
+/* Mobile Compact Navbar (Single line, ~40px height) */
+.mobile-compact-navbar {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: #212529;
+    z-index: 1001;
+    padding: 0 10px;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.navbar-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.icon-btn {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-radius: 4px;
+    padding: 0;
+    line-height: 1;
+}
+
+.icon-btn:hover,
+.icon-btn:focus {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.icon-btn:active {
+    background: rgba(255, 255, 255, 0.2);
+}
+
 #map {
     height: calc(100vh - 290px);
     width: 100%;
@@ -674,56 +740,50 @@ body {
     padding: 10px 15px 15px 15px;
 }
 
-/* Station Info Compact */
+/* Station Info Compact - Single line with inline gallery */
 .station-info-compact {
-    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    gap: 10px;
+}
+
+.station-info-text {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .station-name {
     font-size: 1.1rem;
     font-weight: 700;
     color: #198754;
-    margin-bottom: 3px;
+    margin-bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .station-meta {
     font-size: 0.88rem;
     color: #6c757d;
     font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/* Mobile Gallery */
+/* Mobile Gallery - Inline mini thumbnails */
 .mobile-gallery {
-    margin-bottom: 10px;
-    overflow: hidden;
+    flex: 0 0 auto;
+    overflow: visible;
 }
 
 .gallery-scroll {
     display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding: 5px 0 8px 0;
-    scrollbar-width: thin;
-}
-
-.gallery-scroll::-webkit-scrollbar {
-    height: 5px;
-}
-
-.gallery-scroll::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 3px;
-}
-
-.gallery-scroll::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.25);
-    border-radius: 3px;
-}
-
-.gallery-scroll::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.35);
+    gap: 4px;
+    overflow: visible;
 }
 
 .gallery-image {
@@ -801,20 +861,124 @@ body {
     margin-bottom: 10px;
 }
 
+/* Image Lightbox */
+.image-lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+}
+
+.lightbox-content {
+    position: relative;
+    max-width: 95vw;
+    max-height: 95vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-content img {
+    max-width: 100%;
+    max-height: 85vh;
+    object-fit: contain;
+    display: block;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 10001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+}
+
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    font-size: 2.5rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-prev {
+    left: 10px;
+    border-radius: 0 8px 8px 0;
+}
+
+.lightbox-next {
+    right: 10px;
+    border-radius: 8px 0 0 8px;
+}
+
+.lightbox-caption {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    max-width: 90%;
+    text-align: center;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     /* Show mobile elements, hide desktop elements */
     .mobile-only {
-        display: block !important;
+        display: flex !important;
     }
     
-    .desktop-only {
+    .desktop-only,
+    .desktop-navbar {
         display: none !important;
     }
     
+    .mobile-compact-navbar {
+        display: flex !important;
+    }
+    
     #map {
-        height: calc(100vh - 230px);
+        height: calc(100vh - 130px); /* 40px navbar + 90px bottom panel */
         width: 100%;
+        margin-top: 40px;
     }
     
     .location-search {
@@ -833,33 +997,51 @@ body {
         display: none !important;
     }
     
-    /* Mobile bottom panel adjustments */
+    /* Mobile bottom panel adjustments - now compact */
     .mobile-bottom-panel {
         height: auto;
-        min-height: 220px;
+        min-height: 90px; /* Reduced from 220px */
+        max-height: 90px;
+    }
+    
+    .mobile-bottom-panel .panel-content {
+        padding: 8px 12px 10px 12px;
     }
     
     .mobile-bottom-panel.expanded {
+        max-height: 65vh;
         height: 65vh;
     }
     
+    .station-info-compact {
+        margin-bottom: 6px;
+    }
+    
     .station-name {
-        font-size: 1rem;
+        font-size: 0.95rem;
+        line-height: 1.2;
     }
     
     .station-meta {
-        font-size: 0.82rem;
+        font-size: 0.75rem;
+        line-height: 1.2;
     }
     
     .gallery-image {
-        width: 100px;
-        height: 75px;
+        width: 40px; /* Mini thumbnails as specified */
+        height: 30px;
+        border-radius: 4px;
     }
     
     .gallery-placeholder {
-        width: 100px;
-        height: 75px;
-        font-size: 1.8rem;
+        width: 40px;
+        height: 30px;
+        font-size: 1rem;
+        border-radius: 4px;
+    }
+    
+    .mobile-timeline-container {
+        margin-bottom: 5px;
     }
     
     .timeline-controls {

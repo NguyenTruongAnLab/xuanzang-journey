@@ -33,7 +33,8 @@
     <link rel="stylesheet" href="avatar.css">
 </head>
 <body>
-    <nav class="navbar navbar-dark bg-dark">
+    <!-- Desktop Navbar -->
+    <nav class="navbar navbar-dark bg-dark desktop-navbar">
         <div class="container-fluid">
             <span class="navbar-brand mb-0 h1">Xuanzang's Journey (629-645 CE)</span>
             <div class="d-flex gap-2">
@@ -43,6 +44,19 @@
                 </div>
                 <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#aboutModal">About</button>
             </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Compact Navbar -->
+    <nav class="mobile-compact-navbar mobile-only">
+        <div class="navbar-left">
+            <button class="icon-btn" id="mobileMenuBtn" aria-label="Menu">☰</button>
+            <span class="navbar-title">HT 629-645</span>
+        </div>
+        <div class="navbar-right">
+            <button class="icon-btn" id="mobileLangBtn" aria-label="Language" title="Language">🌐</button>
+            <button class="icon-btn" id="mobileAboutBtn" data-bs-toggle="modal" data-bs-target="#aboutModal" aria-label="About" title="About">ℹ️</button>
+            <button class="icon-btn" id="mobileGalleryBtn" aria-label="Toggle gallery" title="Toggle gallery">🖼️</button>
         </div>
     </nav>
 
@@ -104,20 +118,21 @@
             </div>
             
             <div class="panel-content">
-                <!-- Station Info (Compact) -->
+                <!-- Single Line: Station Info + Mini Gallery -->
                 <div class="station-info-compact" id="stationInfoCompact">
-                    <div class="station-name" id="mobileStationName">Chang'an</div>
-                    <div class="station-meta" id="mobileStationMeta">Xi'an, China • 629 CE</div>
-                </div>
-                
-                <!-- Image Gallery (Horizontal Scroll) -->
-                <div class="mobile-gallery" id="mobileGallery">
-                    <div class="gallery-scroll" id="galleryScroll">
-                        <!-- Images will be loaded here -->
+                    <div class="station-info-text">
+                        <div class="station-name" id="mobileStationName">Chang'an</div>
+                        <div class="station-meta" id="mobileStationMeta">Xi'an, China • 629 CE</div>
+                    </div>
+                    <!-- Image Gallery (Inline Mini Thumbnails) -->
+                    <div class="mobile-gallery" id="mobileGallery">
+                        <div class="gallery-scroll" id="galleryScroll">
+                            <!-- 4 mini images will be loaded here (40x30px each) -->
+                        </div>
                     </div>
                 </div>
                 
-                <!-- Timeline (Always Visible) -->
+                <!-- Timeline (Horizontal Scrollable) -->
                 <div id="mobileTimelineContainer" class="mobile-timeline-container"></div>
                 
                 <!-- Expanded Details (Hidden by default) -->
@@ -183,6 +198,18 @@
                     </ul>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Image Lightbox Modal -->
+    <div id="imageLightbox" class="image-lightbox" style="display: none;">
+        <div class="lightbox-overlay" id="lightboxOverlay"></div>
+        <div class="lightbox-content">
+            <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+            <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous image">‹</button>
+            <img id="lightboxImage" src="" alt="">
+            <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next image">›</button>
+            <div class="lightbox-caption" id="lightboxCaption"></div>
         </div>
     </div>
 

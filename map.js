@@ -1205,8 +1205,9 @@ function updateMobileGallery(location, enhanced) {
     const siteIndex = String(location.id).padStart(2, '0');
     const cityName = location.modernName.split(',')[0].trim().replace(/ /g, '_');
     
-    // Image codes: 0001, 0002, 0003, 0004 (same order as desktop for consistency)
+    // Image codes: 0001, 0002, 0003, 0004 (4 mini thumbnails)
     const imageCodes = ['0001', '0002', '0003', '0004'];
+    const loadedImages = [];
     
     imageCodes.forEach((code, index) => {
         const img = document.createElement('img');
@@ -1214,6 +1215,12 @@ function updateMobileGallery(location, enhanced) {
         img.loading = 'lazy';
         img.src = `images/${siteIndex}_${cityName}_${code}.jpg`;
         img.alt = `${enhanced.name} - Image ${index + 1}`;
+        
+        // Store image info for lightbox
+        loadedImages.push({
+            src: img.src,
+            alt: img.alt
+        });
         
         // Add error handling
         img.onerror = function() {
@@ -1223,10 +1230,11 @@ function updateMobileGallery(location, enhanced) {
             this.parentNode.replaceChild(placeholder, this);
         };
         
-        // Add click handler for fullscreen view (future enhancement)
+        // Add click handler for lightbox viewer
         img.addEventListener('click', () => {
-            // TODO: Implement lightbox viewer
-            console.log('Image clicked:', img.src);
+            if (typeof window.openLightbox === 'function') {
+                window.openLightbox(loadedImages, index);
+            }
         });
         
         galleryScroll.appendChild(img);
@@ -1291,3 +1299,228 @@ window.addEventListener('resize', () => {
         initMobileTimeline();
     }
 });
+
+// ===== Mobile Navbar Handlers =====
+
+// Language toggle for mobile
+let currentLangIndex = 0;
+const languages = ['en', 'vi'];
+
+function initMobileNavbar() {
+    const mobileLangBtn = document.getElementById('mobileLangBtn');
+    const mobileGalleryBtn = document.getElementById('mobileGalleryBtn');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    
+    if (mobileLangBtn) {
+        mobileLangBtn.addEventListener('click', () => {
+            currentLangIndex = (currentLangIndex + 1) % languages.length;
+            const newLang = languages[currentLangIndex];
+            if (typeof setLanguage === 'function') {
+                setLanguage(newLang);
+            }
+            // Update button text to show current language
+            mobileLangBtn.textContent = newLang.toUpperCase() === 'EN' ? '🌐' : '🌐';
+        });
+    }
+    
+    if (mobileGalleryBtn) {
+        let galleryVisible = true;
+        mobileGalleryBtn.addEventListener('click', () => {
+            const mobileGallery = document.getElementById('mobileGallery');
+            if (mobileGallery) {
+                galleryVisible = !galleryVisible;
+                mobileGallery.style.display = galleryVisible ? 'block' : 'none';
+                mobileGalleryBtn.style.opacity = galleryVisible ? '1' : '0.5';
+            }
+        });
+    }
+    
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', () => {
+            // Toggle expanded details panel
+            if (mobilePanel) {
+                if (isPanelExpanded) {
+                    collapseMobilePanel();
+                } else {
+                    expandMobilePanel();
+                }
+            }
+        });
+    }
+}
+
+// Initialize on DOM ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMobileNavbar);
+} else {
+    initMobileNavbar();
+}
+
+// ===== Image Lightbox Functionality =====
+
+let currentLightboxImages = [];
+let currentLightboxIndex = 0;
+
+function openLightbox(images, startIndex) {
+    currentLightboxImages = images;
+    currentLightboxIndex = startIndex;
+    showLightboxImage();
+    
+    const lightbox = document.getElementById('imageLightbox');
+    if (lightbox) {
+        lightbox.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeLightbox() {
+    const lightbox = document.getElementById('imageLightbox');
+    if (lightbox) {
+        lightbox.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+}
+
+function showLightboxImage() {
+    const img = document.getElementById('lightboxImage');
+    const caption = document.getElementById('lightboxCaption');
+    
+    if (img && currentLightboxImages.length > 0) {
+        const currentImage = currentLightboxImages[currentLightboxIndex];
+        img.src = currentImage.src;
+        img.alt = currentImage.alt;
+        
+        if (caption) {
+            caption.textContent = currentImage.alt || `Image ${currentLightboxIndex + 1} of ${currentLightboxImages.length}`;
+        }
+    }
+}
+
+function nextLightboxImage() {
+    currentLightboxIndex = (currentLightboxIndex + 1) % currentLightboxImages.length;
+    showLightboxImage();
+}
+
+function prevLightboxImage() {
+    currentLightboxIndex = (currentLightboxIndex - 1 + currentLightboxImages.length) % currentLightboxImages.length;
+    showLightboxImage();
+}
+
+// Initialize lightbox controls
+function initLightbox() {
+    const closeBtn = document.getElementById('lightboxClose');
+    const overlay = document.getElementById('lightboxOverlay');
+    const nextBtn = document.getElementById('lightboxNext');
+    const prevBtn = document.getElementById('lightboxPrev');
+    
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeLightbox);
+    }
+    
+    if (overlay) {
+        overlay.addEventListener('click', closeLightbox);
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', nextLightboxImage);
+    }
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', prevLightboxImage);
+    }
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        const lightbox = document.getElementById('imageLightbox');
+        if (lightbox && lightbox.style.display === 'flex') {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            } else if (e.key === 'ArrowRight') {
+                nextLightboxImage();
+            } else if (e.key === 'ArrowLeft') {
+                prevLightboxImage();
+            }
+        }
+    });
+}
+
+// Initialize on DOM ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLightbox);
+} else {
+    initLightbox();
+}
+
+// Make openLightbox available globally
+window.openLightbox = openLightbox;
+
+// ===== Swipe Navigation for Map (Next/Previous Stop) =====
+
+let touchStartX = 0;
+let touchStartY = 0;
+let touchEndX = 0;
+let touchEndY = 0;
+
+function handleMapSwipe() {
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
+    
+    // Only process horizontal swipes (more horizontal than vertical)
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        const minSwipeDistance = 50;
+        
+        if (deltaX > minSwipeDistance) {
+            // Swipe right - go to previous stop
+            navigateToPreviousStop();
+        } else if (deltaX < -minSwipeDistance) {
+            // Swipe left - go to next stop
+            navigateToNextStop();
+        }
+    }
+}
+
+function navigateToNextStop() {
+    if (typeof currentStepIndex !== 'undefined' && typeof journeyData !== 'undefined') {
+        if (currentStepIndex < journeyData.length - 1) {
+            currentStepIndex++;
+            if (typeof updateTimeline === 'function') {
+                updateTimeline();
+            }
+        }
+    }
+}
+
+function navigateToPreviousStop() {
+    if (typeof currentStepIndex !== 'undefined' && typeof journeyData !== 'undefined') {
+        if (currentStepIndex > 0) {
+            currentStepIndex--;
+            if (typeof updateTimeline === 'function') {
+                updateTimeline();
+            }
+        }
+    }
+}
+
+function initMapSwipe() {
+    const mapElement = document.getElementById('map');
+    if (!mapElement) return;
+    
+    mapElement.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+    
+    mapElement.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        touchEndY = e.changedTouches[0].screenY;
+        handleMapSwipe();
+    }, { passive: true });
+}
+
+// Initialize on DOM ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMapSwipe);
+} else {
+    initMapSwipe();
+}
+
