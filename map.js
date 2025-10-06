@@ -370,10 +370,13 @@ function updateSummaryPanel(location, enhanced, tFunc) {
     // Update brief info (shown by default)
     if (summaryBriefInfo) {
         const modernName = isVietnamese && enhanced.modernName_vi ? enhanced.modernName_vi : enhanced.modernName;
-        // Merge Station and Year into one line
+        // Show year prominently first
         summaryBriefInfo.innerHTML = `
             <div class="mb-2">
-                <strong>Station:</strong> ${enhanced.name} (${enhanced.year} CE)
+                <span class="year-highlight">${enhanced.year} CE</span>
+            </div>
+            <div class="mb-2">
+                <strong>Station:</strong> ${enhanced.name}
             </div>
             <div class="mb-2">
                 <strong>Location:</strong> ${modernName}
@@ -1073,6 +1076,13 @@ document.addEventListener('languageChanged', () => {
     // Update timeline
     updateTimeline();
     
+    // Update mobile language button flag
+    const mobileLangBtn = document.getElementById('mobileLangBtn');
+    if (mobileLangBtn) {
+        const currentLang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : 'en';
+        mobileLangBtn.textContent = currentLang === 'vi' ? '🇻🇳' : '🇬🇧';
+    }
+    
     // Update language buttons
     updateLanguageButtons();
     
@@ -1182,7 +1192,8 @@ function updateMobilePanel(location) {
     
     if (stationMeta) {
         const modernName = isVietnamese && enhanced.modernName_vi ? enhanced.modernName_vi : enhanced.modernName;
-        stationMeta.textContent = `${modernName} • ${enhanced.year} CE`;
+        // Show year prominently first, then location
+        stationMeta.innerHTML = `<span class="year-highlight">${enhanced.year} CE</span><span class="location-text">${modernName}</span>`;
     }
     
     // Update image gallery
@@ -1312,14 +1323,18 @@ function initMobileNavbar() {
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     
     if (mobileLangBtn) {
+        // Initialize with the current language flag
+        const currentLang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : 'en';
+        mobileLangBtn.textContent = currentLang === 'vi' ? '🇻🇳' : '🇬🇧';
+        
         mobileLangBtn.addEventListener('click', () => {
             currentLangIndex = (currentLangIndex + 1) % languages.length;
             const newLang = languages[currentLangIndex];
             if (typeof setLanguage === 'function') {
                 setLanguage(newLang);
             }
-            // Update button text to show current language
-            mobileLangBtn.textContent = newLang.toUpperCase() === 'EN' ? '🌐' : '🌐';
+            // Update button to show the flag of the current language
+            mobileLangBtn.textContent = newLang === 'vi' ? '🇻🇳' : '🇬🇧';
         });
     }
     
