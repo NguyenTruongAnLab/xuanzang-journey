@@ -1154,73 +1154,15 @@ window.onTimelineMarkerClick = function(index) {
 // ===== Mobile Bottom Panel Functionality =====
 
 let mobilePanel = null;
-let panelStartY = 0;
-let panelCurrentY = 0;
-let isDragging = false;
-let isPanelExpanded = false;
 
 function initMobilePanel() {
     mobilePanel = document.getElementById('mobileBottomPanel');
     if (!mobilePanel) return;
     
-    const panelHandle = document.getElementById('panelHandle');
-    
-    // Touch event handlers for swipe gestures
-    panelHandle.addEventListener('touchstart', handleTouchStart, { passive: true });
-    panelHandle.addEventListener('touchmove', handleTouchMove, { passive: false });
-    panelHandle.addEventListener('touchend', handleTouchEnd, { passive: true });
-    
     // Initialize with first location
     if (journeyData && journeyData.length > 0) {
         updateMobilePanel(journeyData[0]);
     }
-}
-
-function handleTouchStart(e) {
-    panelStartY = e.touches[0].clientY;
-    isDragging = true;
-}
-
-function handleTouchMove(e) {
-    if (!isDragging) return;
-    
-    panelCurrentY = e.touches[0].clientY;
-    const deltaY = panelStartY - panelCurrentY;
-    
-    // Prevent default scrolling during drag
-    if (Math.abs(deltaY) > 10) {
-        e.preventDefault();
-    }
-}
-
-function handleTouchEnd(e) {
-    if (!isDragging) return;
-    isDragging = false;
-    
-    const deltaY = panelStartY - panelCurrentY;
-    const threshold = 50; // Minimum swipe distance
-    
-    if (deltaY > threshold) {
-        // Swiped up - expand panel
-        expandMobilePanel();
-    } else if (deltaY < -threshold) {
-        // Swiped down - collapse panel
-        collapseMobilePanel();
-    }
-}
-
-function expandMobilePanel() {
-    if (!mobilePanel) return;
-    mobilePanel.classList.add('expanded');
-    mobilePanel.classList.remove('collapsed');
-    isPanelExpanded = true;
-}
-
-function collapseMobilePanel() {
-    if (!mobilePanel) return;
-    mobilePanel.classList.remove('expanded');
-    mobilePanel.classList.add('collapsed');
-    isPanelExpanded = false;
 }
 
 function updateMobilePanel(location) {
@@ -1229,53 +1171,63 @@ function updateMobilePanel(location) {
     const currentLang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : 'en';
     const isVietnamese = currentLang === 'vi';
     
-    // Update station name and meta
-    const stationName = document.getElementById('mobileStationName');
-    const stationMeta = document.getElementById('mobileStationMeta');
+    // Update overlay text
+    const overlayCity = document.getElementById('overlayCity');
+    const overlayLocation = document.getElementById('overlayLocation');
     
-    if (stationName) {
-        stationName.textContent = enhanced.name;
+    if (overlayCity) {
+        overlayCity.textContent = enhanced.name;
     }
     
-    if (stationMeta) {
+    if (overlayLocation) {
         const modernName = isVietnamese && enhanced.modernName_vi ? enhanced.modernName_vi : enhanced.modernName;
-        // Show year prominently first, then location
-        stationMeta.innerHTML = `<span class="year-highlight">${enhanced.year} CE</span><span class="location-text">${modernName}</span>`;
+        overlayLocation.textContent = `${modernName} • ${enhanced.year} CE`;
     }
     
-    // Update image gallery
-    updateMobileGallery(location, enhanced);
+    // Update image gallery carousel
+    updateMobileGalleryCarousel(location, enhanced);
     
-    // Update expanded details
+    // Update description details
     updateMobileDetails(location, enhanced, tFunc, isVietnamese);
     
     // Initialize mobile timeline if not already done
     initMobileTimeline();
 }
 
-function updateMobileGallery(location, enhanced) {
-    const galleryScroll = document.getElementById('galleryScroll');
-    if (!galleryScroll) return;
+// Current gallery state
+let currentGalleryIndex = 0;
+let galleryImages = [];
+let galleryTouchStartX = 0;
+let galleryTouchEndX = 0;
+
+function updateMobileGalleryCarousel(location, enhanced) {
+    const galleryCarousel = document.getElementById('galleryCarousel');
+    const galleryPagination = document.getElementById('galleryPagination');
     
-    galleryScroll.innerHTML = '';
+    if (!galleryCarousel) return;
+    
+    galleryCarousel.innerHTML = '';
+    if (galleryPagination) galleryPagination.innerHTML = '';
     
     // Use same logic as desktop carousel for image paths
     const siteIndex = String(location.id).padStart(2, '0');
     const cityName = location.modernName.split(',')[0].trim().replace(/ /g, '_');
     
-    // Image codes: 0001, 0002, 0003, 0004 (4 mini thumbnails)
+    // Image codes: 0001, 0002, 0003, 0004 (4 images)
     const imageCodes = ['0001', '0002', '0003', '0004'];
-    const loadedImages = [];
+    galleryImages = [];
     
     imageCodes.forEach((code, index) => {
+        const item = document.createElement('div');
+        item.className = 'gallery-carousel-item';
+        
         const img = document.createElement('img');
-        img.className = 'gallery-image';
-        img.loading = 'lazy';
+        img.className = 'gallery-carousel-image';
+        img.loading = index === 0 ? 'eager' : 'lazy';
         img.src = `images/${siteIndex}_${cityName}_${code}.jpg`;
         img.alt = `${enhanced.name} - Image ${index + 1}`;
         
-        // Store image info for lightbox
-        loadedImages.push({
+        galleryImages.push({
             src: img.src,
             alt: img.alt
         });
@@ -1283,19 +1235,88 @@ function updateMobileGallery(location, enhanced) {
         // Add error handling
         img.onerror = function() {
             const placeholder = document.createElement('div');
-            placeholder.className = 'gallery-placeholder';
+            placeholder.style.cssText = 'width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #333, #555); color: #aaa; font-size: 3rem;';
             placeholder.innerHTML = '🖼️';
             this.parentNode.replaceChild(placeholder, this);
         };
         
-        // Add click handler for lightbox viewer
-        img.addEventListener('click', () => {
-            if (typeof window.openLightbox === 'function') {
-                window.openLightbox(loadedImages, index);
-            }
-        });
+        item.appendChild(img);
+        galleryCarousel.appendChild(item);
         
-        galleryScroll.appendChild(img);
+        // Create pagination dot
+        if (galleryPagination) {
+            const dot = document.createElement('div');
+            dot.className = 'pagination-dot';
+            if (index === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToGalleryImage(index));
+            galleryPagination.appendChild(dot);
+        }
+    });
+    
+    // Reset to first image
+    currentGalleryIndex = 0;
+    updateGalleryPosition();
+    
+    // Set up touch handlers
+    setupGallerySwipe();
+}
+
+function setupGallerySwipe() {
+    const galleryCarousel = document.getElementById('galleryCarousel');
+    if (!galleryCarousel) return;
+    
+    // Remove old listeners
+    const newCarousel = galleryCarousel.cloneNode(true);
+    galleryCarousel.parentNode.replaceChild(newCarousel, galleryCarousel);
+    const carousel = document.getElementById('galleryCarousel');
+    
+    carousel.addEventListener('touchstart', (e) => {
+        galleryTouchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    
+    carousel.addEventListener('touchend', (e) => {
+        galleryTouchEndX = e.changedTouches[0].clientX;
+        handleGallerySwipe();
+    }, { passive: true });
+}
+
+function handleGallerySwipe() {
+    const swipeThreshold = 50;
+    const diff = galleryTouchStartX - galleryTouchEndX;
+    
+    if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+            // Swiped left - next image
+            goToGalleryImage((currentGalleryIndex + 1) % galleryImages.length);
+        } else {
+            // Swiped right - previous image
+            goToGalleryImage((currentGalleryIndex - 1 + galleryImages.length) % galleryImages.length);
+        }
+    }
+}
+
+function goToGalleryImage(index) {
+    currentGalleryIndex = index;
+    updateGalleryPosition();
+    updatePaginationDots();
+}
+
+function updateGalleryPosition() {
+    const galleryCarousel = document.getElementById('galleryCarousel');
+    if (!galleryCarousel) return;
+    
+    const offset = -currentGalleryIndex * 100;
+    galleryCarousel.style.transform = `translateX(${offset}%)`;
+}
+
+function updatePaginationDots() {
+    const dots = document.querySelectorAll('.pagination-dot');
+    dots.forEach((dot, index) => {
+        if (index === currentGalleryIndex) {
+            dot.classList.add('active');
+        } else {
+            dot.classList.remove('active');
+        }
     });
 }
 
@@ -1378,15 +1399,58 @@ function initMobileTimeline() {
         verticalTimeline.appendChild(item);
     });
     
-    // Set up scroll synchronization
-    setupMobileTimelineSync();
+    // Set up scroll listener on timeline to trigger map updates
+    setupTimelineScrollSync();
     
     window.mobileTimelineInitialized = true;
     
     // Set initial highlight
-    if (journeyData.length > 0) {
-        updateMobileTimelineHighlight(0);
-    }
+    const initialIndex = typeof currentStepIndex !== 'undefined' ? currentStepIndex : 0;
+    updateMobileTimelineHighlight(initialIndex);
+}
+
+// Setup scroll synchronization - timeline scroll triggers map movement
+function setupTimelineScrollSync() {
+    const verticalTimeline = document.getElementById('mobileVerticalTimeline');
+    if (!verticalTimeline) return;
+    
+    let scrollTimeout;
+    let isUserScrolling = false;
+    
+    verticalTimeline.addEventListener('scroll', () => {
+        if (!isUserScrolling) {
+            isUserScrolling = true;
+        }
+        
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            // Find which item is currently centered in the viewport
+            const timelineRect = verticalTimeline.getBoundingClientRect();
+            const centerY = timelineRect.top + timelineRect.height / 2;
+            
+            const items = document.querySelectorAll('.mobile-timeline-item');
+            let closestIndex = 0;
+            let closestDistance = Infinity;
+            
+            items.forEach((item, index) => {
+                const itemRect = item.getBoundingClientRect();
+                const itemCenterY = itemRect.top + itemRect.height / 2;
+                const distance = Math.abs(centerY - itemCenterY);
+                
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestIndex = index;
+                }
+            });
+            
+            // Only navigate if different from current
+            if (closestIndex !== window.currentStepIndex) {
+                navigateMobileTimeline(closestIndex);
+            }
+            
+            isUserScrolling = false;
+        }, 150);
+    });
 }
 
 // Navigate to a specific location in mobile timeline
@@ -1399,6 +1463,14 @@ function navigateMobileTimeline(index) {
     // Navigate to the location
     const location = journeyData[index];
     
+    // Smoothly fly to the location on the map with animation
+    if (map && location) {
+        map.flyTo(location.coordinates, 7, {
+            duration: 1.2,
+            easeLinearity: 0.25
+        });
+    }
+    
     // Move monk avatar
     if (window.monkAvatar && location) {
         window.monkAvatar.moveToLocation(location.coordinates, 1000);
@@ -1407,13 +1479,16 @@ function navigateMobileTimeline(index) {
     // Update all panels
     showLocationDetails(location);
     
-    // Update mobile panel
+    // Update mobile panel (images, description)
     if (typeof updateMobilePanel === 'function') {
         updateMobilePanel(location);
     }
     
-    // Update timeline highlight
+    // Update timeline highlight and adjacent opacity
     updateMobileTimelineHighlight(index);
+    
+    // Update journey progress line
+    updateJourneyProgress();
 }
 
 // Update mobile timeline highlight
@@ -1422,35 +1497,19 @@ function updateMobileTimelineHighlight(index) {
     if (!items.length) return;
     
     items.forEach((item, idx) => {
-        item.classList.remove('active');
+        item.classList.remove('active', 'adjacent');
+        
         if (idx === index) {
             item.classList.add('active');
             // Scroll into view smoothly
             item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else if (Math.abs(idx - index) === 1) {
+            // Adjacent items (one above and one below)
+            item.classList.add('adjacent');
         }
     });
 }
 
-// Setup scroll synchronization between timeline and gallery
-function setupMobileTimelineSync() {
-    const mainContent = document.querySelector('.mobile-main-content');
-    const verticalTimeline = document.getElementById('mobileVerticalTimeline');
-    
-    if (!mainContent || !verticalTimeline) return;
-    
-    // When main content scrolls, highlight corresponding timeline item
-    let scrollTimeout;
-    mainContent.addEventListener('scroll', () => {
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-            // Update timeline based on current scroll position
-            // This is a placeholder - can be enhanced based on actual gallery implementation
-            const scrollPercentage = mainContent.scrollTop / (mainContent.scrollHeight - mainContent.clientHeight);
-            const approximateIndex = Math.round(scrollPercentage * (journeyData.length - 1));
-            updateMobileTimelineHighlight(approximateIndex);
-        }, 150);
-    });
-}
 
 // Update showLocationDetails to also update mobile panel
 const originalShowLocationDetails = showLocationDetails;
@@ -1486,8 +1545,7 @@ const languages = ['en', 'vi'];
 
 function initMobileNavbar() {
     const mobileLangBtn = document.getElementById('mobileLangBtn');
-    const mobileGalleryBtn = document.getElementById('mobileGalleryBtn');
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileAboutBtn = document.getElementById('mobileAboutBtn');
     
     if (mobileLangBtn) {
         // Initialize with the current language flag
@@ -1502,31 +1560,6 @@ function initMobileNavbar() {
             }
             // Update button to show the flag of the current language
             mobileLangBtn.textContent = newLang === 'vi' ? '🇻🇳' : '🇬🇧';
-        });
-    }
-    
-    if (mobileGalleryBtn) {
-        let galleryVisible = true;
-        mobileGalleryBtn.addEventListener('click', () => {
-            const mobileGallery = document.getElementById('mobileGallery');
-            if (mobileGallery) {
-                galleryVisible = !galleryVisible;
-                mobileGallery.style.display = galleryVisible ? 'block' : 'none';
-                mobileGalleryBtn.style.opacity = galleryVisible ? '1' : '0.5';
-            }
-        });
-    }
-    
-    if (mobileMenuBtn) {
-        mobileMenuBtn.addEventListener('click', () => {
-            // Toggle expanded details panel
-            if (mobilePanel) {
-                if (isPanelExpanded) {
-                    collapseMobilePanel();
-                } else {
-                    expandMobilePanel();
-                }
-            }
         });
     }
 }
