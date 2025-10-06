@@ -9,6 +9,15 @@ body {
     overflow-x: hidden;
 }
 
+/* Utility classes for responsive display */
+.mobile-only {
+    display: none !important;
+}
+
+.desktop-only {
+    display: block !important;
+}
+
 #map {
     height: calc(100vh - 290px);
     width: 100%;
@@ -611,10 +620,201 @@ body {
     stroke-opacity: 0.9;
 }
 
+/* Mobile Bottom Panel Styles */
+.mobile-bottom-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transition: transform 0.3s ease, height 0.3s ease;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.mobile-bottom-panel.collapsed {
+    height: auto;
+}
+
+.mobile-bottom-panel.expanded {
+    height: 65vh;
+}
+
+.panel-handle {
+    padding: 10px 0;
+    cursor: grab;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(248, 249, 250, 0.95);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.panel-handle:active {
+    cursor: grabbing;
+}
+
+.handle-bar {
+    width: 50px;
+    height: 5px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 3px;
+}
+
+.panel-content {
+    overflow-y: auto;
+    flex: 1;
+    padding: 10px 15px 15px 15px;
+}
+
+/* Station Info Compact */
+.station-info-compact {
+    margin-bottom: 10px;
+}
+
+.station-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #198754;
+    margin-bottom: 3px;
+}
+
+.station-meta {
+    font-size: 0.88rem;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+/* Mobile Gallery */
+.mobile-gallery {
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.gallery-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 5px 0 8px 0;
+    scrollbar-width: thin;
+}
+
+.gallery-scroll::-webkit-scrollbar {
+    height: 5px;
+}
+
+.gallery-scroll::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+}
+
+.gallery-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 3px;
+}
+
+.gallery-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.gallery-image {
+    flex: 0 0 auto;
+    width: 110px;
+    height: 82px;
+    object-fit: cover;
+    border-radius: 8px;
+    scroll-snap-align: start;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-image:active {
+    transform: scale(0.96);
+}
+
+.gallery-placeholder {
+    flex: 0 0 auto;
+    width: 110px;
+    height: 82px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #adb5bd;
+    scroll-snap-align: start;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Mobile Timeline Container */
+.mobile-timeline-container {
+    margin-bottom: 10px;
+}
+
+/* Expanded Details */
+.expanded-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    margin-top: 8px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 0;
+}
+
+.mobile-bottom-panel.expanded .expanded-details {
+    max-height: 1000px;
+    padding-top: 12px;
+}
+
+#mobileStationDetails {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #495057;
+}
+
+#mobileStationDetails h6 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #198754;
+    margin-bottom: 8px;
+    border-bottom: 2px solid #198754;
+    padding-bottom: 4px;
+    margin-top: 12px;
+}
+
+#mobileStationDetails h6:first-child {
+    margin-top: 0;
+}
+
+#mobileStationDetails p {
+    margin-bottom: 10px;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
+    /* Show mobile elements, hide desktop elements */
+    .mobile-only {
+        display: block !important;
+    }
+    
+    .desktop-only {
+        display: none !important;
+    }
+    
     #map {
-        height: calc(100vh - 350px);
+        height: calc(100vh - 230px);
+        width: 100%;
     }
     
     .location-search {
@@ -628,101 +828,42 @@ body {
         padding: 6px 12px;
     }
     
+    /* Hide old info panel on mobile */
     .info-panel {
-        position: fixed;
-        bottom: 230px;
-        right: 10px;
-        left: 10px;
-        width: auto;
-        max-height: 200px;
+        display: none !important;
     }
     
-    /* Mobile: Make illustration panel work as overlay modal */
-    .illustration-panel {
-        position: fixed;
-        top: 60px;
-        left: 5px;
-        right: 5px;
-        width: auto;
-        max-height: calc(100vh - 180px);
-        z-index: 1001;
-        display: none;
+    /* Mobile bottom panel adjustments */
+    .mobile-bottom-panel {
+        height: auto;
+        min-height: 220px;
     }
     
-    .illustration-panel.active {
-        display: block;
+    .mobile-bottom-panel.expanded {
+        height: 65vh;
     }
     
-    /* Make carousel more mobile-friendly */
-    .carousel-container {
-        height: 220px;
-    }
-    
-    .carousel-btn {
-        padding: 8px 12px;
-        font-size: 1.5rem;
-    }
-    
-    /* Larger touch target for show images button */
-    .show-images-btn {
-        padding: 12px 20px;
+    .station-name {
         font-size: 1rem;
-        top: 70px;
-        left: 5px;
-        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
     }
     
-    /* Make panel toggle button larger for mobile */
-    .panel-toggle-btn {
-        padding: 8px 15px;
-        font-size: 1rem;
-        min-width: 44px;
-        min-height: 44px;
+    .station-meta {
+        font-size: 0.82rem;
     }
     
-    .summary-panel {
-        position: fixed;
-        top: auto;
-        bottom: 230px;
-        right: 10px;
-        left: 10px;
-        width: auto;
-        max-height: 180px;
+    .gallery-image {
+        width: 100px;
+        height: 75px;
     }
     
-    .summary-panel .card-body {
-        padding: 0.75rem;
-    }
-    
-    .share-buttons {
-        flex-direction: column;
-    }
-    
-    .share-btn {
-        width: 100%;
-        min-width: auto;
-    }
-    
-    .summary-item {
-        font-size: 0.85rem;
-        margin-bottom: 5px;
-    }
-    
-    #summaryDetails {
-        font-size: 0.75rem;
+    .gallery-placeholder {
+        width: 100px;
+        height: 75px;
+        font-size: 1.8rem;
     }
     
     .timeline-controls {
-        padding: 10px 0;
-    }
-    
-    .timeline-controls .row {
-        row-gap: 10px;
-    }
-    
-    .timeline-controls .col-md-2,
-    .timeline-controls .col-md-8 {
-        width: 100%;
+        display: none !important;
     }
 }
 

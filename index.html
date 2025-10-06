@@ -49,11 +49,11 @@
     <div class="container-fluid p-0">
         <div id="map"></div>
         
-        <!-- Show Images Button -->
-        <button id="showImagesBtn" class="show-images-btn" onclick="toggleIllustrationPanel()">📷 Show Images</button>
+        <!-- Desktop: Show Images Button (hidden on mobile) -->
+        <button id="showImagesBtn" class="show-images-btn desktop-only" onclick="toggleIllustrationPanel()">📷 Show Images</button>
         
-        <!-- Left Illustration Panel -->
-        <div id="illustrationPanel" class="illustration-panel" role="region" aria-label="Location illustrations">
+        <!-- Desktop: Left Illustration Panel (hidden on mobile) -->
+        <div id="illustrationPanel" class="illustration-panel desktop-only" role="region" aria-label="Location illustrations">
             <div class="card">
                 <div class="card-body">
                     <button class="panel-toggle-btn" onclick="toggleIllustrationPanel()">✕</button>
@@ -72,8 +72,8 @@
             </div>
         </div>
         
-        <!-- Right Summary Panel (Fixed) -->
-        <div id="summaryPanel" class="summary-panel" role="region" aria-label="Journey summary">
+        <!-- Desktop: Right Summary Panel (hidden on mobile) -->
+        <div id="summaryPanel" class="summary-panel desktop-only" role="region" aria-label="Journey summary">
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title" id="summaryTitle">Journey Summary</h6>
@@ -97,8 +97,40 @@
             </div>
         </div>
         
-        <!-- Enhanced Visual Timeline -->
-        <div id="enhancedTimelineContainer" class="enhanced-timeline-container"></div>
+        <!-- Mobile: Smart Bottom Panel -->
+        <div id="mobileBottomPanel" class="mobile-bottom-panel mobile-only" role="region" aria-label="Journey information">
+            <div class="panel-handle" id="panelHandle">
+                <div class="handle-bar"></div>
+            </div>
+            
+            <div class="panel-content">
+                <!-- Station Info (Compact) -->
+                <div class="station-info-compact" id="stationInfoCompact">
+                    <div class="station-name" id="mobileStationName">Chang'an</div>
+                    <div class="station-meta" id="mobileStationMeta">Xi'an, China • 629 CE</div>
+                </div>
+                
+                <!-- Image Gallery (Horizontal Scroll) -->
+                <div class="mobile-gallery" id="mobileGallery">
+                    <div class="gallery-scroll" id="galleryScroll">
+                        <!-- Images will be loaded here -->
+                    </div>
+                </div>
+                
+                <!-- Timeline (Always Visible) -->
+                <div id="mobileTimelineContainer" class="mobile-timeline-container"></div>
+                
+                <!-- Expanded Details (Hidden by default) -->
+                <div class="expanded-details" id="expandedDetails">
+                    <div id="mobileStationDetails">
+                        <!-- Full details will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Desktop: Enhanced Visual Timeline -->
+        <div id="enhancedTimelineContainer" class="enhanced-timeline-container desktop-only"></div>
         
         <div class="timeline-controls" style="display: none;">
             <div class="container">
