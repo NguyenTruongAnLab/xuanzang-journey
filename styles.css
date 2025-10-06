@@ -633,6 +633,8 @@ body {
     max-height: 85vh;
     display: flex;
     flex-direction: column;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
 }
 
 .mobile-bottom-panel.collapsed {
@@ -640,17 +642,19 @@ body {
 }
 
 .mobile-bottom-panel.expanded {
-    height: 60vh;
+    height: 65vh;
 }
 
 .panel-handle {
-    padding: 8px 0;
+    padding: 10px 0;
     cursor: grab;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(240, 240, 240, 0.95);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    background: rgba(248, 249, 250, 0.95);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
 }
 
 .panel-handle:active {
@@ -658,53 +662,54 @@ body {
 }
 
 .handle-bar {
-    width: 40px;
-    height: 4px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 2px;
+    width: 50px;
+    height: 5px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 3px;
 }
 
 .panel-content {
     overflow-y: auto;
     flex: 1;
-    padding: 12px 15px;
+    padding: 10px 15px 15px 15px;
 }
 
 /* Station Info Compact */
 .station-info-compact {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .station-name {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #212529;
-    margin-bottom: 4px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #198754;
+    margin-bottom: 3px;
 }
 
 .station-meta {
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     color: #6c757d;
+    font-weight: 500;
 }
 
 /* Mobile Gallery */
 .mobile-gallery {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     overflow: hidden;
 }
 
 .gallery-scroll {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    padding: 4px 0;
+    padding: 5px 0 8px 0;
     scrollbar-width: thin;
 }
 
 .gallery-scroll::-webkit-scrollbar {
-    height: 6px;
+    height: 5px;
 }
 
 .gallery-scroll::-webkit-scrollbar-track {
@@ -713,47 +718,48 @@ body {
 }
 
 .gallery-scroll::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.25);
     border-radius: 3px;
 }
 
 .gallery-scroll::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.35);
 }
 
 .gallery-image {
     flex: 0 0 auto;
-    width: 120px;
-    height: 90px;
+    width: 110px;
+    height: 82px;
     object-fit: cover;
-    border-radius: 6px;
+    border-radius: 8px;
     scroll-snap-align: start;
     cursor: pointer;
-    transition: transform 0.2s ease;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .gallery-image:active {
-    transform: scale(0.95);
+    transform: scale(0.96);
 }
 
 .gallery-placeholder {
     flex: 0 0 auto;
-    width: 120px;
-    height: 90px;
-    background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
-    border-radius: 6px;
+    width: 110px;
+    height: 82px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 2rem;
-    color: #999;
+    color: #adb5bd;
     scroll-snap-align: start;
+    border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 /* Mobile Timeline Container */
 .mobile-timeline-container {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 /* Expanded Details */
@@ -761,11 +767,14 @@ body {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
-    margin-top: 12px;
+    margin-top: 8px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 0;
 }
 
 .mobile-bottom-panel.expanded .expanded-details {
     max-height: 1000px;
+    padding-top: 12px;
 }
 
 #mobileStationDetails {
@@ -781,6 +790,11 @@ body {
     margin-bottom: 8px;
     border-bottom: 2px solid #198754;
     padding-bottom: 4px;
+    margin-top: 12px;
+}
+
+#mobileStationDetails h6:first-child {
+    margin-top: 0;
 }
 
 #mobileStationDetails p {
@@ -799,7 +813,8 @@ body {
     }
     
     #map {
-        height: calc(100vh - 200px);
+        height: calc(100vh - 230px);
+        width: 100%;
     }
     
     .location-search {
@@ -821,19 +836,19 @@ body {
     /* Mobile bottom panel adjustments */
     .mobile-bottom-panel {
         height: auto;
-        min-height: 180px;
+        min-height: 220px;
     }
     
     .mobile-bottom-panel.expanded {
-        height: 60vh;
+        height: 65vh;
     }
     
     .station-name {
-        font-size: 0.95rem;
+        font-size: 1rem;
     }
     
     .station-meta {
-        font-size: 0.8rem;
+        font-size: 0.82rem;
     }
     
     .gallery-image {
@@ -844,6 +859,7 @@ body {
     .gallery-placeholder {
         width: 100px;
         height: 75px;
+        font-size: 1.8rem;
     }
     
     .timeline-controls {
