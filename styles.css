@@ -869,14 +869,42 @@ body {
 
 .journey-marker.start {
     background-color: #28a745;
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
+    box-shadow: 0 0 10px rgba(40, 167, 69, 0.8), 0 0 20px rgba(40, 167, 69, 0.5);
+    border: 3px solid #fff;
+    animation: pulse-start 2s ease-in-out infinite;
+}
+
+@keyframes pulse-start {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.15);
+        opacity: 0.9;
+    }
 }
 
 .journey-marker.end {
     background-color: #ffc107;
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.8), 0 0 20px rgba(255, 193, 7, 0.5);
+    border: 3px solid #fff;
+    animation: pulse-end 2s ease-in-out infinite;
+}
+
+@keyframes pulse-end {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.15);
+        opacity: 0.9;
+    }
 }
 
 .journey-marker.major {

@@ -177,14 +177,10 @@ class EnhancedTimeline {
     }
     
     onMarkerClick(index) {
-        console.log('📍 Timeline marker clicked:', index);
-        
         // Use the centralized navigation handler from map.js
         if (window.navigateToLocation) {
-            console.log('✅ Using centralized navigation handler');
             window.navigateToLocation(index);
         } else {
-            console.warn('⚠️ Using fallback navigation handler');
             // Fallback for initialization order issues
             // Calculate duration based on distance from current position BEFORE updating
             const currentIndex = window.currentStepIndex !== undefined ? window.currentStepIndex : 0;
@@ -194,9 +190,8 @@ class EnhancedTimeline {
             // Update current index
             window.currentStepIndex = index;
             
-            // Move monk avatar to clicked location with calculated duration
+            // Move monk avatar to clicked location with calculated duration - DISABLED
             if (window.monkAvatar && window.journeyData && window.journeyData[index]) {
-                console.log('🚶 Calling monkAvatar.moveToLocation from timeline fallback');
                 window.monkAvatar.moveToLocation(window.journeyData[index].coordinates, duration, index);
             }
             

@@ -42,6 +42,14 @@ _No issues currently in progress._
 
 <!-- Most recent fixes - keep last 10, move older ones to archive section -->
 
+### Version 2.2 (January 2025)
+- [x] ✅ **Disabled animated monk avatar feature**: The moving monk avatar was causing navigation issues and complexity. Replaced with enhanced static departure (Chang'an) and destination (final Xi'an) markers that pulse and glow for better visibility.
+  - **Solution**: Disabled all monk avatar movement, animation, and rendering code in `avatar.js`. Enhanced start/end journey markers with pulsing animations and glowing effects in `styles.css`.
+  - **Rationale**: Simplified navigation experience, removed animation complexity, maintained journey visualization with clear departure and destination markers.
+  - **Files Modified**: `avatar.js`, `map.js`, `timeline.js`, `styles.css`
+  - **Commit**: Part of v2.2 release
+  - **Date**: January 2025
+
 ### Version 2.1 (December 2024)
 - [x] ✅ **Fixed website crash**: Resolved unclosed block comment in `map.js` (line 12-83) that prevented the entire website from loading
   - **Solution**: Fixed syntax error in JavaScript block comment
@@ -69,9 +77,10 @@ _No issues currently in progress._
 - Mobile panels: ✅ Working
 
 ### Avatar Animation
-- Walking animation: ✅ Working
-- Emotion states: ✅ Working
-- Position sync: ✅ Working
+- Walking animation: ⚠️ DISABLED (Feature removed - see v2.2 notes)
+- Emotion states: ⚠️ DISABLED (Feature removed - see v2.2 notes)
+- Position sync: ⚠️ DISABLED (Feature removed - see v2.2 notes)
+- Static markers: ✅ Working (Enhanced departure and destination markers)
 
 ### Internationalization
 - English language: ✅ Working

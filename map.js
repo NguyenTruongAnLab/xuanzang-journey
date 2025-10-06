@@ -272,7 +272,7 @@ function addMarkers() {
     journeyData.forEach((location, index) => {
         // Create custom icon based on location type
         const iconClass = `journey-marker ${location.type}`;
-        const iconSize = location.type === 'start' || location.type === 'end' ? 16 : 
+        const iconSize = location.type === 'start' || location.type === 'end' ? 20 : 
                         location.type === 'major' ? 14 : 12;
         
         const customIcon = L.divIcon({
@@ -999,30 +999,15 @@ function updateLanguageButtons() {
 // update state consistently and interrupt any ongoing animation
 
 function navigateToLocation(index) {
-    console.log('🧭 navigateToLocation() called with index:', index);
-    
-    if (!journeyData || index < 0 || index >= journeyData.length) {
-        console.warn('⚠️ Invalid navigation index:', index);
-        return;
-    }
+    if (!journeyData || index < 0 || index >= journeyData.length) return;
     
     // Check if clicking the same location - ignore redundant clicks
-    if (window.currentStepIndex === index) {
-        console.log('ℹ️ Already at this location, skipping navigation');
-        return;
-    }
+    if (window.currentStepIndex === index) return;
     
     // Calculate duration based on distance from current position BEFORE updating
     const currentIndex = window.currentStepIndex !== undefined ? window.currentStepIndex : 0;
     const stepsDifference = Math.abs(index - currentIndex);
     const duration = Math.min(2000 + (stepsDifference * 300), 8000); // Cap at 8 seconds
-    
-    console.log('📏 Navigation details:', { 
-        from: currentIndex, 
-        to: index, 
-        steps: stepsDifference, 
-        duration 
-    });
     
     // Update current step index FIRST
     window.currentStepIndex = index;
@@ -1030,7 +1015,6 @@ function navigateToLocation(index) {
     
     // Get the location
     const location = journeyData[index];
-    console.log('📍 Navigating to location:', location.name);
     
     // Update URL hash for deep-linking
     updateLocationHash(location);
@@ -1088,21 +1072,10 @@ function navigateToLocation(index) {
     // Update journey progress line
     updateJourneyProgress();
     
-    // Move monk avatar with interruption support - pass targetIndex for sync at end
-    console.log('🤔 Checking monk avatar:', {
-        hasMonkAvatar: !!window.monkAvatar,
-        hasLocation: !!location,
-        coordinates: location?.coordinates
-    });
-    
+    // Move monk avatar with interruption support - DISABLED (feature removed)
+    // Avatar movement is now disabled, but we keep the call for compatibility
     if (window.monkAvatar && location) {
-        console.log('✅ Calling monkAvatar.moveToLocation()...');
         window.monkAvatar.moveToLocation(location.coordinates, duration, index);
-    } else {
-        console.warn('⚠️ Monk avatar not available:', {
-            monkAvatar: window.monkAvatar,
-            location: location
-        });
     }
     
     // Stop play mode if active
@@ -1157,7 +1130,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize enhanced timeline
     initEnhancedTimeline();
     
-    // Initialize monk avatar
+    // Initialize monk avatar - DISABLED (feature removed)
+    // Still initialize for backward compatibility, but functionality is disabled
     initMonkAvatar();
     updatePlayButtonWithAvatar();
     
@@ -1177,11 +1151,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // Use centralized navigation with no animation for initial load
             navigateToLocation(0);
             
-            // Position avatar at first location without animation
+            // Position avatar at first location without animation - DISABLED
+            // Avatar feature has been removed
+            /*
             if (window.monkAvatar && journeyData[0]) {
                 window.monkAvatar.moveToLocation(journeyData[0].coordinates, 0, 0);
                 window.monkAvatar.show(); // Ensure avatar is visible
             }
+            */
         }, 500);
     }
     
