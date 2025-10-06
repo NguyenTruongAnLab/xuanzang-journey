@@ -345,10 +345,15 @@ function showLocationDetails(location) {
     const enhanced = typeof getEnhancedLocation === 'function' ? getEnhancedLocation(location) : location;
     const tFunc = typeof t === 'function' ? t : (key) => key;
     
-    // Update Summary Panel (right side - always visible)
+    // Update Desktop Side Panel (≥1024px)
+    if (window.innerWidth >= 1024) {
+        updateDesktopSidePanel(location);
+    }
+    
+    // Update Summary Panel (right side - deprecated but kept for compatibility)
     updateSummaryPanel(location, enhanced, tFunc);
     
-    // Update Illustration Panel (left side)
+    // Update Illustration Panel (left side - deprecated but kept for compatibility)
     updateIllustrationPanel(location, enhanced, tFunc);
     
     // Keep old info panel hidden
@@ -1538,4 +1543,197 @@ if (document.readyState === 'loading') {
 } else {
     initMapSwipe();
 }
+
+// ===== Desktop Side Panel Functionality =====
+
+let isDesktopSidePanelCollapsed = false;
+
+function toggleDesktopSidePanel() {
+    const panel = document.getElementById('desktopSidePanel');
+    if (!panel) return;
+    
+    isDesktopSidePanelCollapsed = !isDesktopSidePanelCollapsed;
+    
+    if (isDesktopSidePanelCollapsed) {
+        panel.classList.add('collapsed');
+    } else {
+        panel.classList.remove('collapsed');
+    }
+}
+
+function updateDesktopSidePanel(location) {
+    // Only update on desktop (≥1024px)
+    if (window.innerWidth < 1024) return;
+    
+    const enhanced = typeof getEnhancedLocation === 'function' ? getEnhancedLocation(location) : location;
+    const tFunc = typeof t === 'function' ? t : (key) => key;
+    const currentLang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : 'en';
+    const isVietnamese = currentLang === 'vi';
+    
+    // Update title and subtitle
+    const titleEl = document.getElementById('desktopLocationTitle');
+    const subtitleEl = document.getElementById('desktopLocationSubtitle');
+    
+    if (titleEl) {
+        titleEl.textContent = enhanced.name;
+    }
+    
+    if (subtitleEl) {
+        const modernName = isVietnamese && enhanced.modernName_vi ? enhanced.modernName_vi : enhanced.modernName;
+        subtitleEl.textContent = `${modernName} • ${enhanced.year} CE`;
+    }
+    
+    // Update gallery
+    updateDesktopGallery(location, enhanced);
+    
+    // Update mini timeline
+    updateDesktopMiniTimeline(location);
+    
+    // Update description
+    const descriptionEl = document.getElementById('desktopDescription');
+    if (descriptionEl) {
+        const description = isVietnamese 
+            ? (enhanced.expandedDescription_vi || enhanced.description_vi || enhanced.description)
+            : (enhanced.expandedDescription || enhanced.description);
+        descriptionEl.textContent = description;
+    }
+    
+    // Update historical context
+    const historicalSection = document.getElementById('desktopHistoricalSection');
+    const historicalContext = document.getElementById('desktopHistoricalContext');
+    
+    if (enhanced.historicalEvents && historicalContext) {
+        const histEventsText = isVietnamese && enhanced.historicalEvents_vi 
+            ? enhanced.historicalEvents_vi 
+            : enhanced.historicalEvents;
+        historicalContext.textContent = histEventsText;
+        if (historicalSection) {
+            historicalSection.style.display = 'block';
+        }
+    } else if (historicalSection) {
+        historicalSection.style.display = 'none';
+    }
+    
+    // Ensure panel is visible (not collapsed)
+    const panel = document.getElementById('desktopSidePanel');
+    if (panel && isDesktopSidePanelCollapsed) {
+        panel.classList.remove('collapsed');
+        isDesktopSidePanelCollapsed = false;
+    }
+}
+
+function updateDesktopGallery(location, enhanced) {
+    const galleryEl = document.getElementById('desktopGallery');
+    if (!galleryEl) return;
+    
+    galleryEl.innerHTML = '';
+    
+    if (enhanced.images && enhanced.images.length > 0) {
+        enhanced.images.forEach((imgPath, index) => {
+            const img = document.createElement('img');
+            img.className = 'side-panel-gallery-image';
+            img.src = imgPath;
+            img.alt = `${enhanced.name} - Image ${index + 1}`;
+            img.loading = 'lazy';
+            
+            // Add click handler to open lightbox
+            img.addEventListener('click', () => {
+                const images = enhanced.images.map((path, idx) => ({
+                    src: path,
+                    alt: `${enhanced.name} - Image ${idx + 1}`
+                }));
+                if (typeof openLightbox === 'function') {
+                    openLightbox(images, index);
+                }
+            });
+            
+            galleryEl.appendChild(img);
+        });
+    } else {
+        // Show placeholder
+        for (let i = 0; i < 4; i++) {
+            const placeholder = document.createElement('div');
+            placeholder.className = 'side-panel-gallery-placeholder';
+            placeholder.textContent = '🏛️';
+            galleryEl.appendChild(placeholder);
+        }
+    }
+}
+
+function updateDesktopMiniTimeline(currentLocation) {
+    const timelineEl = document.getElementById('desktopMiniTimeline');
+    if (!timelineEl || !journeyData) return;
+    
+    timelineEl.innerHTML = '';
+    
+    // Find current location index
+    const currentIndex = journeyData.findIndex(loc => 
+        loc.name === currentLocation.name && loc.year === currentLocation.year
+    );
+    
+    // Create mini timeline markers (show every 3rd location for space)
+    const step = Math.max(1, Math.floor(journeyData.length / 7));
+    
+    journeyData.forEach((location, index) => {
+        if (index % step === 0 || index === journeyData.length - 1 || index === currentIndex) {
+            const marker = document.createElement('div');
+            marker.className = 'mini-timeline-marker';
+            marker.title = `${location.name} (${location.year})`;
+            marker.dataset.index = index;
+            
+            if (index === currentIndex) {
+                marker.classList.add('active');
+            } else if (index < currentIndex) {
+                marker.classList.add('visited');
+            }
+            
+            // Add click handler
+            marker.addEventListener('click', () => {
+                if (window.currentStepIndex !== undefined) {
+                    window.currentStepIndex = index;
+                }
+                
+                // Move monk avatar
+                if (window.monkAvatar && journeyData[index]) {
+                    window.monkAvatar.moveToLocation(journeyData[index].coordinates, 1000);
+                }
+                
+                // Update all panels
+                showLocationDetails(journeyData[index]);
+                
+                // Update mobile panel if needed
+                if (window.innerWidth <= 768 && typeof updateMobilePanel === 'function') {
+                    updateMobilePanel(journeyData[index]);
+                }
+            });
+            
+            timelineEl.appendChild(marker);
+        }
+    });
+}
+
+// Make functions globally accessible
+window.toggleDesktopSidePanel = toggleDesktopSidePanel;
+window.updateDesktopSidePanel = updateDesktopSidePanel;
+
+// Initialize desktop side panel with first location
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        if (journeyData && journeyData.length > 0 && window.innerWidth >= 1024) {
+            updateDesktopSidePanel(journeyData[0]);
+        }
+    });
+} else {
+    if (journeyData && journeyData.length > 0 && window.innerWidth >= 1024) {
+        updateDesktopSidePanel(journeyData[0]);
+    }
+}
+
+// Handle window resize
+window.addEventListener('resize', () => {
+    if (window.innerWidth >= 1024 && journeyData && journeyData[window.currentStepIndex || 0]) {
+        // On desktop, update desktop side panel
+        updateDesktopSidePanel(journeyData[window.currentStepIndex || 0]);
+    }
+});
 
