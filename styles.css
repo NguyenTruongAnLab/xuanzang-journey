@@ -637,8 +637,47 @@ body {
         max-height: 200px;
     }
     
+    /* Mobile: Make illustration panel work as overlay modal */
     .illustration-panel {
-        display: none; /* Hide on mobile for space */
+        position: fixed;
+        top: 60px;
+        left: 5px;
+        right: 5px;
+        width: auto;
+        max-height: calc(100vh - 180px);
+        z-index: 1001;
+        display: none;
+    }
+    
+    .illustration-panel.active {
+        display: block;
+    }
+    
+    /* Make carousel more mobile-friendly */
+    .carousel-container {
+        height: 220px;
+    }
+    
+    .carousel-btn {
+        padding: 8px 12px;
+        font-size: 1.5rem;
+    }
+    
+    /* Larger touch target for show images button */
+    .show-images-btn {
+        padding: 12px 20px;
+        font-size: 1rem;
+        top: 70px;
+        left: 5px;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+    }
+    
+    /* Make panel toggle button larger for mobile */
+    .panel-toggle-btn {
+        padding: 8px 15px;
+        font-size: 1rem;
+        min-width: 44px;
+        min-height: 44px;
     }
     
     .summary-panel {
@@ -706,7 +745,19 @@ body {
 
 @media (max-width: 576px) {
     .navbar-brand {
-        font-size: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Ensure all buttons meet minimum touch target size (44x44px) */
+    .btn, button {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Make language buttons larger for easier tapping */
+    .btn-group .btn {
+        padding: 10px 15px;
+        font-size: 0.95rem;
     }
     
     .info-panel .card-title {
@@ -715,6 +766,24 @@ body {
     
     .info-panel .card-text {
         font-size: 0.875rem;
+    }
+    
+    /* Improve carousel caption readability */
+    .carousel-caption {
+        font-size: 0.8rem;
+    }
+    
+    /* Make illustration panel take more screen space on small devices */
+    .illustration-panel.active {
+        top: 60px;
+        bottom: 150px;
+        left: 5px;
+        right: 5px;
+        max-height: calc(100vh - 210px);
+    }
+    
+    .carousel-container {
+        height: 200px;
     }
 }
 

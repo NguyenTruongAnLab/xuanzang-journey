@@ -223,6 +223,32 @@
         height: 50px;
     }
     
+    /* Larger markers for easier mobile tapping */
+    .marker-dot {
+        width: 16px;
+        height: 16px;
+        top: 23px;
+    }
+    
+    .marker-dot.major {
+        width: 20px;
+        height: 20px;
+        top: 21px;
+    }
+    
+    .marker-dot.start,
+    .marker-dot.end {
+        width: 24px;
+        height: 24px;
+        top: 19px;
+    }
+    
+    /* Increase touch target area for timeline markers */
+    .timeline-marker {
+        padding: 10px;
+        margin: -10px;
+    }
+    
     .marker-label {
         font-size: 0.55rem;
         padding: 3px 6px;
@@ -247,19 +273,29 @@
 }
 
 @media (max-width: 576px) {
+    /* Extra large markers for small mobile screens */
     .marker-dot {
-        width: 10px;
-        height: 10px;
+        width: 18px;
+        height: 18px;
+        top: 22px;
     }
     
     .marker-dot.major {
-        width: 12px;
-        height: 12px;
+        width: 22px;
+        height: 22px;
+        top: 20px;
     }
     
     .marker-dot.start,
     .marker-dot.end {
-        width: 14px;
-        height: 14px;
+        width: 26px;
+        height: 26px;
+        top: 18px;
+    }
+    
+    /* Larger touch area for very small screens */
+    .timeline-marker {
+        padding: 12px;
+        margin: -12px;
     }
 }

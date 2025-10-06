@@ -570,8 +570,9 @@ function updateIllustrationPanel(location, enhanced, tFunc) {
         // Format: {index}_{city}_{code}.jpg where code is 0001-0004
         // Show only 0004.jpg by default (road condition), others available for scrolling
         const siteIndex = String(location.id).padStart(2, '0');
-        // Get city name and replace spaces with underscores to match filename
-        const cityName = enhanced.modernName.split(',')[0].trim().replace(/ /g, '_');
+        // IMPORTANT: Always use the original English city name for image paths, not translated names
+        // Image filenames are based on English names (e.g., "Xi'an" not "Tây An")
+        const cityName = location.modernName.split(',')[0].trim().replace(/ /g, '_');
         
         // Image codes: 0004, 0001, 0002, 0003 for gallery, 0004 first as default (road condition)
         const imageCodes = ['0004', '0001', '0002', '0003']; // 0004 first as default
@@ -716,6 +717,36 @@ function setupCarousel() {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 goToNext();
+            }
+        };
+    }
+    
+    // Add touch swipe support for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    if (carouselImages) {
+        carouselImages.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        carouselImages.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+        
+        const handleSwipe = () => {
+            const swipeThreshold = 50; // minimum distance for swipe
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swiped left - go to next
+                    goToNext();
+                } else {
+                    // Swiped right - go to previous
+                    goToPrev();
+                }
             }
         };
     }
