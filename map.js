@@ -1460,6 +1460,33 @@ function setupTimelineScrollSync() {
     let scrollTimeout;
     let isUserScrolling = false;
     let lastProcessedIndex = -1;
+    let mapInteractionTimeout;
+    let isUserInteractingWithMap = false;
+    
+    // Add map interaction listeners to pause timeline sync
+    if (map) {
+        // Detect when user starts interacting with map
+        const startMapInteraction = () => {
+            isUserInteractingWithMap = true;
+            clearTimeout(mapInteractionTimeout);
+        };
+        
+        // Resume timeline sync after user stops interacting with map for 2 seconds
+        const endMapInteraction = () => {
+            clearTimeout(mapInteractionTimeout);
+            mapInteractionTimeout = setTimeout(() => {
+                isUserInteractingWithMap = false;
+            }, 2000);
+        };
+        
+        // Listen to various map interaction events
+        map.on('zoomstart', startMapInteraction);
+        map.on('zoomend', endMapInteraction);
+        map.on('movestart', startMapInteraction);
+        map.on('moveend', endMapInteraction);
+        map.on('dragstart', startMapInteraction);
+        map.on('dragend', endMapInteraction);
+    }
     
     // Throttle function to limit execution rate
     const throttle = (func, delay) => {
@@ -1474,6 +1501,11 @@ function setupTimelineScrollSync() {
     };
     
     const handleScroll = throttle(() => {
+        // Don't sync if user is actively interacting with map
+        if (isUserInteractingWithMap) {
+            return;
+        }
+        
         // Find which item is currently centered in the viewport
         const timelineRect = verticalTimeline.getBoundingClientRect();
         const centerY = timelineRect.top + timelineRect.height / 2;

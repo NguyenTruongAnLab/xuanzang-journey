@@ -1177,7 +1177,7 @@ body {
 }
 
 .mobile-timeline-year {
-    font-size: 1rem;
+    font-size: 0.7rem;
     font-weight: 700;
     color: #ffc107;
     margin-bottom: 3px;
@@ -1186,7 +1186,7 @@ body {
 }
 
 .mobile-timeline-city {
-    font-size: 0.65rem;
+    font-size: 0.45rem;
     color: #e9ecef;
     text-align: center;
     line-height: 1.2;
@@ -1251,14 +1251,14 @@ body {
 }
 
 .overlay-city {
-    font-size: 1.5rem;
+    font-size: 1.05rem;
     font-weight: 700;
     margin-bottom: 4px;
     line-height: 1.2;
 }
 
 .overlay-location {
-    font-size: 1rem;
+    font-size: 0.7rem;
     font-weight: 500;
     opacity: 0.95;
 }
@@ -1298,13 +1298,13 @@ body {
 }
 
 #mobileStationDetails {
-    font-size: 0.95rem;
+    font-size: 0.67rem;
     line-height: 1.7;
     color: #495057;
 }
 
 #mobileStationDetails h6 {
-    font-size: 1.1rem;
+    font-size: 0.77rem;
     font-weight: 600;
     color: #198754;
     margin-bottom: 10px;
@@ -1515,36 +1515,14 @@ body {
     }
 }
 
-/* Very small phones (<375px) - map 45%, panel 55% */
-@media (max-width: 374px) {
-    #map {
-        height: 45vh !important;
-    }
-    
-    .mobile-bottom-panel {
-        height: 55vh !important;
-    }
-}
-
-/* Medium phones (375-414px) - map 50%, panel 50% (default) */
-@media (min-width: 375px) and (max-width: 414px) {
+/* All mobile phones in vertical mode - map 50%, panel 50% */
+@media (max-width: 768px) {
     #map {
         height: 50vh !important;
     }
     
     .mobile-bottom-panel {
         height: 50vh !important;
-    }
-}
-
-/* Larger phones (>414px) - map 55%, panel 45% */
-@media (min-width: 415px) and (max-width: 768px) {
-    #map {
-        height: 55vh !important;
-    }
-    
-    .mobile-bottom-panel {
-        height: 45vh !important;
     }
 }
 
