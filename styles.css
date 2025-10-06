@@ -9,6 +9,15 @@ body {
     overflow-x: hidden;
 }
 
+/* Utility classes for responsive display */
+.mobile-only {
+    display: none !important;
+}
+
+.desktop-only {
+    display: block !important;
+}
+
 #map {
     height: calc(100vh - 290px);
     width: 100%;
@@ -611,10 +620,186 @@ body {
     stroke-opacity: 0.9;
 }
 
+/* Mobile Bottom Panel Styles */
+.mobile-bottom-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transition: transform 0.3s ease, height 0.3s ease;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-bottom-panel.collapsed {
+    height: auto;
+}
+
+.mobile-bottom-panel.expanded {
+    height: 60vh;
+}
+
+.panel-handle {
+    padding: 8px 0;
+    cursor: grab;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(240, 240, 240, 0.95);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.panel-handle:active {
+    cursor: grabbing;
+}
+
+.handle-bar {
+    width: 40px;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 2px;
+}
+
+.panel-content {
+    overflow-y: auto;
+    flex: 1;
+    padding: 12px 15px;
+}
+
+/* Station Info Compact */
+.station-info-compact {
+    margin-bottom: 12px;
+}
+
+.station-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 4px;
+}
+
+.station-meta {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+/* Mobile Gallery */
+.mobile-gallery {
+    margin-bottom: 12px;
+    overflow: hidden;
+}
+
+.gallery-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 0;
+    scrollbar-width: thin;
+}
+
+.gallery-scroll::-webkit-scrollbar {
+    height: 6px;
+}
+
+.gallery-scroll::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+}
+
+.gallery-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+.gallery-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.gallery-image {
+    flex: 0 0 auto;
+    width: 120px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 6px;
+    scroll-snap-align: start;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-image:active {
+    transform: scale(0.95);
+}
+
+.gallery-placeholder {
+    flex: 0 0 auto;
+    width: 120px;
+    height: 90px;
+    background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #999;
+    scroll-snap-align: start;
+}
+
+/* Mobile Timeline Container */
+.mobile-timeline-container {
+    margin-bottom: 12px;
+}
+
+/* Expanded Details */
+.expanded-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    margin-top: 12px;
+}
+
+.mobile-bottom-panel.expanded .expanded-details {
+    max-height: 1000px;
+}
+
+#mobileStationDetails {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #495057;
+}
+
+#mobileStationDetails h6 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #198754;
+    margin-bottom: 8px;
+    border-bottom: 2px solid #198754;
+    padding-bottom: 4px;
+}
+
+#mobileStationDetails p {
+    margin-bottom: 10px;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
+    /* Show mobile elements, hide desktop elements */
+    .mobile-only {
+        display: block !important;
+    }
+    
+    .desktop-only {
+        display: none !important;
+    }
+    
     #map {
-        height: calc(100vh - 350px);
+        height: calc(100vh - 200px);
     }
     
     .location-search {
@@ -628,101 +813,41 @@ body {
         padding: 6px 12px;
     }
     
+    /* Hide old info panel on mobile */
     .info-panel {
-        position: fixed;
-        bottom: 230px;
-        right: 10px;
-        left: 10px;
-        width: auto;
-        max-height: 200px;
+        display: none !important;
     }
     
-    /* Mobile: Make illustration panel work as overlay modal */
-    .illustration-panel {
-        position: fixed;
-        top: 60px;
-        left: 5px;
-        right: 5px;
-        width: auto;
-        max-height: calc(100vh - 180px);
-        z-index: 1001;
-        display: none;
+    /* Mobile bottom panel adjustments */
+    .mobile-bottom-panel {
+        height: auto;
+        min-height: 180px;
     }
     
-    .illustration-panel.active {
-        display: block;
+    .mobile-bottom-panel.expanded {
+        height: 60vh;
     }
     
-    /* Make carousel more mobile-friendly */
-    .carousel-container {
-        height: 220px;
+    .station-name {
+        font-size: 0.95rem;
     }
     
-    .carousel-btn {
-        padding: 8px 12px;
-        font-size: 1.5rem;
+    .station-meta {
+        font-size: 0.8rem;
     }
     
-    /* Larger touch target for show images button */
-    .show-images-btn {
-        padding: 12px 20px;
-        font-size: 1rem;
-        top: 70px;
-        left: 5px;
-        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+    .gallery-image {
+        width: 100px;
+        height: 75px;
     }
     
-    /* Make panel toggle button larger for mobile */
-    .panel-toggle-btn {
-        padding: 8px 15px;
-        font-size: 1rem;
-        min-width: 44px;
-        min-height: 44px;
-    }
-    
-    .summary-panel {
-        position: fixed;
-        top: auto;
-        bottom: 230px;
-        right: 10px;
-        left: 10px;
-        width: auto;
-        max-height: 180px;
-    }
-    
-    .summary-panel .card-body {
-        padding: 0.75rem;
-    }
-    
-    .share-buttons {
-        flex-direction: column;
-    }
-    
-    .share-btn {
-        width: 100%;
-        min-width: auto;
-    }
-    
-    .summary-item {
-        font-size: 0.85rem;
-        margin-bottom: 5px;
-    }
-    
-    #summaryDetails {
-        font-size: 0.75rem;
+    .gallery-placeholder {
+        width: 100px;
+        height: 75px;
     }
     
     .timeline-controls {
-        padding: 10px 0;
-    }
-    
-    .timeline-controls .row {
-        row-gap: 10px;
-    }
-    
-    .timeline-controls .col-md-2,
-    .timeline-controls .col-md-8 {
-        width: 100%;
+        display: none !important;
     }
 }
 

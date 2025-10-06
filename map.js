@@ -1093,3 +1093,201 @@ window.onTimelineMarkerClick = function(index) {
 // NOTE: Location search functionality removed per requirements
 // The search function has been removed from the UI to simplify the interface
 // and focus on the journey visualization
+
+// ===== Mobile Bottom Panel Functionality =====
+
+let mobilePanel = null;
+let panelStartY = 0;
+let panelCurrentY = 0;
+let isDragging = false;
+let isPanelExpanded = false;
+
+function initMobilePanel() {
+    mobilePanel = document.getElementById('mobileBottomPanel');
+    if (!mobilePanel) return;
+    
+    const panelHandle = document.getElementById('panelHandle');
+    
+    // Touch event handlers for swipe gestures
+    panelHandle.addEventListener('touchstart', handleTouchStart, { passive: true });
+    panelHandle.addEventListener('touchmove', handleTouchMove, { passive: false });
+    panelHandle.addEventListener('touchend', handleTouchEnd, { passive: true });
+    
+    // Initialize with first location
+    if (journeyData && journeyData.length > 0) {
+        updateMobilePanel(journeyData[0]);
+    }
+}
+
+function handleTouchStart(e) {
+    panelStartY = e.touches[0].clientY;
+    isDragging = true;
+}
+
+function handleTouchMove(e) {
+    if (!isDragging) return;
+    
+    panelCurrentY = e.touches[0].clientY;
+    const deltaY = panelStartY - panelCurrentY;
+    
+    // Prevent default scrolling during drag
+    if (Math.abs(deltaY) > 10) {
+        e.preventDefault();
+    }
+}
+
+function handleTouchEnd(e) {
+    if (!isDragging) return;
+    isDragging = false;
+    
+    const deltaY = panelStartY - panelCurrentY;
+    const threshold = 50; // Minimum swipe distance
+    
+    if (deltaY > threshold) {
+        // Swiped up - expand panel
+        expandMobilePanel();
+    } else if (deltaY < -threshold) {
+        // Swiped down - collapse panel
+        collapseMobilePanel();
+    }
+}
+
+function expandMobilePanel() {
+    if (!mobilePanel) return;
+    mobilePanel.classList.add('expanded');
+    mobilePanel.classList.remove('collapsed');
+    isPanelExpanded = true;
+}
+
+function collapseMobilePanel() {
+    if (!mobilePanel) return;
+    mobilePanel.classList.remove('expanded');
+    mobilePanel.classList.add('collapsed');
+    isPanelExpanded = false;
+}
+
+function updateMobilePanel(location) {
+    const enhanced = typeof getEnhancedLocation === 'function' ? getEnhancedLocation(location) : location;
+    const tFunc = typeof t === 'function' ? t : (key) => key;
+    const currentLang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : 'en';
+    const isVietnamese = currentLang === 'vi';
+    
+    // Update station name and meta
+    const stationName = document.getElementById('mobileStationName');
+    const stationMeta = document.getElementById('mobileStationMeta');
+    
+    if (stationName) {
+        stationName.textContent = enhanced.name;
+    }
+    
+    if (stationMeta) {
+        const modernName = isVietnamese && enhanced.modernName_vi ? enhanced.modernName_vi : enhanced.modernName;
+        stationMeta.textContent = `${modernName} • ${enhanced.year} CE`;
+    }
+    
+    // Update image gallery
+    updateMobileGallery(location, enhanced);
+    
+    // Update expanded details
+    updateMobileDetails(location, enhanced, tFunc, isVietnamese);
+    
+    // Initialize mobile timeline if not already done
+    initMobileTimeline();
+}
+
+function updateMobileGallery(location, enhanced) {
+    const galleryScroll = document.getElementById('galleryScroll');
+    if (!galleryScroll) return;
+    
+    galleryScroll.innerHTML = '';
+    
+    // Get site index (1-based for image filenames)
+    const siteIndex = journeyData.findIndex(loc => loc.name === location.name) + 1;
+    const cityName = location.name.toLowerCase().replace(/['\\s]/g, '-').replace(/--+/g, '-');
+    
+    // Image codes: 0001, 0002, 0003, 0004
+    const imageCodes = ['0001', '0002', '0003', '0004'];
+    
+    imageCodes.forEach((code, index) => {
+        const img = document.createElement('img');
+        img.className = 'gallery-image';
+        img.loading = 'lazy';
+        img.src = `images/${siteIndex}_${cityName}_${code}.jpg`;
+        img.alt = `${enhanced.name} - Image ${index + 1}`;
+        
+        // Add error handling
+        img.onerror = function() {
+            const placeholder = document.createElement('div');
+            placeholder.className = 'gallery-placeholder';
+            placeholder.innerHTML = '🖼️';
+            this.parentNode.replaceChild(placeholder, this);
+        };
+        
+        // Add click handler for fullscreen view (future enhancement)
+        img.addEventListener('click', () => {
+            // TODO: Implement lightbox viewer
+            console.log('Image clicked:', img.src);
+        });
+        
+        galleryScroll.appendChild(img);
+    });
+}
+
+function updateMobileDetails(location, enhanced, tFunc, isVietnamese) {
+    const detailsContainer = document.getElementById('mobileStationDetails');
+    if (!detailsContainer) return;
+    
+    const description = isVietnamese && enhanced.description_vi ? enhanced.description_vi : enhanced.description;
+    const historicalContext = isVietnamese && enhanced.historicalContext_vi ? enhanced.historicalContext_vi : enhanced.historicalContext;
+    
+    detailsContainer.innerHTML = `
+        <h6>${tFunc('info.description') || 'Description'}</h6>
+        <p>${description}</p>
+        ${historicalContext ? `
+            <h6>${tFunc('info.historicalContext') || 'Historical Context'}</h6>
+            <p>${historicalContext}</p>
+        ` : ''}
+        <p><strong>${tFunc('info.duration') || 'Duration'}:</strong> ${enhanced.duration}</p>
+        <p><strong>${tFunc('info.arrival') || 'Arrival'}:</strong> ${enhanced.arrivalMonth || enhanced.year + ' CE'}</p>
+    `;
+}
+
+function initMobileTimeline() {
+    const mobileTimelineContainer = document.getElementById('mobileTimelineContainer');
+    if (!mobileTimelineContainer || window.mobileTimelineInitialized) return;
+    
+    // Check if we're on mobile
+    if (window.innerWidth > 768) return;
+    
+    // Create a timeline instance for mobile
+    if (typeof EnhancedTimeline !== 'undefined' && journeyData) {
+        window.mobileTimeline = new EnhancedTimeline(mobileTimelineContainer, journeyData);
+        window.mobileTimelineInitialized = true;
+    }
+}
+
+// Update showLocationDetails to also update mobile panel
+const originalShowLocationDetails = showLocationDetails;
+showLocationDetails = function(location) {
+    // Call original function for desktop panels
+    originalShowLocationDetails(location);
+    
+    // Update mobile panel if on mobile
+    if (window.innerWidth <= 768) {
+        updateMobilePanel(location);
+    }
+};
+
+// Initialize mobile panel on page load
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMobilePanel);
+} else {
+    initMobilePanel();
+}
+
+// Re-initialize on window resize
+window.addEventListener('resize', () => {
+    if (window.innerWidth <= 768) {
+        initMobileTimeline();
+    }
+});
