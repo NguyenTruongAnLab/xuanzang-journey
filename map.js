@@ -1348,12 +1348,31 @@ function updateMobileDetails(location, enhanced, tFunc, isVietnamese) {
     const detailsContainer = document.getElementById('mobileStationDetails');
     if (!detailsContainer) return;
     
-    const description = isVietnamese && enhanced.description_vi ? enhanced.description_vi : enhanced.description;
+    // Use expandedDescription (long form) instead of brief description
+    const description = isVietnamese 
+        ? (enhanced.expandedDescription_vi || enhanced.description_vi || enhanced.description)
+        : (enhanced.expandedDescription || enhanced.description);
+    
     const historicalContext = isVietnamese && enhanced.historicalContext_vi ? enhanced.historicalContext_vi : enhanced.historicalContext;
+    const buddhistContext = isVietnamese && enhanced.buddhistContext_vi ? enhanced.buddhistContext_vi : enhanced.buddhistContext;
+    const xuanzangExperience = isVietnamese && enhanced.xuanzangExperience_vi ? enhanced.xuanzangExperience_vi : enhanced.xuanzangExperience;
+    const historicalEvents = isVietnamese && enhanced.historicalEvents_vi ? enhanced.historicalEvents_vi : enhanced.historicalEvents;
     
     detailsContainer.innerHTML = `
         <h6>${tFunc('info.description') || 'Description'}</h6>
         <p>${description}</p>
+        ${buddhistContext ? `
+            <h6>${tFunc('info.buddhistContext') || 'Buddhist Context'}</h6>
+            <p>${buddhistContext}</p>
+        ` : ''}
+        ${xuanzangExperience ? `
+            <h6>${tFunc('info.xuanzangExperience') || 'Xuanzang\'s Experience'}</h6>
+            <p>${xuanzangExperience}</p>
+        ` : ''}
+        ${historicalEvents ? `
+            <h6>${tFunc('info.historicalEvents') || 'Historical Events'}</h6>
+            <p>${historicalEvents}</p>
+        ` : ''}
         ${historicalContext ? `
             <h6>${tFunc('info.historicalContext') || 'Historical Context'}</h6>
             <p>${historicalContext}</p>
@@ -1854,7 +1873,39 @@ function updateDesktopSidePanel(location) {
         descriptionEl.textContent = description;
     }
     
-    // Update historical context
+    // Update Buddhist Context
+    const buddhistSection = document.getElementById('desktopBuddhistSection');
+    const buddhistContext = document.getElementById('desktopBuddhistContext');
+    
+    if (enhanced.buddhistContext && buddhistContext) {
+        const buddhistText = isVietnamese && enhanced.buddhistContext_vi 
+            ? enhanced.buddhistContext_vi 
+            : enhanced.buddhistContext;
+        buddhistContext.textContent = buddhistText;
+        if (buddhistSection) {
+            buddhistSection.style.display = 'block';
+        }
+    } else if (buddhistSection) {
+        buddhistSection.style.display = 'none';
+    }
+    
+    // Update Xuanzang's Experience
+    const xuanzangSection = document.getElementById('desktopXuanzangSection');
+    const xuanzangExperience = document.getElementById('desktopXuanzangExperience');
+    
+    if (enhanced.xuanzangExperience && xuanzangExperience) {
+        const xuanzangText = isVietnamese && enhanced.xuanzangExperience_vi 
+            ? enhanced.xuanzangExperience_vi 
+            : enhanced.xuanzangExperience;
+        xuanzangExperience.textContent = xuanzangText;
+        if (xuanzangSection) {
+            xuanzangSection.style.display = 'block';
+        }
+    } else if (xuanzangSection) {
+        xuanzangSection.style.display = 'none';
+    }
+    
+    // Update historical events
     const historicalSection = document.getElementById('desktopHistoricalSection');
     const historicalContext = document.getElementById('desktopHistoricalContext');
     
