@@ -349,12 +349,15 @@ function addMarkers() {
         // Add click event to show detailed info in panel
         marker.on('click', () => {
             showLocationDetails(location);
+            const prevIndex = currentStepIndex;
             currentStepIndex = index;
             updateTimeline();
             
-            // Move avatar to clicked location
+            // Move avatar to clicked location with duration based on distance
             if (window.monkAvatar) {
-                window.monkAvatar.moveToLocation(location.coordinates, 1000);
+                const stepsDifference = Math.abs(index - prevIndex);
+                const duration = Math.min(2000 + (stepsDifference * 300), 8000);
+                window.monkAvatar.moveToLocation(location.coordinates, duration);
             }
         });
         
@@ -2014,13 +2017,16 @@ function initDesktopTimeline() {
         
         // Add click handler
         marker.addEventListener('click', () => {
+            const prevIndex = window.currentStepIndex || 0;
             if (window.currentStepIndex !== undefined) {
                 window.currentStepIndex = index;
             }
             
-            // Move monk avatar
+            // Move monk avatar with duration based on distance
             if (window.monkAvatar && journeyData[index]) {
-                window.monkAvatar.moveToLocation(journeyData[index].coordinates, 1000);
+                const stepsDifference = Math.abs(index - prevIndex);
+                const duration = Math.min(2000 + (stepsDifference * 300), 8000);
+                window.monkAvatar.moveToLocation(journeyData[index].coordinates, duration);
             }
             
             // Update all panels

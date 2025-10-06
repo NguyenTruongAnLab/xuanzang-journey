@@ -9,6 +9,8 @@ class MonkAvatar {
         this.footstepInterval = null;
         this.map = null;
         this.mapMarker = null;
+        this.currentPosition = null; // Track current position for animations
+        this.animationFrame = null; // Track animation frame for cancellation
         this.init();
     }
     
@@ -29,10 +31,17 @@ class MonkAvatar {
             });
             
             // Create marker but don't add to map yet
-            this.mapMarker = L.marker([0, 0], { 
+            // Initialize at first journey location if available
+            const initialCoords = window.journeyData && window.journeyData[0] 
+                ? window.journeyData[0].coordinates 
+                : [34.2658, 108.9541]; // Default to Chang'an
+            
+            this.mapMarker = L.marker(initialCoords, { 
                 icon: avatarIcon,
                 zIndexOffset: 2000
             });
+            
+            this.currentPosition = initialCoords;
         }
     }
     
@@ -235,22 +244,167 @@ class MonkAvatar {
     }
     
     moveToLocation(coordinates, duration = 1000) {
-        // Move avatar on the map to specific coordinates
+        // Move avatar on the map to specific coordinates with animation along the route
         if (this.map && this.mapMarker && coordinates) {
             // Add marker to map if not already added
             if (!this.map.hasLayer(this.mapMarker)) {
                 this.mapMarker.addTo(this.map);
             }
             
-            // Animate movement to new coordinates
-            this.mapMarker.setLatLng(coordinates);
+            // Get current position
+            const currentLatLng = this.mapMarker.getLatLng();
+            this.currentPosition = [currentLatLng.lat, currentLatLng.lng];
+            const targetPosition = coordinates;
             
-            // Pan map to follow avatar (smoothly)
-            this.map.panTo(coordinates, {
-                animate: true,
-                duration: duration / 1000
-            });
+            // Find the path between current and target positions
+            const path = this.getPathBetweenLocations(this.currentPosition, targetPosition);
+            
+            // Animate along the path
+            this.animateAlongPath(path, duration);
         }
+    }
+    
+    getPathBetweenLocations(start, end) {
+        // Get journey data to find intermediate points
+        if (!window.journeyData) {
+            return [start, end];
+        }
+        
+        // Find indices of start and end in journey data
+        const startIndex = window.journeyData.findIndex(loc => 
+            Math.abs(loc.coordinates[0] - start[0]) < 0.01 && 
+            Math.abs(loc.coordinates[1] - start[1]) < 0.01
+        );
+        
+        const endIndex = window.journeyData.findIndex(loc => 
+            Math.abs(loc.coordinates[0] - end[0]) < 0.01 && 
+            Math.abs(loc.coordinates[1] - end[1]) < 0.01
+        );
+        
+        // If we can't find the locations, just return direct path
+        if (startIndex === -1 || endIndex === -1) {
+            return [start, end];
+        }
+        
+        // Extract the path between the two locations
+        const path = [];
+        const minIndex = Math.min(startIndex, endIndex);
+        const maxIndex = Math.max(startIndex, endIndex);
+        
+        // If going forward in journey
+        if (startIndex < endIndex) {
+            for (let i = minIndex; i <= maxIndex; i++) {
+                path.push(window.journeyData[i].coordinates);
+            }
+        } else {
+            // If going backward in journey
+            for (let i = maxIndex; i >= minIndex; i--) {
+                path.push(window.journeyData[i].coordinates);
+            }
+        }
+        
+        return path;
+    }
+    
+    animateAlongPath(path, totalDuration) {
+        if (!path || path.length < 2) return;
+        
+        // Cancel any ongoing animation
+        if (this.animationFrame) {
+            cancelAnimationFrame(this.animationFrame);
+        }
+        
+        const startTime = Date.now();
+        const totalDistance = this.calculatePathDistance(path);
+        
+        // Start walking animation
+        this.startWalking();
+        
+        const animate = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / totalDuration, 1);
+            
+            // Calculate position along path based on progress
+            const position = this.getPositionAlongPath(path, progress);
+            
+            if (position) {
+                this.mapMarker.setLatLng(position);
+                this.currentPosition = position;
+                
+                // Don't pan the map - per requirement "we do not need to automatically zoom into the chosen location"
+                // But we can keep the location in view without zooming
+            }
+            
+            if (progress < 1) {
+                this.animationFrame = requestAnimationFrame(animate);
+            } else {
+                // Animation complete - stop walking
+                this.stopWalking();
+                this.animationFrame = null;
+            }
+        };
+        
+        this.animationFrame = requestAnimationFrame(animate);
+    }
+    
+    calculatePathDistance(path) {
+        let totalDistance = 0;
+        for (let i = 0; i < path.length - 1; i++) {
+            const lat1 = path[i][0];
+            const lon1 = path[i][1];
+            const lat2 = path[i + 1][0];
+            const lon2 = path[i + 1][1];
+            
+            // Simple distance calculation
+            totalDistance += Math.sqrt(
+                Math.pow(lat2 - lat1, 2) + Math.pow(lon2 - lon1, 2)
+            );
+        }
+        return totalDistance;
+    }
+    
+    getPositionAlongPath(path, progress) {
+        if (progress <= 0) return path[0];
+        if (progress >= 1) return path[path.length - 1];
+        
+        // Calculate total path length
+        const segments = [];
+        let totalLength = 0;
+        
+        for (let i = 0; i < path.length - 1; i++) {
+            const lat1 = path[i][0];
+            const lon1 = path[i][1];
+            const lat2 = path[i + 1][0];
+            const lon2 = path[i + 1][1];
+            
+            const length = Math.sqrt(
+                Math.pow(lat2 - lat1, 2) + Math.pow(lon2 - lon1, 2)
+            );
+            
+            segments.push({ start: path[i], end: path[i + 1], length });
+            totalLength += length;
+        }
+        
+        // Find which segment we're on based on progress
+        const targetDistance = progress * totalLength;
+        let accumulatedDistance = 0;
+        
+        for (const segment of segments) {
+            if (accumulatedDistance + segment.length >= targetDistance) {
+                // We're on this segment
+                const segmentProgress = (targetDistance - accumulatedDistance) / segment.length;
+                
+                // Interpolate position
+                const lat = segment.start[0] + (segment.end[0] - segment.start[0]) * segmentProgress;
+                const lon = segment.start[1] + (segment.end[1] - segment.start[1]) * segmentProgress;
+                
+                return [lat, lon];
+            }
+            
+            accumulatedDistance += segment.length;
+        }
+        
+        return path[path.length - 1];
     }
     
     hide() {
