@@ -182,9 +182,15 @@ class EnhancedTimeline {
             window.currentStepIndex = index;
         }
         
-        // Move monk avatar to clicked location
+        // Move monk avatar to clicked location with duration based on distance
         if (window.monkAvatar && window.journeyData && window.journeyData[index]) {
-            window.monkAvatar.moveToLocation(window.journeyData[index].coordinates, 1000);
+            // Calculate duration based on number of steps between current and target
+            const currentIndex = window.currentStepIndex || 0;
+            const stepsDifference = Math.abs(index - currentIndex);
+            // Base duration of 2 seconds, plus 300ms per step
+            const duration = Math.min(2000 + (stepsDifference * 300), 8000); // Cap at 8 seconds
+            
+            window.monkAvatar.moveToLocation(window.journeyData[index].coordinates, duration);
         }
         
         // Call the map update function
