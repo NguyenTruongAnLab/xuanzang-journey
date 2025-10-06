@@ -887,6 +887,9 @@ function highlightCurrentLocation() {
     // Pan to current location
     map.panTo(currentLocation.coordinates);
     
+    // Highlight the marker
+    highlightMarker(currentStepIndex);
+    
     // Show location details
     showLocationDetails(currentLocation);
     
@@ -1259,6 +1262,27 @@ function updateMobileGalleryCarousel(location, enhanced) {
     
     // Set up touch handlers
     setupGallerySwipe();
+    
+    // Preload images for adjacent locations
+    preloadAdjacentImages(location.id);
+}
+
+// Preload images for previous and next locations for smooth transitions
+function preloadAdjacentImages(currentLocationId) {
+    const currentIndex = journeyData.findIndex(loc => loc.id === currentLocationId);
+    if (currentIndex === -1) return;
+    
+    const adjacentIndices = [currentIndex - 1, currentIndex + 1].filter(i => i >= 0 && i < journeyData.length);
+    
+    adjacentIndices.forEach(index => {
+        const location = journeyData[index];
+        const siteIndex = String(location.id).padStart(2, '0');
+        const cityName = location.modernName.split(',')[0].trim().replace(/ /g, '_');
+        
+        // Preload first image of adjacent locations
+        const img = new Image();
+        img.src = `images/${siteIndex}_${cityName}_0001.jpg`;
+    });
 }
 
 function setupGallerySwipe() {
@@ -1416,41 +1440,48 @@ function setupTimelineScrollSync() {
     
     let scrollTimeout;
     let isUserScrolling = false;
+    let lastProcessedIndex = -1;
     
-    verticalTimeline.addEventListener('scroll', () => {
-        if (!isUserScrolling) {
-            isUserScrolling = true;
-        }
-        
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-            // Find which item is currently centered in the viewport
-            const timelineRect = verticalTimeline.getBoundingClientRect();
-            const centerY = timelineRect.top + timelineRect.height / 2;
-            
-            const items = document.querySelectorAll('.mobile-timeline-item');
-            let closestIndex = 0;
-            let closestDistance = Infinity;
-            
-            items.forEach((item, index) => {
-                const itemRect = item.getBoundingClientRect();
-                const itemCenterY = itemRect.top + itemRect.height / 2;
-                const distance = Math.abs(centerY - itemCenterY);
-                
-                if (distance < closestDistance) {
-                    closestDistance = distance;
-                    closestIndex = index;
-                }
-            });
-            
-            // Only navigate if different from current
-            if (closestIndex !== window.currentStepIndex) {
-                navigateMobileTimeline(closestIndex);
+    // Throttle function to limit execution rate
+    const throttle = (func, delay) => {
+        let lastCall = 0;
+        return function(...args) {
+            const now = Date.now();
+            if (now - lastCall >= delay) {
+                lastCall = now;
+                return func.apply(this, args);
             }
+        };
+    };
+    
+    const handleScroll = throttle(() => {
+        // Find which item is currently centered in the viewport
+        const timelineRect = verticalTimeline.getBoundingClientRect();
+        const centerY = timelineRect.top + timelineRect.height / 2;
+        
+        const items = document.querySelectorAll('.mobile-timeline-item');
+        let closestIndex = 0;
+        let closestDistance = Infinity;
+        
+        items.forEach((item, index) => {
+            const itemRect = item.getBoundingClientRect();
+            const itemCenterY = itemRect.top + itemRect.height / 2;
+            const distance = Math.abs(centerY - itemCenterY);
             
-            isUserScrolling = false;
-        }, 150);
-    });
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestIndex = index;
+            }
+        });
+        
+        // Only navigate if different from current and last processed
+        if (closestIndex !== window.currentStepIndex && closestIndex !== lastProcessedIndex) {
+            lastProcessedIndex = closestIndex;
+            navigateMobileTimeline(closestIndex);
+        }
+    }, 200); // Throttle to once every 200ms
+    
+    verticalTimeline.addEventListener('scroll', handleScroll);
 }
 
 // Navigate to a specific location in mobile timeline
@@ -1471,6 +1502,9 @@ function navigateMobileTimeline(index) {
         });
     }
     
+    // Highlight the active marker
+    highlightMarker(index);
+    
     // Move monk avatar
     if (window.monkAvatar && location) {
         window.monkAvatar.moveToLocation(location.coordinates, 1000);
@@ -1489,6 +1523,30 @@ function navigateMobileTimeline(index) {
     
     // Update journey progress line
     updateJourneyProgress();
+}
+
+// Highlight active marker and dim others
+function highlightMarker(activeIndex) {
+    if (!markers || markers.length === 0) return;
+    
+    markers.forEach((marker, index) => {
+        const element = marker.getElement();
+        if (!element) return;
+        
+        if (index === activeIndex) {
+            // Active marker - add pulse animation
+            element.classList.add('marker-pulse');
+            element.classList.remove('marker-dimmed');
+            element.style.opacity = '1';
+            element.style.filter = 'none';
+            element.style.zIndex = '1000';
+        } else {
+            // Other markers - dim them
+            element.classList.remove('marker-pulse');
+            element.classList.add('marker-dimmed');
+            element.style.zIndex = '500';
+        }
+    });
 }
 
 // Update mobile timeline highlight

@@ -1326,7 +1326,28 @@ body {
     font-weight: 600;
 }
 
-/* Image Lightbox */
+/* Pulsing marker animation for active location */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(25, 135, 84, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(25, 135, 84, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(25, 135, 84, 0);
+    }
+}
+
+.marker-pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Dimmed markers for inactive locations */
+.marker-dimmed {
+    opacity: 0.4;
+    filter: grayscale(50%);
+}
 .image-lightbox {
     position: fixed;
     top: 0;
