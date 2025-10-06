@@ -1005,6 +1005,71 @@ function updateLanguageButtons() {
     document.getElementById('langVi').classList.toggle('active', currentLang === 'vi');
 }
 
+// ===== Centralized Navigation Handler =====
+// This ensures all navigation triggers (timeline, map, arrows, keyboard) 
+// update state consistently and interrupt any ongoing animation
+
+function navigateToLocation(index) {
+    if (!journeyData || index < 0 || index >= journeyData.length) return;
+    
+    // Check if clicking the same location - ignore redundant clicks
+    if (window.currentStepIndex === index) return;
+    
+    // Calculate duration based on distance from current position BEFORE updating
+    const currentIndex = window.currentStepIndex !== undefined ? window.currentStepIndex : 0;
+    const stepsDifference = Math.abs(index - currentIndex);
+    const duration = Math.min(2000 + (stepsDifference * 300), 8000); // Cap at 8 seconds
+    
+    // Update current step index
+    window.currentStepIndex = index;
+    
+    // Get the location
+    const location = journeyData[index];
+    
+    // Move monk avatar with interruption support - pass targetIndex for sync at end
+    if (window.monkAvatar && location) {
+        window.monkAvatar.moveToLocation(location.coordinates, duration, index);
+    }
+    
+    // Update all panels and displays
+    showLocationDetails(location);
+    updateTimeline();
+    
+    // Update desktop side panel
+    if (typeof updateDesktopSidePanel === 'function' && window.innerWidth >= 1024) {
+        updateDesktopSidePanel(location);
+    }
+    
+    // Update mobile panel
+    if (typeof updateMobilePanel === 'function' && window.innerWidth <= 768) {
+        updateMobilePanel(location);
+    }
+    
+    // Update timeline highlights
+    if (window.enhancedTimeline) {
+        window.enhancedTimeline.setCurrentIndex(index);
+    }
+    
+    if (typeof updateDesktopTimelineHighlight === 'function' && window.innerWidth >= 1024) {
+        updateDesktopTimelineHighlight(location);
+    }
+    
+    if (typeof updateMobileTimelineHighlight === 'function' && window.innerWidth <= 768) {
+        updateMobileTimelineHighlight(index);
+    }
+    
+    // Update journey progress
+    updateJourneyProgress();
+    
+    // Stop play mode if active
+    if (isPlaying) {
+        stopPlaying();
+    }
+}
+
+// Make centralized handler globally accessible
+window.navigateToLocation = navigateToLocation;
+
 // Deep-linking support - parse URL hash and navigate to location
 function handleDeepLink() {
     const hash = window.location.hash.substring(1); // Remove the #
@@ -1124,11 +1189,8 @@ document.addEventListener('languageChanged', () => {
 
 // Connect timeline clicks to map
 window.onTimelineMarkerClick = function(index) {
-    currentStepIndex = index;
-    window.currentStepIndex = index;
-    showLocationDetails(journeyData[index]);
-    updateTimeline();
-    stopPlaying();
+    // Use centralized navigation handler
+    navigateToLocation(index);
 };
 
 // NOTE: Location search functionality removed per requirements
@@ -1451,10 +1513,10 @@ function setupTimelineScrollSync() {
 function navigateMobileTimeline(index) {
     if (!journeyData || index < 0 || index >= journeyData.length) return;
     
-    // Update current step index
-    window.currentStepIndex = index;
+    // Use centralized navigation handler
+    navigateToLocation(index);
     
-    // Navigate to the location
+    // Additional mobile-specific actions
     const location = journeyData[index];
     
     // Smoothly fly to the location on the map with animation
@@ -1467,25 +1529,6 @@ function navigateMobileTimeline(index) {
     
     // Highlight the active marker
     highlightMarker(index);
-    
-    // Move monk avatar
-    if (window.monkAvatar && location) {
-        window.monkAvatar.moveToLocation(location.coordinates, 1000);
-    }
-    
-    // Update all panels
-    showLocationDetails(location);
-    
-    // Update mobile panel (images, description)
-    if (typeof updateMobilePanel === 'function') {
-        updateMobilePanel(location);
-    }
-    
-    // Update timeline highlight and adjacent opacity
-    updateMobileTimelineHighlight(index);
-    
-    // Update journey progress line
-    updateJourneyProgress();
 }
 
 // Highlight active marker and dim others
@@ -1718,10 +1761,7 @@ function handleMapSwipe() {
 function navigateToNextStop() {
     if (typeof currentStepIndex !== 'undefined' && typeof journeyData !== 'undefined') {
         if (currentStepIndex < journeyData.length - 1) {
-            currentStepIndex++;
-            if (typeof updateTimeline === 'function') {
-                updateTimeline();
-            }
+            navigateToLocation(currentStepIndex + 1);
         }
     }
 }
@@ -1729,10 +1769,7 @@ function navigateToNextStop() {
 function navigateToPreviousStop() {
     if (typeof currentStepIndex !== 'undefined' && typeof journeyData !== 'undefined') {
         if (currentStepIndex > 0) {
-            currentStepIndex--;
-            if (typeof updateTimeline === 'function') {
-                updateTimeline();
-            }
+            navigateToLocation(currentStepIndex - 1);
         }
     }
 }
@@ -1995,28 +2032,7 @@ function initDesktopTimeline() {
         
         // Add click handler
         marker.addEventListener('click', () => {
-            const prevIndex = window.currentStepIndex || 0;
-            if (window.currentStepIndex !== undefined) {
-                window.currentStepIndex = index;
-            }
-            
-            // Move monk avatar with duration based on distance
-            if (window.monkAvatar && journeyData[index]) {
-                const stepsDifference = Math.abs(index - prevIndex);
-                const duration = Math.min(2000 + (stepsDifference * 300), 8000);
-                window.monkAvatar.moveToLocation(journeyData[index].coordinates, duration);
-            }
-            
-            // Update all panels
-            showLocationDetails(journeyData[index]);
-            
-            // Update desktop side panel
-            if (typeof updateDesktopSidePanel === 'function') {
-                updateDesktopSidePanel(journeyData[index]);
-            }
-            
-            // Update timeline highlight
-            updateDesktopTimelineHighlight(journeyData[index]);
+            navigateToLocation(index);
         });
         
         marker.appendChild(yearEl);
@@ -2093,27 +2109,8 @@ function navigateDesktopTimeline(direction) {
         return; // Can't navigate further
     }
     
-    // Update current step index
-    window.currentStepIndex = newIndex;
-    
-    // Navigate to the location
-    const location = journeyData[newIndex];
-    
-    // Move monk avatar
-    if (window.monkAvatar && location) {
-        window.monkAvatar.moveToLocation(location.coordinates, 1000);
-    }
-    
-    // Update all panels
-    showLocationDetails(location);
-    
-    // Update desktop side panel
-    if (typeof updateDesktopSidePanel === 'function') {
-        updateDesktopSidePanel(location);
-    }
-    
-    // Update timeline highlight
-    updateDesktopTimelineHighlight(location);
+    // Use centralized navigation handler
+    navigateToLocation(newIndex);
 }
 
 // Update navigation button states

@@ -268,7 +268,7 @@ class MonkAvatar {
         this.container.style.bottom = y + 'px';
     }
     
-    moveToLocation(coordinates, duration = 1000) {
+    moveToLocation(coordinates, duration = 1000, targetIndex = null) {
         // Move avatar on the map to specific coordinates with animation along the route
         if (this.map && this.mapMarker && coordinates) {
             // Add marker to map if not already added
@@ -285,7 +285,7 @@ class MonkAvatar {
             const path = this.getPathBetweenLocations(this.currentPosition, targetPosition);
             
             // Animate along the path
-            this.animateAlongPath(path, duration);
+            this.animateAlongPath(path, duration, targetIndex);
         }
     }
     
@@ -331,12 +331,13 @@ class MonkAvatar {
         return path;
     }
     
-    animateAlongPath(path, totalDuration) {
+    animateAlongPath(path, totalDuration, targetIndex = null) {
         if (!path || path.length < 2) return;
         
-        // Cancel any ongoing animation
+        // Cancel any ongoing animation (interrupt if needed)
         if (this.animationFrame) {
             cancelAnimationFrame(this.animationFrame);
+            this.animationFrame = null;
         }
         
         const startTime = Date.now();
@@ -366,6 +367,11 @@ class MonkAvatar {
                 // Animation complete - stop walking
                 this.stopWalking();
                 this.animationFrame = null;
+                
+                // Update window.currentStepIndex if targetIndex was provided
+                if (targetIndex !== null && typeof targetIndex !== 'undefined') {
+                    window.currentStepIndex = targetIndex;
+                }
             }
         };
         

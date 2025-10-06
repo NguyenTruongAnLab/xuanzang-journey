@@ -177,27 +177,32 @@ class EnhancedTimeline {
     }
     
     onMarkerClick(index) {
-        // Calculate duration based on distance from current position BEFORE updating
-        const currentIndex = window.currentStepIndex !== undefined ? window.currentStepIndex : 0;
-        const stepsDifference = Math.abs(index - currentIndex);
-        // Base duration of 2 seconds, plus 300ms per step
-        const duration = Math.min(2000 + (stepsDifference * 300), 8000); // Cap at 8 seconds
-        
-        // Update current index
-        window.currentStepIndex = index;
-        
-        // Move monk avatar to clicked location with calculated duration
-        if (window.monkAvatar && window.journeyData && window.journeyData[index]) {
-            window.monkAvatar.moveToLocation(window.journeyData[index].coordinates, duration);
+        // Use the centralized navigation handler from map.js
+        if (window.navigateToLocation) {
+            window.navigateToLocation(index);
+        } else {
+            // Fallback for initialization order issues
+            // Calculate duration based on distance from current position BEFORE updating
+            const currentIndex = window.currentStepIndex !== undefined ? window.currentStepIndex : 0;
+            const stepsDifference = Math.abs(index - currentIndex);
+            const duration = Math.min(2000 + (stepsDifference * 300), 8000);
+            
+            // Update current index
+            window.currentStepIndex = index;
+            
+            // Move monk avatar to clicked location with calculated duration
+            if (window.monkAvatar && window.journeyData && window.journeyData[index]) {
+                window.monkAvatar.moveToLocation(window.journeyData[index].coordinates, duration, index);
+            }
+            
+            // Call the map update function
+            if (window.onTimelineMarkerClick) {
+                window.onTimelineMarkerClick(index);
+            }
+            
+            // Update timeline to show current position
+            this.updatePosition(index);
         }
-        
-        // Call the map update function
-        if (window.onTimelineMarkerClick) {
-            window.onTimelineMarkerClick(index);
-        }
-        
-        // Update timeline to show current position
-        this.updatePosition(index);
     }
     
     setCurrentIndex(index) {
