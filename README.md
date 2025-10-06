@@ -1,5 +1,8 @@
 # Xuanzang's Journey (629-645 CE)
 
+> **📋 Project Memory Bank**: All project problems, diagnoses, and feature goals are tracked in [`status.md`](status.md) and [`roadmap.md`](roadmap.md).  
+> DO NOT leave orphaned fix/test/temporary markdown files in the repo—consolidate all state in these two docs for a complete memory bank!
+
 An interactive historical map showing the remarkable 16-year journey of the Chinese Buddhist monk Xuanzang from China to India and back, with modern city names, duration of stays, and historical context.
 
 ## 🗺️ Live Demo

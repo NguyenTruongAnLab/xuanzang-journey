@@ -1,0 +1,39 @@
+# Temporary and test files - DO NOT COMMIT
+# All issues should be tracked in status.md and roadmap.md
+*TEST*.md
+*FIX*.md
+*CHANGES*.md
+*temp*.md
+*tmp*.md
+*debug*.md
+*draft*.md
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+
+# Build outputs
+dist/
+build/
+.cache/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS files
+Thumbs.db
