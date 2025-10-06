@@ -1774,10 +1774,27 @@ function initDesktopTimeline() {
         timelineMarkers.appendChild(marker);
     });
     
+    // Create navigation buttons
+    const prevBtn = document.createElement('button');
+    prevBtn.className = 'desktop-timeline-nav desktop-timeline-nav-prev';
+    prevBtn.innerHTML = '◄';
+    prevBtn.setAttribute('aria-label', 'Previous location');
+    
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'desktop-timeline-nav desktop-timeline-nav-next';
+    nextBtn.innerHTML = '►';
+    nextBtn.setAttribute('aria-label', 'Next location');
+    
+    // Add navigation button handlers
+    prevBtn.addEventListener('click', () => navigateDesktopTimeline('prev'));
+    nextBtn.addEventListener('click', () => navigateDesktopTimeline('next'));
+    
     timelineContent.appendChild(timelineTrack);
     timelineContent.appendChild(timelineMarkers);
     timelineContainer.innerHTML = '';
+    timelineContainer.appendChild(prevBtn);
     timelineContainer.appendChild(timelineContent);
+    timelineContainer.appendChild(nextBtn);
     
     // Set initial highlight
     if (journeyData.length > 0) {
@@ -1805,6 +1822,61 @@ function updateDesktopTimelineHighlight(currentLocation) {
             marker.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         }
     });
+    
+    // Update navigation button states
+    updateDesktopTimelineNavButtons(currentIndex);
+}
+
+// Navigate desktop timeline (previous/next)
+function navigateDesktopTimeline(direction) {
+    if (!journeyData || window.innerWidth < 1024) return;
+    
+    const currentIndex = window.currentStepIndex !== undefined ? window.currentStepIndex : 0;
+    let newIndex = currentIndex;
+    
+    if (direction === 'prev' && currentIndex > 0) {
+        newIndex = currentIndex - 1;
+    } else if (direction === 'next' && currentIndex < journeyData.length - 1) {
+        newIndex = currentIndex + 1;
+    } else {
+        return; // Can't navigate further
+    }
+    
+    // Update current step index
+    window.currentStepIndex = newIndex;
+    
+    // Navigate to the location
+    const location = journeyData[newIndex];
+    
+    // Move monk avatar
+    if (window.monkAvatar && location) {
+        window.monkAvatar.moveToLocation(location.coordinates, 1000);
+    }
+    
+    // Update all panels
+    showLocationDetails(location);
+    
+    // Update desktop side panel
+    if (typeof updateDesktopSidePanel === 'function') {
+        updateDesktopSidePanel(location);
+    }
+    
+    // Update timeline highlight
+    updateDesktopTimelineHighlight(location);
+}
+
+// Update navigation button states
+function updateDesktopTimelineNavButtons(currentIndex) {
+    const prevBtn = document.querySelector('.desktop-timeline-nav-prev');
+    const nextBtn = document.querySelector('.desktop-timeline-nav-next');
+    
+    if (prevBtn) {
+        prevBtn.disabled = currentIndex === 0;
+    }
+    
+    if (nextBtn) {
+        nextBtn.disabled = currentIndex === journeyData.length - 1;
+    }
 }
 
 // Make functions globally accessible

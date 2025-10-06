@@ -330,12 +330,11 @@ body {
     position: fixed;
     bottom: 0;
     left: 0;
-    right: 380px; /* Account for side panel width */
+    right: 0; /* Full width - edge to edge */
     height: 100px;
     background: rgba(33, 37, 41, 0.95);
     z-index: 998;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: hidden; /* Hide scroll bars, use arrows instead */
     border-top: 2px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 -3px 15px rgba(0, 0, 0, 0.3);
     display: none; /* Hidden by default, shown on desktop */
@@ -347,15 +346,16 @@ body {
     min-width: 100%;
     width: max-content;
     height: 100%;
-    padding: 15px 20px;
+    padding: 15px 60px; /* Add space for arrow buttons */
     position: relative;
+    transition: transform 0.3s ease;
 }
 
 .desktop-timeline-track {
     position: absolute;
     top: 45px;
-    left: 20px;
-    right: 20px;
+    left: 60px;
+    right: 60px;
     height: 3px;
     background: linear-gradient(90deg, #198754 0%, #0d6efd 50%, #dc3545 100%);
 }
@@ -371,8 +371,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 80px;
-    padding: 0 10px;
+    min-width: 50px; /* Reduced from 80px for tighter spacing */
+    padding: 0 5px; /* Reduced from 10px */
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -430,12 +430,60 @@ body {
 }
 
 .desktop-timeline-city {
-    font-size: 0.75rem;
+    font-size: 0.7rem; /* Slightly smaller for tighter spacing */
     color: #e9ecef;
     text-align: center;
     line-height: 1.2;
-    max-width: 80px;
+    max-width: 50px; /* Reduced to match marker width */
     word-wrap: break-word;
+}
+
+/* Navigation arrow buttons */
+.desktop-timeline-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #212529;
+    z-index: 1000;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.desktop-timeline-nav:hover {
+    background: #fff;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
+}
+
+.desktop-timeline-nav:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.desktop-timeline-nav:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.desktop-timeline-nav:disabled:hover {
+    transform: translateY(-50%);
+}
+
+.desktop-timeline-nav-prev {
+    left: 10px;
+}
+
+.desktop-timeline-nav-next {
+    right: 10px;
 }
 
 .illustration-panel.active {
