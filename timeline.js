@@ -190,7 +190,7 @@ class EnhancedTimeline {
             // Update current index
             window.currentStepIndex = index;
             
-            // Move monk avatar to clicked location with calculated duration
+            // Move monk avatar to clicked location with calculated duration - DISABLED
             if (window.monkAvatar && window.journeyData && window.journeyData[index]) {
                 window.monkAvatar.moveToLocation(window.journeyData[index].coordinates, duration, index);
             }

@@ -272,7 +272,7 @@ function addMarkers() {
     journeyData.forEach((location, index) => {
         // Create custom icon based on location type
         const iconClass = `journey-marker ${location.type}`;
-        const iconSize = location.type === 'start' || location.type === 'end' ? 16 : 
+        const iconSize = location.type === 'start' || location.type === 'end' ? 20 : 
                         location.type === 'major' ? 14 : 12;
         
         const customIcon = L.divIcon({
@@ -1072,7 +1072,8 @@ function navigateToLocation(index) {
     // Update journey progress line
     updateJourneyProgress();
     
-    // Move monk avatar with interruption support - pass targetIndex for sync at end
+    // Move monk avatar with interruption support - DISABLED (feature removed)
+    // Avatar movement is now disabled, but we keep the call for compatibility
     if (window.monkAvatar && location) {
         window.monkAvatar.moveToLocation(location.coordinates, duration, index);
     }
@@ -1129,7 +1130,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize enhanced timeline
     initEnhancedTimeline();
     
-    // Initialize monk avatar
+    // Initialize monk avatar - DISABLED (feature removed)
+    // Still initialize for backward compatibility, but functionality is disabled
     initMonkAvatar();
     updatePlayButtonWithAvatar();
     
@@ -1149,11 +1151,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // Use centralized navigation with no animation for initial load
             navigateToLocation(0);
             
-            // Position avatar at first location without animation
+            // Position avatar at first location without animation - DISABLED
+            // Avatar feature has been removed
+            /*
             if (window.monkAvatar && journeyData[0]) {
                 window.monkAvatar.moveToLocation(journeyData[0].coordinates, 0, 0);
                 window.monkAvatar.show(); // Ensure avatar is visible
             }
+            */
         }, 500);
     }
     
