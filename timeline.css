@@ -123,8 +123,8 @@
 
 .marker-year {
     font-weight: 700;
-    color: #fff;
-    font-size: 0.75rem;
+    color: #ffc107;
+    font-size: 0.95rem;
     display: block;
 }
 
@@ -205,9 +205,9 @@
 }
 
 .year-marker {
-    font-size: 0.65rem;
-    color: #adb5bd;
-    font-weight: 500;
+    font-size: 0.8rem;
+    color: #ffc107;
+    font-weight: 700;
 }
 
 /* Emotion emojis removed per requirements */
@@ -258,7 +258,9 @@
     }
     
     .mobile-timeline-container .marker-year {
-        font-size: 0.65rem;
+        font-size: 0.85rem;
+        color: #ffc107;
+        font-weight: 700;
     }
     
     .mobile-timeline-container .marker-city {
@@ -270,7 +272,9 @@
     }
     
     .mobile-timeline-container .year-marker {
-        font-size: 0.6rem;
+        font-size: 0.75rem;
+        color: #ffc107;
+        font-weight: 700;
     }
     
     .mobile-timeline-container .timeline-current-position {
@@ -290,7 +294,9 @@
     }
     
     .marker-year {
-        font-size: 0.7rem;
+        font-size: 0.85rem;
+        color: #ffc107;
+        font-weight: 700;
     }
     
     .marker-city {
@@ -302,7 +308,9 @@
     }
     
     .year-marker {
-        font-size: 0.6rem;
+        font-size: 0.75rem;
+        color: #ffc107;
+        font-weight: 700;
     }
 }
 

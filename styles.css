@@ -772,6 +772,25 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.year-highlight {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffc107;
+    flex-shrink: 0;
+}
+
+.location-text {
+    color: #6c757d;
+    font-size: 0.88rem;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 /* Mobile Gallery - Inline mini thumbnails */
@@ -1025,6 +1044,14 @@ body {
     .station-meta {
         font-size: 0.75rem;
         line-height: 1.2;
+    }
+    
+    .year-highlight {
+        font-size: 0.95rem;
+    }
+    
+    .location-text {
+        font-size: 0.75rem;
     }
     
     .gallery-image {
