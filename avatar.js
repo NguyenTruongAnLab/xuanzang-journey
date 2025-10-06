@@ -126,6 +126,20 @@ class MonkAvatar {
         this.avatar.className = 'monk-avatar walking';
         this.startFootsteps();
         this.startLeaves();
+        
+        // Apply walking animation to map marker SVG as well
+        if (this.mapMarker && this.map && this.map.hasLayer(this.mapMarker)) {
+            // Use setTimeout to ensure DOM is ready after marker is added
+            setTimeout(() => {
+                const markerElement = this.mapMarker.getElement();
+                if (markerElement) {
+                    const svg = markerElement.querySelector('.monk-avatar');
+                    if (svg) {
+                        svg.classList.add('walking');
+                    }
+                }
+            }, 0);
+        }
     }
     
     stopWalking() {
@@ -133,6 +147,17 @@ class MonkAvatar {
         this.avatar.className = 'monk-avatar';
         this.stopFootsteps();
         this.stopLeaves();
+        
+        // Remove walking animation from map marker SVG as well
+        if (this.mapMarker && this.map && this.map.hasLayer(this.mapMarker)) {
+            const markerElement = this.mapMarker.getElement();
+            if (markerElement) {
+                const svg = markerElement.querySelector('.monk-avatar');
+                if (svg) {
+                    svg.classList.remove('walking');
+                }
+            }
+        }
     }
     
     bow() {
